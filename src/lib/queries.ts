@@ -1,0 +1,151 @@
+import { useQuery } from "@tanstack/react-query";
+import {
+  agents as seedAgents,
+  demoArticles,
+  demoProperties,
+  locations as seedLocations,
+  propertyTypes as seedTypes,
+} from "@/data/seed";
+import {
+  fetchAgents,
+  fetchArticles,
+  fetchEnquiries,
+  fetchLocations,
+  fetchProperties,
+  fetchPropertyTypes,
+  fetchSubmissions,
+  fetchUsers,
+} from "./store";
+import type { Property, PropertyFiltersState } from "./types";
+
+export const defaultFilters: PropertyFiltersState = {
+  q: "",
+  listingType: "all",
+  category: "all",
+  typeId: "",
+  areaSlug: "",
+  minPrice: "",
+  maxPrice: "",
+  bedrooms: "",
+  bathrooms: "",
+  minSize: "",
+  amenities: [],
+  sort: "newest",
+};
+
+export function useProperties() {
+  return useQuery({
+    queryKey: ["properties"],
+    queryFn: fetchProperties,
+    initialData: demoProperties,
+    staleTime: 60_000,
+  });
+}
+
+export function usePropertyTypes() {
+  return useQuery({
+    queryKey: ["propertyTypes"],
+    queryFn: fetchPropertyTypes,
+    initialData: seedTypes,
+    staleTime: 300_000,
+  });
+}
+
+export function useLocations() {
+  return useQuery({
+    queryKey: ["locations"],
+    queryFn: fetchLocations,
+    initialData: seedLocations,
+    staleTime: 300_000,
+  });
+}
+
+export function useAgents() {
+  return useQuery({
+    queryKey: ["agents"],
+    queryFn: fetchAgents,
+    initialData: seedAgents,
+    staleTime: 300_000,
+  });
+}
+
+export function useArticles() {
+  return useQuery({
+    queryKey: ["articles"],
+    queryFn: fetchArticles,
+    initialData: demoArticles,
+    staleTime: 300_000,
+  });
+}
+
+export function useEnquiries() {
+  return useQuery({ queryKey: ["enquiries"], queryFn: fetchEnquiries, initialData: [] });
+}
+
+export function useSubmissions() {
+  return useQuery({ queryKey: ["submissions"], queryFn: fetchSubmissions, initialData: [] });
+}
+
+export function useUsers() {
+  return useQuery({ queryKey: ["users"], queryFn: fetchUsers, initialData: [] });
+}
+
+export function isPublic(p: Property): boolean {
+  return p.status === "published" || p.status === "sold" || p.status === "rented";
+}
+
+const num = (v: string): number | null => {
+  const n = Number(v);
+  return v.trim() === "" || Number.isNaN(n) ? null : n;
+};
+
+export function applyFilters(
+  properties: Property[],
+  filters: PropertyFiltersState,
+  typeCategory: (typeId: string) => string | undefined,
+): Property[] {
+  const q = filters.q.trim().toLowerCase();
+  const minPrice = num(filters.minPrice);
+  const maxPrice = num(filters.maxPrice);
+  const beds = num(filters.bedrooms);
+  const baths = num(filters.bathrooms);
+  const minSize = num(filters.minSize);
+
+  const result = properties.filter((p) => {
+    if (!isPublic(p)) return false;
+    if (q) {
+      const haystack = `${p.title} ${p.area} ${p.town} ${p.description}`.toLowerCase();
+      if (!haystack.includes(q)) return false;
+    }
+    if (filters.listingType !== "all" && p.listingType !== filters.listingType) return false;
+    if (filters.category !== "all" && typeCategory(p.propertyTypeId) !== filters.category) return false;
+    if (filters.typeId && p.propertyTypeId !== filters.typeId) return false;
+    if (filters.areaSlug && p.areaSlug !== filters.areaSlug) return false;
+    if (minPrice !== null && p.price < minPrice) return false;
+    if (maxPrice !== null && p.price > maxPrice) return false;
+    if (beds !== null && (p.bedrooms ?? 0) < beds) return false;
+    if (baths !== null && (p.bathrooms ?? 0) < baths) return false;
+    if (minSize !== null && (p.propertySize ?? 0) < minSize) return false;
+    if (filters.amenities.length && !filters.amenities.every((a) => p.amenities.includes(a))) return false;
+    return true;
+  });
+
+  const sorted = [...result];
+  switch (filters.sort) {
+    case "price_asc":
+      sorted.sort((a, b) => a.price - b.price);
+      break;
+    case "price_desc":
+      sorted.sort((a, b) => b.price - a.price);
+      break;
+    case "featured":
+      sorted.sort((a, b) => Number(b.featured) - Number(a.featured));
+      break;
+    case "largest":
+      sorted.sort((a, b) => (b.propertySize ?? 0) - (a.propertySize ?? 0));
+      break;
+    default:
+      sorted.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+  }
+  return sorted;
+}

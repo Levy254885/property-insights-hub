@@ -10,33 +10,284 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AccountRouteImport } from './routes/account'
+import { Route as BuyRouteImport } from './routes/buy'
+import { Route as CommercialRouteImport } from './routes/commercial'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as FavoritesRouteImport } from './routes/favorites'
+import { Route as LandRouteImport } from './routes/land'
+import { Route as ListPropertyRouteImport } from './routes/list-property'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as RentRouteImport } from './routes/rent'
+import { Route as AgentsIndexRouteImport } from './routes/agents.index'
+import { Route as AgentsSlugRouteImport } from './routes/agents.$slug'
+import { Route as InsightsIndexRouteImport } from './routes/insights.index'
+import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
+import { Route as LocationsIndexRouteImport } from './routes/locations.index'
+import { Route as LocationsSlugRouteImport } from './routes/locations.$slug'
+import { Route as PropertiesIndexRouteImport } from './routes/properties.index'
+import { Route as PropertiesSlugRouteImport } from './routes/properties.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountRoute = AccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BuyRoute = BuyRouteImport.update({
+  id: '/buy',
+  path: '/buy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommercialRoute = CommercialRouteImport.update({
+  id: '/commercial',
+  path: '/commercial',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FavoritesRoute = FavoritesRouteImport.update({
+  id: '/favorites',
+  path: '/favorites',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LandRoute = LandRouteImport.update({
+  id: '/land',
+  path: '/land',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ListPropertyRoute = ListPropertyRouteImport.update({
+  id: '/list-property',
+  path: '/list-property',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RentRoute = RentRouteImport.update({
+  id: '/rent',
+  path: '/rent',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgentsIndexRoute = AgentsIndexRouteImport.update({
+  id: '/agents/',
+  path: '/agents/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgentsSlugRoute = AgentsSlugRouteImport.update({
+  id: '/agents/$slug',
+  path: '/agents/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InsightsIndexRoute = InsightsIndexRouteImport.update({
+  id: '/insights/',
+  path: '/insights/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InsightsSlugRoute = InsightsSlugRouteImport.update({
+  id: '/insights/$slug',
+  path: '/insights/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LocationsIndexRoute = LocationsIndexRouteImport.update({
+  id: '/locations/',
+  path: '/locations/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LocationsSlugRoute = LocationsSlugRouteImport.update({
+  id: '/locations/$slug',
+  path: '/locations/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PropertiesIndexRoute = PropertiesIndexRouteImport.update({
+  id: '/properties/',
+  path: '/properties/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PropertiesSlugRoute = PropertiesSlugRouteImport.update({
+  id: '/properties/$slug',
+  path: '/properties/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
+  '/buy': typeof BuyRoute
+  '/commercial': typeof CommercialRoute
+  '/contact': typeof ContactRoute
+  '/favorites': typeof FavoritesRoute
+  '/land': typeof LandRoute
+  '/list-property': typeof ListPropertyRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/rent': typeof RentRoute
+  '/agents/$slug': typeof AgentsSlugRoute
+  '/insights/$slug': typeof InsightsSlugRoute
+  '/locations/$slug': typeof LocationsSlugRoute
+  '/properties/$slug': typeof PropertiesSlugRoute
+  '/agents/': typeof AgentsIndexRoute
+  '/insights/': typeof InsightsIndexRoute
+  '/locations/': typeof LocationsIndexRoute
+  '/properties/': typeof PropertiesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
+  '/buy': typeof BuyRoute
+  '/commercial': typeof CommercialRoute
+  '/contact': typeof ContactRoute
+  '/favorites': typeof FavoritesRoute
+  '/land': typeof LandRoute
+  '/list-property': typeof ListPropertyRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/rent': typeof RentRoute
+  '/agents/$slug': typeof AgentsSlugRoute
+  '/insights/$slug': typeof InsightsSlugRoute
+  '/locations/$slug': typeof LocationsSlugRoute
+  '/properties/$slug': typeof PropertiesSlugRoute
+  '/agents': typeof AgentsIndexRoute
+  '/insights': typeof InsightsIndexRoute
+  '/locations': typeof LocationsIndexRoute
+  '/properties': typeof PropertiesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
+  '/buy': typeof BuyRoute
+  '/commercial': typeof CommercialRoute
+  '/contact': typeof ContactRoute
+  '/favorites': typeof FavoritesRoute
+  '/land': typeof LandRoute
+  '/list-property': typeof ListPropertyRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/rent': typeof RentRoute
+  '/agents/$slug': typeof AgentsSlugRoute
+  '/insights/$slug': typeof InsightsSlugRoute
+  '/locations/$slug': typeof LocationsSlugRoute
+  '/properties/$slug': typeof PropertiesSlugRoute
+  '/agents/': typeof AgentsIndexRoute
+  '/insights/': typeof InsightsIndexRoute
+  '/locations/': typeof LocationsIndexRoute
+  '/properties/': typeof PropertiesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/account'
+    | '/buy'
+    | '/commercial'
+    | '/contact'
+    | '/favorites'
+    | '/land'
+    | '/list-property'
+    | '/login'
+    | '/register'
+    | '/rent'
+    | '/agents/$slug'
+    | '/insights/$slug'
+    | '/locations/$slug'
+    | '/properties/$slug'
+    | '/agents/'
+    | '/insights/'
+    | '/locations/'
+    | '/properties/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/account'
+    | '/buy'
+    | '/commercial'
+    | '/contact'
+    | '/favorites'
+    | '/land'
+    | '/list-property'
+    | '/login'
+    | '/register'
+    | '/rent'
+    | '/agents/$slug'
+    | '/insights/$slug'
+    | '/locations/$slug'
+    | '/properties/$slug'
+    | '/agents'
+    | '/insights'
+    | '/locations'
+    | '/properties'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/account'
+    | '/buy'
+    | '/commercial'
+    | '/contact'
+    | '/favorites'
+    | '/land'
+    | '/list-property'
+    | '/login'
+    | '/register'
+    | '/rent'
+    | '/agents/$slug'
+    | '/insights/$slug'
+    | '/locations/$slug'
+    | '/properties/$slug'
+    | '/agents/'
+    | '/insights/'
+    | '/locations/'
+    | '/properties/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  AccountRoute: typeof AccountRoute
+  BuyRoute: typeof BuyRoute
+  CommercialRoute: typeof CommercialRoute
+  ContactRoute: typeof ContactRoute
+  FavoritesRoute: typeof FavoritesRoute
+  LandRoute: typeof LandRoute
+  ListPropertyRoute: typeof ListPropertyRoute
+  LoginRoute: typeof LoginRoute
+  RegisterRoute: typeof RegisterRoute
+  RentRoute: typeof RentRoute
+  AgentsSlugRoute: typeof AgentsSlugRoute
+  InsightsSlugRoute: typeof InsightsSlugRoute
+  LocationsSlugRoute: typeof LocationsSlugRoute
+  PropertiesSlugRoute: typeof PropertiesSlugRoute
+  AgentsIndexRoute: typeof AgentsIndexRoute
+  InsightsIndexRoute: typeof InsightsIndexRoute
+  LocationsIndexRoute: typeof LocationsIndexRoute
+  PropertiesIndexRoute: typeof PropertiesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +299,164 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account': {
+      id: '/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AccountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/buy': {
+      id: '/buy'
+      path: '/buy'
+      fullPath: '/buy'
+      preLoaderRoute: typeof BuyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/commercial': {
+      id: '/commercial'
+      path: '/commercial'
+      fullPath: '/commercial'
+      preLoaderRoute: typeof CommercialRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/favorites': {
+      id: '/favorites'
+      path: '/favorites'
+      fullPath: '/favorites'
+      preLoaderRoute: typeof FavoritesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/land': {
+      id: '/land'
+      path: '/land'
+      fullPath: '/land'
+      preLoaderRoute: typeof LandRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/list-property': {
+      id: '/list-property'
+      path: '/list-property'
+      fullPath: '/list-property'
+      preLoaderRoute: typeof ListPropertyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rent': {
+      id: '/rent'
+      path: '/rent'
+      fullPath: '/rent'
+      preLoaderRoute: typeof RentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agents/': {
+      id: '/agents/'
+      path: '/agents'
+      fullPath: '/agents/'
+      preLoaderRoute: typeof AgentsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agents/$slug': {
+      id: '/agents/$slug'
+      path: '/agents/$slug'
+      fullPath: '/agents/$slug'
+      preLoaderRoute: typeof AgentsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/insights/': {
+      id: '/insights/'
+      path: '/insights'
+      fullPath: '/insights/'
+      preLoaderRoute: typeof InsightsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/insights/$slug': {
+      id: '/insights/$slug'
+      path: '/insights/$slug'
+      fullPath: '/insights/$slug'
+      preLoaderRoute: typeof InsightsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/locations/': {
+      id: '/locations/'
+      path: '/locations'
+      fullPath: '/locations/'
+      preLoaderRoute: typeof LocationsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/locations/$slug': {
+      id: '/locations/$slug'
+      path: '/locations/$slug'
+      fullPath: '/locations/$slug'
+      preLoaderRoute: typeof LocationsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/properties/': {
+      id: '/properties/'
+      path: '/properties'
+      fullPath: '/properties/'
+      preLoaderRoute: typeof PropertiesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/properties/$slug': {
+      id: '/properties/$slug'
+      path: '/properties/$slug'
+      fullPath: '/properties/$slug'
+      preLoaderRoute: typeof PropertiesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  AccountRoute: AccountRoute,
+  BuyRoute: BuyRoute,
+  CommercialRoute: CommercialRoute,
+  ContactRoute: ContactRoute,
+  FavoritesRoute: FavoritesRoute,
+  LandRoute: LandRoute,
+  ListPropertyRoute: ListPropertyRoute,
+  LoginRoute: LoginRoute,
+  RegisterRoute: RegisterRoute,
+  RentRoute: RentRoute,
+  AgentsSlugRoute: AgentsSlugRoute,
+  InsightsSlugRoute: InsightsSlugRoute,
+  LocationsSlugRoute: LocationsSlugRoute,
+  PropertiesSlugRoute: PropertiesSlugRoute,
+  AgentsIndexRoute: AgentsIndexRoute,
+  InsightsIndexRoute: InsightsIndexRoute,
+  LocationsIndexRoute: LocationsIndexRoute,
+  PropertiesIndexRoute: PropertiesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
