@@ -7,14 +7,14 @@ import {
   propertyTypes as seedTypes,
 } from "@/data/seed";
 import {
-  fetchAgents,
   fetchArticles,
   fetchEnquiries,
   fetchLocations,
   fetchProperties,
   fetchPropertyTypes,
-  fetchSubmissions,
+  fetchSpecialists,
   fetchUsers,
+  fetchViewingRequests,
 } from "./store";
 import type { Property, PropertyFiltersState } from "./types";
 
@@ -60,10 +60,10 @@ export function useLocations() {
   });
 }
 
-export function useAgents() {
+export function useSpecialists() {
   return useQuery({
-    queryKey: ["agents"],
-    queryFn: fetchAgents,
+    queryKey: ["propertySpecialists"],
+    queryFn: fetchSpecialists,
     initialData: seedAgents,
     staleTime: 300_000,
   });
@@ -82,16 +82,22 @@ export function useEnquiries() {
   return useQuery({ queryKey: ["enquiries"], queryFn: fetchEnquiries, initialData: [] });
 }
 
-export function useSubmissions() {
-  return useQuery({ queryKey: ["submissions"], queryFn: fetchSubmissions, initialData: [] });
+export function useViewingRequests() {
+  return useQuery({ queryKey: ["viewingRequests"], queryFn: fetchViewingRequests, initialData: [] });
 }
 
 export function useUsers() {
   return useQuery({ queryKey: ["users"], queryFn: fetchUsers, initialData: [] });
 }
 
+/** Statuses that are visible on the public catalogue. */
 export function isPublic(p: Property): boolean {
-  return p.status === "published" || p.status === "sold" || p.status === "rented";
+  return p.status !== "draft";
+}
+
+/** Inventory a customer can still transact on. */
+export function isAvailable(p: Property): boolean {
+  return p.status === "available" || p.status === "reserved";
 }
 
 const num = (v: string): number | null => {
