@@ -156,7 +156,8 @@ export interface Article {
   published: boolean;
 }
 
-export type UserRole = "customer" | "agent" | "admin" | "super_admin";
+/** Accounts exist only for internal Property Masters staff. */
+export type UserRole = "staff" | "admin" | "super_admin";
 
 export interface AppUser {
   uid: string;
