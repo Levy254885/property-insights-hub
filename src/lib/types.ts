@@ -1,12 +1,16 @@
 export type ListingType = "sale" | "rent";
 
+/**
+ * Inventory statuses for property owned/marketed by Property Masters.
+ * There are no seller/submission statuses — inventory is internal.
+ */
 export type PropertyStatus =
   | "draft"
-  | "published"
-  | "pending"
+  | "available"
+  | "reserved"
   | "sold"
   | "rented"
-  | "archived";
+  | "unavailable";
 
 export type PropertyCategory = "residential" | "land" | "commercial";
 
