@@ -22,16 +22,16 @@ import type {
   Enquiry,
   LocationArea,
   Property,
-  PropertySubmission,
   PropertyType,
+  ViewingRequest,
 } from "./types";
 
 /**
- * Data access layer.
+ * Data access layer for the Property Masters internal inventory.
  *
- * Every read attempts Firestore first. Demo seed records are used as a
- * fallback so the site renders during SSR and before the Firestore
- * collections are populated. Demo records carry `isDemo: true`.
+ * Properties are company-owned records maintained by staff through the admin
+ * dashboard. Demo seed records are used as a fallback so the site renders
+ * during SSR and before the Firestore collections are populated.
  */
 
 async function readCollection<T>(name: string): Promise<T[]> {
@@ -61,8 +61,9 @@ export async function fetchLocations(): Promise<LocationArea[]> {
   return remote.length ? remote : seedLocations;
 }
 
-export async function fetchAgents(): Promise<Agent[]> {
-  const remote = await readCollection<Agent>("agents");
+/** Property specialists are internal Property Masters staff. */
+export async function fetchSpecialists(): Promise<Agent[]> {
+  const remote = await readCollection<Agent>("propertySpecialists");
   return remote.length ? remote : seedAgents;
 }
 
@@ -75,8 +76,8 @@ export async function fetchEnquiries(): Promise<Enquiry[]> {
   return readCollection<Enquiry>("enquiries");
 }
 
-export async function fetchSubmissions(): Promise<PropertySubmission[]> {
-  return readCollection<PropertySubmission>("propertySubmissions");
+export async function fetchViewingRequests(): Promise<ViewingRequest[]> {
+  return readCollection<ViewingRequest>("viewingRequests");
 }
 
 export async function fetchUsers(): Promise<
@@ -101,21 +102,17 @@ export async function updateEnquiryStatus(id: string, status: Enquiry["status"])
   await updateDoc(doc(requireDb(), "enquiries", id), { status });
 }
 
-export async function createSubmission(payload: Omit<PropertySubmission, "id">): Promise<string> {
+export async function createViewingRequest(payload: Omit<ViewingRequest, "id">): Promise<string> {
   const db = requireDb();
-  const ref = await addDoc(collection(db, "propertySubmissions"), {
+  const ref = await addDoc(collection(db, "viewingRequests"), {
     ...payload,
-    status: "pending",
     _createdAt: serverTimestamp(),
   });
   return ref.id;
 }
 
-export async function updateSubmission(
-  id: string,
-  patch: Partial<PropertySubmission>,
-): Promise<void> {
-  await updateDoc(doc(requireDb(), "propertySubmissions", id), patch);
+export async function updateViewingStatus(id: string, status: ViewingRequest["status"]): Promise<void> {
+  await updateDoc(doc(requireDb(), "viewingRequests", id), { status });
 }
 
 export async function saveProperty(property: Property): Promise<void> {
@@ -135,10 +132,10 @@ export async function deleteProperty(id: string): Promise<void> {
   await deleteDoc(doc(requireDb(), "properties", id));
 }
 
-export async function saveAgent(agent: Agent): Promise<void> {
+export async function saveSpecialist(specialist: Agent): Promise<void> {
   const db = requireDb();
-  const { id, ...rest } = agent;
-  await setDoc(doc(db, "agents", id), rest, { merge: true });
+  const { id, ...rest } = specialist;
+  await setDoc(doc(db, "propertySpecialists", id), rest, { merge: true });
 }
 
 export async function saveLocation(location: LocationArea): Promise<void> {
@@ -157,4 +154,8 @@ export async function saveArticle(article: Article): Promise<void> {
   const db = requireDb();
   const { id, ...rest } = article;
   await setDoc(doc(db, "articles", id), rest, { merge: true });
+}
+
+export async function saveSettings(settings: Record<string, unknown>): Promise<void> {
+  await setDoc(doc(requireDb(), "settings", "site"), settings, { merge: true });
 }
