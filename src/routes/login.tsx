@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,10 +8,15 @@ import { useAuth } from "@/lib/auth";
 export const Route = createFileRoute("/login")({
   head: () => ({
     meta: [
-      { title: "Sign in | Property Masters" },
-      { name: "description", content: "Sign in to save properties and manage your Property Masters account." },
-      { property: "og:title", content: "Sign in | Property Masters" },
-      { property: "og:description", content: "Access your saved properties and enquiries." },
+      { title: "Staff sign in | Property Masters" },
+      {
+        name: "description",
+        content: "Internal sign in for Property Masters staff managing property inventory and leads.",
+      },
+      { property: "og:title", content: "Staff sign in | Property Masters" },
+      { property: "og:description", content: "Internal access for the Property Masters team." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },
     ],
     links: [{ rel: "canonical", href: "/login" }],
@@ -20,7 +25,7 @@ export const Route = createFileRoute("/login")({
 });
 
 function LoginPage() {
-  const { signIn, signInWithGoogle } = useAuth();
+  const { signIn } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,7 +36,7 @@ function LoginPage() {
     setBusy(true);
     try {
       await signIn(email, password);
-      void navigate({ to: "/account" });
+      void navigate({ to: "/admin" });
     } catch (error) {
       toast.error("Could not sign in", { description: (error as Error).message });
     } finally {
@@ -42,11 +47,19 @@ function LoginPage() {
   return (
     <div className="container-page flex justify-center py-20">
       <div className="w-full max-w-sm rounded-md border border-border bg-card p-8">
-        <h1 className="text-2xl font-bold">Sign in</h1>
+        <p className="eyebrow">Internal access</p>
+        <h1 className="mt-2 text-2xl font-bold">Staff sign in</h1>
+        <p className="mt-2 text-sm text-muted-foreground">
+          This area is for Property Masters staff. Looking for a property?{" "}
+          <a href="/properties" className="font-semibold text-foreground underline underline-offset-4">
+            Explore properties
+          </a>
+          .
+        </p>
         <form onSubmit={submit} className="mt-6 space-y-4">
           <div>
             <label htmlFor="l-email" className="eyebrow mb-1.5 block">
-              Email
+              Work email
             </label>
             <Input id="l-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
@@ -66,22 +79,8 @@ function LoginPage() {
             {busy ? "Signing in…" : "Sign in"}
           </Button>
         </form>
-        <Button
-          variant="outline"
-          className="mt-3 w-full"
-          onClick={() =>
-            void signInWithGoogle()
-              .then(() => navigate({ to: "/account" }))
-              .catch((e: Error) => toast.error("Google sign-in failed", { description: e.message }))
-          }
-        >
-          Continue with Google
-        </Button>
-        <p className="mt-6 text-sm text-muted-foreground">
-          No account?{" "}
-          <Link to="/register" className="font-semibold text-foreground underline underline-offset-4">
-            Create one
-          </Link>
+        <p className="mt-6 text-xs text-muted-foreground">
+          Accounts are created by an administrator. Contact your manager if you need access.
         </p>
       </div>
     </div>
