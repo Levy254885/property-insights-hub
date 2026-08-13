@@ -149,10 +149,12 @@ function LocationPage() {
 
       <div className="mt-16 flex flex-wrap gap-3 rounded-md border border-border bg-card p-8">
         <Button asChild>
-          <Link to="/contact">Talk to us about {location.name}</Link>
+          <Link to="/contact">Talk to a property specialist about {location.name}</Link>
         </Button>
         <Button variant="outline" asChild>
-          <Link to="/list-property">List a property here</Link>
+          <Link to="/properties" search={{ area: location.slug }}>
+            View properties in {location.name}
+          </Link>
         </Button>
       </div>
     </div>
