@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { PropertyGallery } from "@/components/property/PropertyGallery";
 import { EnquiryForm } from "@/components/property/EnquiryForm";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
-import { useAgents, useProperties, usePropertyTypes, isPublic } from "@/lib/queries";
+import { useSpecialists, useProperties, usePropertyTypes, isPublic } from "@/lib/queries";
 import { useFavorites } from "@/lib/favorites";
 import { formatPrice, formatSize, propertyLocation, statusLabel, whatsappLink } from "@/lib/format";
 import { defaultSettings } from "@/lib/settings";
@@ -39,7 +39,7 @@ function PropertyDetail() {
   const { slug } = Route.useParams();
   const { data: properties, isFetching } = useProperties();
   const { data: types } = usePropertyTypes();
-  const { data: agents } = useAgents();
+  const { data: specialists } = useSpecialists();
   const { isFavorite, toggleFavorite } = useFavorites();
 
   const property = properties.find((p) => p.slug === slug);
@@ -59,7 +59,7 @@ function PropertyDetail() {
   if (!isPublic(property)) throw notFound();
 
   const type = types.find((t) => t.id === property.propertyTypeId);
-  const agent = agents.find((a) => a.id === property.agentId);
+  const agent = specialists.find((a) => a.id === property.agentId);
   const saved = isFavorite(property.id);
   const size = formatSize(property.propertySize, property.sizeUnit);
   const land = formatSize(property.landSize, property.landSize && property.landSize < 20 ? "acres" : property.sizeUnit);
