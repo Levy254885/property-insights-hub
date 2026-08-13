@@ -18,14 +18,14 @@ import { Route as FavoritesRouteImport } from './routes/favorites'
 import { Route as LandRouteImport } from './routes/land'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RentRouteImport } from './routes/rent'
-import { Route as AgentsIndexRouteImport } from './routes/agents.index'
-import { Route as AgentsSlugRouteImport } from './routes/agents.$slug'
 import { Route as InsightsIndexRouteImport } from './routes/insights.index'
 import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
 import { Route as LocationsIndexRouteImport } from './routes/locations.index'
 import { Route as LocationsSlugRouteImport } from './routes/locations.$slug'
 import { Route as PropertiesIndexRouteImport } from './routes/properties.index'
 import { Route as PropertiesSlugRouteImport } from './routes/properties.$slug'
+import { Route as SpecialistsIndexRouteImport } from './routes/specialists.index'
+import { Route as SpecialistsSlugRouteImport } from './routes/specialists.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -72,16 +72,6 @@ const RentRoute = RentRouteImport.update({
   path: '/rent',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AgentsIndexRoute = AgentsIndexRouteImport.update({
-  id: '/agents/',
-  path: '/agents/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AgentsSlugRoute = AgentsSlugRouteImport.update({
-  id: '/agents/$slug',
-  path: '/agents/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const InsightsIndexRoute = InsightsIndexRouteImport.update({
   id: '/insights/',
   path: '/insights/',
@@ -112,6 +102,16 @@ const PropertiesSlugRoute = PropertiesSlugRouteImport.update({
   path: '/properties/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SpecialistsIndexRoute = SpecialistsIndexRouteImport.update({
+  id: '/specialists/',
+  path: '/specialists/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SpecialistsSlugRoute = SpecialistsSlugRouteImport.update({
+  id: '/specialists/$slug',
+  path: '/specialists/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -123,14 +123,14 @@ export interface FileRoutesByFullPath {
   '/land': typeof LandRoute
   '/login': typeof LoginRoute
   '/rent': typeof RentRoute
-  '/agents/$slug': typeof AgentsSlugRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/properties/$slug': typeof PropertiesSlugRoute
-  '/agents/': typeof AgentsIndexRoute
+  '/specialists/$slug': typeof SpecialistsSlugRoute
   '/insights/': typeof InsightsIndexRoute
   '/locations/': typeof LocationsIndexRoute
   '/properties/': typeof PropertiesIndexRoute
+  '/specialists/': typeof SpecialistsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -142,14 +142,14 @@ export interface FileRoutesByTo {
   '/land': typeof LandRoute
   '/login': typeof LoginRoute
   '/rent': typeof RentRoute
-  '/agents/$slug': typeof AgentsSlugRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/properties/$slug': typeof PropertiesSlugRoute
-  '/agents': typeof AgentsIndexRoute
+  '/specialists/$slug': typeof SpecialistsSlugRoute
   '/insights': typeof InsightsIndexRoute
   '/locations': typeof LocationsIndexRoute
   '/properties': typeof PropertiesIndexRoute
+  '/specialists': typeof SpecialistsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -162,14 +162,14 @@ export interface FileRoutesById {
   '/land': typeof LandRoute
   '/login': typeof LoginRoute
   '/rent': typeof RentRoute
-  '/agents/$slug': typeof AgentsSlugRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/properties/$slug': typeof PropertiesSlugRoute
-  '/agents/': typeof AgentsIndexRoute
+  '/specialists/$slug': typeof SpecialistsSlugRoute
   '/insights/': typeof InsightsIndexRoute
   '/locations/': typeof LocationsIndexRoute
   '/properties/': typeof PropertiesIndexRoute
+  '/specialists/': typeof SpecialistsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -183,14 +183,14 @@ export interface FileRouteTypes {
     | '/land'
     | '/login'
     | '/rent'
-    | '/agents/$slug'
     | '/insights/$slug'
     | '/locations/$slug'
     | '/properties/$slug'
-    | '/agents/'
+    | '/specialists/$slug'
     | '/insights/'
     | '/locations/'
     | '/properties/'
+    | '/specialists/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -202,14 +202,14 @@ export interface FileRouteTypes {
     | '/land'
     | '/login'
     | '/rent'
-    | '/agents/$slug'
     | '/insights/$slug'
     | '/locations/$slug'
     | '/properties/$slug'
-    | '/agents'
+    | '/specialists/$slug'
     | '/insights'
     | '/locations'
     | '/properties'
+    | '/specialists'
   id:
     | '__root__'
     | '/'
@@ -221,14 +221,14 @@ export interface FileRouteTypes {
     | '/land'
     | '/login'
     | '/rent'
-    | '/agents/$slug'
     | '/insights/$slug'
     | '/locations/$slug'
     | '/properties/$slug'
-    | '/agents/'
+    | '/specialists/$slug'
     | '/insights/'
     | '/locations/'
     | '/properties/'
+    | '/specialists/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -241,14 +241,14 @@ export interface RootRouteChildren {
   LandRoute: typeof LandRoute
   LoginRoute: typeof LoginRoute
   RentRoute: typeof RentRoute
-  AgentsSlugRoute: typeof AgentsSlugRoute
   InsightsSlugRoute: typeof InsightsSlugRoute
   LocationsSlugRoute: typeof LocationsSlugRoute
   PropertiesSlugRoute: typeof PropertiesSlugRoute
-  AgentsIndexRoute: typeof AgentsIndexRoute
+  SpecialistsSlugRoute: typeof SpecialistsSlugRoute
   InsightsIndexRoute: typeof InsightsIndexRoute
   LocationsIndexRoute: typeof LocationsIndexRoute
   PropertiesIndexRoute: typeof PropertiesIndexRoute
+  SpecialistsIndexRoute: typeof SpecialistsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -316,20 +316,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RentRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/agents/': {
-      id: '/agents/'
-      path: '/agents'
-      fullPath: '/agents/'
-      preLoaderRoute: typeof AgentsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/agents/$slug': {
-      id: '/agents/$slug'
-      path: '/agents/$slug'
-      fullPath: '/agents/$slug'
-      preLoaderRoute: typeof AgentsSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/insights/': {
       id: '/insights/'
       path: '/insights'
@@ -372,6 +358,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PropertiesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/specialists/': {
+      id: '/specialists/'
+      path: '/specialists'
+      fullPath: '/specialists/'
+      preLoaderRoute: typeof SpecialistsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/specialists/$slug': {
+      id: '/specialists/$slug'
+      path: '/specialists/$slug'
+      fullPath: '/specialists/$slug'
+      preLoaderRoute: typeof SpecialistsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -385,14 +385,14 @@ const rootRouteChildren: RootRouteChildren = {
   LandRoute: LandRoute,
   LoginRoute: LoginRoute,
   RentRoute: RentRoute,
-  AgentsSlugRoute: AgentsSlugRoute,
   InsightsSlugRoute: InsightsSlugRoute,
   LocationsSlugRoute: LocationsSlugRoute,
   PropertiesSlugRoute: PropertiesSlugRoute,
-  AgentsIndexRoute: AgentsIndexRoute,
+  SpecialistsSlugRoute: SpecialistsSlugRoute,
   InsightsIndexRoute: InsightsIndexRoute,
   LocationsIndexRoute: LocationsIndexRoute,
   PropertiesIndexRoute: PropertiesIndexRoute,
+  SpecialistsIndexRoute: SpecialistsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
