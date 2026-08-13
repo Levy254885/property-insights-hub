@@ -16,18 +16,18 @@ const columns = [
     title: "Company",
     links: [
       { label: "About", to: "/about" },
-      { label: "Our team", to: "/agents" },
+      { label: "Property specialists", to: "/specialists" },
       { label: "Insights", to: "/insights" },
       { label: "Contact", to: "/contact" },
     ],
   },
   {
-    title: "Owners",
+    title: "Buyers & tenants",
     links: [
-      { label: "List your property", to: "/list-property" },
       { label: "Saved properties", to: "/favorites" },
-      { label: "Sign in", to: "/login" },
       { label: "Locations", to: "/locations" },
+      { label: "Book a viewing", to: "/contact" },
+      { label: "Staff sign in", to: "/login" },
     ],
   },
 ] as const;
