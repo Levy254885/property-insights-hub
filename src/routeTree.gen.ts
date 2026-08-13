@@ -19,6 +19,7 @@ import { Route as FavoritesRouteImport } from './routes/favorites'
 import { Route as LandRouteImport } from './routes/land'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RentRouteImport } from './routes/rent'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as InsightsIndexRouteImport } from './routes/insights.index'
 import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
 import { Route as LocationsIndexRouteImport } from './routes/locations.index'
@@ -78,6 +79,11 @@ const RentRoute = RentRouteImport.update({
   path: '/rent',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const InsightsIndexRoute = InsightsIndexRouteImport.update({
   id: '/insights/',
   path: '/insights/',
@@ -122,7 +128,7 @@ const SpecialistsSlugRoute = SpecialistsSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/buy': typeof BuyRoute
   '/commercial': typeof CommercialRoute
   '/contact': typeof ContactRoute
@@ -134,6 +140,7 @@ export interface FileRoutesByFullPath {
   '/locations/$slug': typeof LocationsSlugRoute
   '/properties/$slug': typeof PropertiesSlugRoute
   '/specialists/$slug': typeof SpecialistsSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/insights/': typeof InsightsIndexRoute
   '/locations/': typeof LocationsIndexRoute
   '/properties/': typeof PropertiesIndexRoute
@@ -142,7 +149,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
   '/buy': typeof BuyRoute
   '/commercial': typeof CommercialRoute
   '/contact': typeof ContactRoute
@@ -154,6 +160,7 @@ export interface FileRoutesByTo {
   '/locations/$slug': typeof LocationsSlugRoute
   '/properties/$slug': typeof PropertiesSlugRoute
   '/specialists/$slug': typeof SpecialistsSlugRoute
+  '/admin': typeof AdminIndexRoute
   '/insights': typeof InsightsIndexRoute
   '/locations': typeof LocationsIndexRoute
   '/properties': typeof PropertiesIndexRoute
@@ -163,7 +170,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/buy': typeof BuyRoute
   '/commercial': typeof CommercialRoute
   '/contact': typeof ContactRoute
@@ -175,6 +182,7 @@ export interface FileRoutesById {
   '/locations/$slug': typeof LocationsSlugRoute
   '/properties/$slug': typeof PropertiesSlugRoute
   '/specialists/$slug': typeof SpecialistsSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/insights/': typeof InsightsIndexRoute
   '/locations/': typeof LocationsIndexRoute
   '/properties/': typeof PropertiesIndexRoute
@@ -197,6 +205,7 @@ export interface FileRouteTypes {
     | '/locations/$slug'
     | '/properties/$slug'
     | '/specialists/$slug'
+    | '/admin/'
     | '/insights/'
     | '/locations/'
     | '/properties/'
@@ -205,7 +214,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
-    | '/admin'
     | '/buy'
     | '/commercial'
     | '/contact'
@@ -217,6 +225,7 @@ export interface FileRouteTypes {
     | '/locations/$slug'
     | '/properties/$slug'
     | '/specialists/$slug'
+    | '/admin'
     | '/insights'
     | '/locations'
     | '/properties'
@@ -237,6 +246,7 @@ export interface FileRouteTypes {
     | '/locations/$slug'
     | '/properties/$slug'
     | '/specialists/$slug'
+    | '/admin/'
     | '/insights/'
     | '/locations/'
     | '/properties/'
@@ -246,7 +256,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  AdminRoute: typeof AdminRoute
+  AdminRoute: typeof AdminRouteWithChildren
   BuyRoute: typeof BuyRoute
   CommercialRoute: typeof CommercialRoute
   ContactRoute: typeof ContactRoute
@@ -336,6 +346,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RentRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/insights/': {
       id: '/insights/'
       path: '/insights'
@@ -395,10 +412,20 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminRouteChildren {
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  AdminRoute: AdminRoute,
+  AdminRoute: AdminRouteWithChildren,
   BuyRoute: BuyRoute,
   CommercialRoute: CommercialRoute,
   ContactRoute: ContactRoute,
