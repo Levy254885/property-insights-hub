@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Menu, Heart, Search, User2 } from "lucide-react";
+import { Menu, Heart, Phone, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { useAuth } from "@/lib/auth";
 import { useFavorites } from "@/lib/favorites";
+import { defaultSettings } from "@/lib/settings";
 import { cn } from "@/lib/utils";
 
 const primaryNav = [
@@ -18,9 +18,9 @@ const primaryNav = [
 
 export function Header() {
   const [open, setOpen] = useState(false);
-  const { user, isAdmin, logout } = useAuth();
   const { favorites } = useFavorites();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const tel = `tel:${defaultSettings.phone.replace(/\s/g, "")}`;
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
@@ -65,28 +65,16 @@ export function Header() {
               )}
             </Link>
           </Button>
-          {user ? (
-            <>
-              <Button variant="ghost" size="sm" asChild>
-                <Link to={isAdmin ? "/admin" : "/account"}>
-                  <User2 />
-                  {isAdmin ? "Admin" : "Account"}
-                </Link>
-              </Button>
-              <Button variant="ghost" size="sm" onClick={() => void logout()}>
-                Sign out
-              </Button>
-            </>
-          ) : (
-            <Button variant="ghost" size="sm" asChild>
-              <Link to="/login">Sign in</Link>
-            </Button>
-          )}
+          <Button variant="ghost" size="sm" asChild>
+            <a href={tel}>
+              <Phone /> {defaultSettings.phone}
+            </a>
+          </Button>
           <Button variant="outline" size="sm" asChild>
-            <Link to="/list-property">List Your Property</Link>
+            <Link to="/properties">Explore Properties</Link>
           </Button>
           <Button size="sm" asChild>
-            <Link to="/contact">Contact</Link>
+            <Link to="/contact">Enquire Now</Link>
           </Button>
         </div>
 
@@ -104,7 +92,7 @@ export function Header() {
             </SheetTrigger>
             <SheetContent side="right" className="w-[86vw] max-w-sm p-0">
               <SheetTitle className="sr-only">Navigation</SheetTitle>
-              <nav aria-label="Mobile" className="flex h-full flex-col px-6 pb-8 pt-14">
+              <nav aria-label="Mobile" className="flex h-full flex-col overflow-y-auto px-6 pb-8 pt-14">
                 {primaryNav.map((item) => (
                   <Link
                     key={item.to}
@@ -123,6 +111,13 @@ export function Header() {
                   All Properties
                 </Link>
                 <Link
+                  to="/specialists"
+                  onClick={() => setOpen(false)}
+                  className="border-b border-border py-4 text-lg font-medium text-foreground"
+                >
+                  Property Specialists
+                </Link>
+                <Link
                   to="/insights"
                   onClick={() => setOpen(false)}
                   className="border-b border-border py-4 text-lg font-medium text-foreground"
@@ -131,20 +126,14 @@ export function Header() {
                 </Link>
                 <div className="mt-8 flex flex-col gap-3">
                   <Button asChild onClick={() => setOpen(false)}>
-                    <Link to="/contact">Contact Property Masters</Link>
+                    <Link to="/properties">Explore Properties</Link>
                   </Button>
                   <Button variant="outline" asChild onClick={() => setOpen(false)}>
-                    <Link to="/list-property">List Your Property</Link>
+                    <Link to="/contact">Enquire Now</Link>
                   </Button>
-                  {user ? (
-                    <Button variant="ghost" asChild onClick={() => setOpen(false)}>
-                      <Link to={isAdmin ? "/admin" : "/account"}>{isAdmin ? "Admin" : "My account"}</Link>
-                    </Button>
-                  ) : (
-                    <Button variant="ghost" asChild onClick={() => setOpen(false)}>
-                      <Link to="/login">Sign in</Link>
-                    </Button>
-                  )}
+                  <Button variant="ghost" asChild onClick={() => setOpen(false)}>
+                    <a href={tel}>Call {defaultSettings.phone}</a>
+                  </Button>
                 </div>
               </nav>
             </SheetContent>
