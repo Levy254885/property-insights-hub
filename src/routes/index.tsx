@@ -7,6 +7,7 @@ import { PropertyGrid } from "@/components/property/PropertyGrid";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { useArticles, useLocations, useProperties, usePropertyTypes, isPublic } from "@/lib/queries";
 import { formatDate } from "@/lib/format";
+import { defaultSettings } from "@/lib/settings";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -41,7 +42,7 @@ const categories = [
 ];
 
 const trust = [
-  { icon: BadgeCheck, title: "Verified listings", body: "Listings marked verified have had their ownership and key details checked by our team before publication." },
+  { icon: BadgeCheck, title: "Verified inventory", body: "Every property we market has had its ownership and key details checked by our team before it is published." },
   { icon: MapPin, title: "Local market knowledge", body: "Advice grounded in the specific neighbourhood you are buying or renting in, not generic national averages." },
   { icon: MessagesSquare, title: "Professional assistance", body: "One point of contact from first viewing through to offer, documentation and handover." },
   { icon: ScrollText, title: "Transparent information", body: "Sizes, tenure, service charge and price basis stated clearly on every listing we publish." },
@@ -158,7 +159,7 @@ function Home() {
         <div className="container-page py-16 lg:py-24">
           <p className="eyebrow text-ink-foreground/60">Why Property Masters</p>
           <h2 className="mt-3 max-w-2xl text-2xl font-bold sm:text-3xl">
-            A straightforward way to buy, rent and list property.
+            A straightforward way to buy and rent property in Kenya.
           </h2>
           <div className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
             {trust.map((t) => (
@@ -182,19 +183,21 @@ function Home() {
       <section className="border-y border-border bg-secondary/40">
         <div className="container-page grid gap-8 py-16 lg:grid-cols-2 lg:items-center lg:py-20">
           <div>
-            <p className="eyebrow">Owners and agents</p>
-            <h2 className="mt-3 text-2xl font-bold sm:text-3xl">Have a property to sell or rent?</h2>
+            <p className="eyebrow">Speak to us</p>
+            <h2 className="mt-3 text-2xl font-bold sm:text-3xl">
+              Found something you like? Arrange a viewing.
+            </h2>
             <p className="mt-4 max-w-lg text-sm leading-relaxed text-muted-foreground">
-              Submit the details and photographs of your property. Our team reviews every submission
-              before it is published, so listings stay accurate.
+              Every property on this site is marketed directly by Property Masters. Tell us what you
+              are looking for and a property specialist will take you through the options.
             </p>
           </div>
-          <div className="flex gap-3 lg:justify-end">
+          <div className="flex flex-wrap gap-3 lg:justify-end">
             <Button size="lg" asChild>
-              <Link to="/list-property">List Your Property</Link>
+              <Link to="/contact">Talk to a Property Specialist</Link>
             </Button>
             <Button size="lg" variant="outline" asChild>
-              <Link to="/contact">Talk to us</Link>
+              <a href={`tel:${defaultSettings.phone.replace(/\s/g, "")}`}>Call Property Masters</a>
             </Button>
           </div>
         </div>
@@ -232,7 +235,7 @@ function Home() {
           <h2 className="max-w-xl text-2xl font-bold sm:text-3xl">Let's find the right property.</h2>
           <div className="flex flex-wrap gap-3">
             <Button size="lg" asChild>
-              <Link to="/properties">Browse Properties</Link>
+              <Link to="/properties">Explore Properties</Link>
             </Button>
             <Button size="lg" variant="outline" asChild>
               <Link to="/contact">Contact Property Masters</Link>

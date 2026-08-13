@@ -1,27 +1,27 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
 import { EmptyState } from "@/components/site/EmptyState";
-import { useAgents, useProperties, usePropertyTypes, isPublic } from "@/lib/queries";
+import { useSpecialists, useProperties, usePropertyTypes, isPublic } from "@/lib/queries";
 
-export const Route = createFileRoute("/agents/$slug")({
+export const Route = createFileRoute("/specialists/$slug")({
   head: ({ params }) => ({
     meta: [
       { title: `${params.slug.replace(/-/g, " ")} | Property Masters` },
       { name: "description", content: "Current listings handled by this Property Masters desk." },
-      { property: "og:url", content: `/agents/${params.slug}` },
+      { property: "og:url", content: `/specialists/${params.slug}` },
     ],
-    links: [{ rel: "canonical", href: `/agents/${params.slug}` }],
+    links: [{ rel: "canonical", href: `/specialists/${params.slug}` }],
   }),
   component: AgentPage,
 });
 
 function AgentPage() {
   const { slug } = Route.useParams();
-  const { data: agents } = useAgents();
+  const { data: specialists } = useSpecialists();
   const { data: properties } = useProperties();
   const { data: types } = usePropertyTypes();
 
-  const agent = agents.find((a) => a.slug === slug);
+  const agent = specialists.find((a) => a.slug === slug);
   if (!agent) throw notFound();
   const listings = properties.filter((p) => isPublic(p) && p.agentId === agent.id);
 

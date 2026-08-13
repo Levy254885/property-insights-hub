@@ -11,24 +11,29 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
-import { Route as AccountRouteImport } from './routes/account'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as BuyRouteImport } from './routes/buy'
 import { Route as CommercialRouteImport } from './routes/commercial'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as FavoritesRouteImport } from './routes/favorites'
 import { Route as LandRouteImport } from './routes/land'
-import { Route as ListPropertyRouteImport } from './routes/list-property'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as RegisterRouteImport } from './routes/register'
 import { Route as RentRouteImport } from './routes/rent'
-import { Route as AgentsIndexRouteImport } from './routes/agents.index'
-import { Route as AgentsSlugRouteImport } from './routes/agents.$slug'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminContentRouteImport } from './routes/admin.content'
+import { Route as AdminEnquiriesRouteImport } from './routes/admin.enquiries'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminViewingsRouteImport } from './routes/admin.viewings'
 import { Route as InsightsIndexRouteImport } from './routes/insights.index'
 import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
 import { Route as LocationsIndexRouteImport } from './routes/locations.index'
 import { Route as LocationsSlugRouteImport } from './routes/locations.$slug'
 import { Route as PropertiesIndexRouteImport } from './routes/properties.index'
 import { Route as PropertiesSlugRouteImport } from './routes/properties.$slug'
+import { Route as SpecialistsIndexRouteImport } from './routes/specialists.index'
+import { Route as SpecialistsSlugRouteImport } from './routes/specialists.$slug'
+import { Route as AdminPropertiesIndexRouteImport } from './routes/admin.properties.index'
+import { Route as AdminPropertiesIdRouteImport } from './routes/admin.properties.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,9 +45,9 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AccountRoute = AccountRouteImport.update({
-  id: '/account',
-  path: '/account',
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BuyRoute = BuyRouteImport.update({
@@ -70,19 +75,9 @@ const LandRoute = LandRouteImport.update({
   path: '/land',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ListPropertyRoute = ListPropertyRouteImport.update({
-  id: '/list-property',
-  path: '/list-property',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RegisterRoute = RegisterRouteImport.update({
-  id: '/register',
-  path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RentRoute = RentRouteImport.update({
@@ -90,15 +85,30 @@ const RentRoute = RentRouteImport.update({
   path: '/rent',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AgentsIndexRoute = AgentsIndexRouteImport.update({
-  id: '/agents/',
-  path: '/agents/',
-  getParentRoute: () => rootRouteImport,
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
 } as any)
-const AgentsSlugRoute = AgentsSlugRouteImport.update({
-  id: '/agents/$slug',
-  path: '/agents/$slug',
-  getParentRoute: () => rootRouteImport,
+const AdminContentRoute = AdminContentRouteImport.update({
+  id: '/content',
+  path: '/content',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminEnquiriesRoute = AdminEnquiriesRouteImport.update({
+  id: '/enquiries',
+  path: '/enquiries',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminViewingsRoute = AdminViewingsRouteImport.update({
+  id: '/viewings',
+  path: '/viewings',
+  getParentRoute: () => AdminRoute,
 } as any)
 const InsightsIndexRoute = InsightsIndexRouteImport.update({
   id: '/insights/',
@@ -130,164 +140,210 @@ const PropertiesSlugRoute = PropertiesSlugRouteImport.update({
   path: '/properties/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SpecialistsIndexRoute = SpecialistsIndexRouteImport.update({
+  id: '/specialists/',
+  path: '/specialists/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SpecialistsSlugRoute = SpecialistsSlugRouteImport.update({
+  id: '/specialists/$slug',
+  path: '/specialists/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminPropertiesIndexRoute = AdminPropertiesIndexRouteImport.update({
+  id: '/properties/',
+  path: '/properties/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPropertiesIdRoute = AdminPropertiesIdRouteImport.update({
+  id: '/properties/$id',
+  path: '/properties/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/account': typeof AccountRoute
+  '/admin': typeof AdminRouteWithChildren
   '/buy': typeof BuyRoute
   '/commercial': typeof CommercialRoute
   '/contact': typeof ContactRoute
   '/favorites': typeof FavoritesRoute
   '/land': typeof LandRoute
-  '/list-property': typeof ListPropertyRoute
   '/login': typeof LoginRoute
-  '/register': typeof RegisterRoute
   '/rent': typeof RentRoute
-  '/agents/$slug': typeof AgentsSlugRoute
+  '/admin/content': typeof AdminContentRoute
+  '/admin/enquiries': typeof AdminEnquiriesRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/viewings': typeof AdminViewingsRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/properties/$slug': typeof PropertiesSlugRoute
-  '/agents/': typeof AgentsIndexRoute
+  '/specialists/$slug': typeof SpecialistsSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/insights/': typeof InsightsIndexRoute
   '/locations/': typeof LocationsIndexRoute
   '/properties/': typeof PropertiesIndexRoute
+  '/specialists/': typeof SpecialistsIndexRoute
+  '/admin/properties/$id': typeof AdminPropertiesIdRoute
+  '/admin/properties/': typeof AdminPropertiesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/account': typeof AccountRoute
   '/buy': typeof BuyRoute
   '/commercial': typeof CommercialRoute
   '/contact': typeof ContactRoute
   '/favorites': typeof FavoritesRoute
   '/land': typeof LandRoute
-  '/list-property': typeof ListPropertyRoute
   '/login': typeof LoginRoute
-  '/register': typeof RegisterRoute
   '/rent': typeof RentRoute
-  '/agents/$slug': typeof AgentsSlugRoute
+  '/admin/content': typeof AdminContentRoute
+  '/admin/enquiries': typeof AdminEnquiriesRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/viewings': typeof AdminViewingsRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/properties/$slug': typeof PropertiesSlugRoute
-  '/agents': typeof AgentsIndexRoute
+  '/specialists/$slug': typeof SpecialistsSlugRoute
+  '/admin': typeof AdminIndexRoute
   '/insights': typeof InsightsIndexRoute
   '/locations': typeof LocationsIndexRoute
   '/properties': typeof PropertiesIndexRoute
+  '/specialists': typeof SpecialistsIndexRoute
+  '/admin/properties/$id': typeof AdminPropertiesIdRoute
+  '/admin/properties': typeof AdminPropertiesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/account': typeof AccountRoute
+  '/admin': typeof AdminRouteWithChildren
   '/buy': typeof BuyRoute
   '/commercial': typeof CommercialRoute
   '/contact': typeof ContactRoute
   '/favorites': typeof FavoritesRoute
   '/land': typeof LandRoute
-  '/list-property': typeof ListPropertyRoute
   '/login': typeof LoginRoute
-  '/register': typeof RegisterRoute
   '/rent': typeof RentRoute
-  '/agents/$slug': typeof AgentsSlugRoute
+  '/admin/content': typeof AdminContentRoute
+  '/admin/enquiries': typeof AdminEnquiriesRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/viewings': typeof AdminViewingsRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/properties/$slug': typeof PropertiesSlugRoute
-  '/agents/': typeof AgentsIndexRoute
+  '/specialists/$slug': typeof SpecialistsSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/insights/': typeof InsightsIndexRoute
   '/locations/': typeof LocationsIndexRoute
   '/properties/': typeof PropertiesIndexRoute
+  '/specialists/': typeof SpecialistsIndexRoute
+  '/admin/properties/$id': typeof AdminPropertiesIdRoute
+  '/admin/properties/': typeof AdminPropertiesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/about'
-    | '/account'
+    | '/admin'
     | '/buy'
     | '/commercial'
     | '/contact'
     | '/favorites'
     | '/land'
-    | '/list-property'
     | '/login'
-    | '/register'
     | '/rent'
-    | '/agents/$slug'
+    | '/admin/content'
+    | '/admin/enquiries'
+    | '/admin/settings'
+    | '/admin/viewings'
     | '/insights/$slug'
     | '/locations/$slug'
     | '/properties/$slug'
-    | '/agents/'
+    | '/specialists/$slug'
+    | '/admin/'
     | '/insights/'
     | '/locations/'
     | '/properties/'
+    | '/specialists/'
+    | '/admin/properties/$id'
+    | '/admin/properties/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
-    | '/account'
     | '/buy'
     | '/commercial'
     | '/contact'
     | '/favorites'
     | '/land'
-    | '/list-property'
     | '/login'
-    | '/register'
     | '/rent'
-    | '/agents/$slug'
+    | '/admin/content'
+    | '/admin/enquiries'
+    | '/admin/settings'
+    | '/admin/viewings'
     | '/insights/$slug'
     | '/locations/$slug'
     | '/properties/$slug'
-    | '/agents'
+    | '/specialists/$slug'
+    | '/admin'
     | '/insights'
     | '/locations'
     | '/properties'
+    | '/specialists'
+    | '/admin/properties/$id'
+    | '/admin/properties'
   id:
     | '__root__'
     | '/'
     | '/about'
-    | '/account'
+    | '/admin'
     | '/buy'
     | '/commercial'
     | '/contact'
     | '/favorites'
     | '/land'
-    | '/list-property'
     | '/login'
-    | '/register'
     | '/rent'
-    | '/agents/$slug'
+    | '/admin/content'
+    | '/admin/enquiries'
+    | '/admin/settings'
+    | '/admin/viewings'
     | '/insights/$slug'
     | '/locations/$slug'
     | '/properties/$slug'
-    | '/agents/'
+    | '/specialists/$slug'
+    | '/admin/'
     | '/insights/'
     | '/locations/'
     | '/properties/'
+    | '/specialists/'
+    | '/admin/properties/$id'
+    | '/admin/properties/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  AccountRoute: typeof AccountRoute
+  AdminRoute: typeof AdminRouteWithChildren
   BuyRoute: typeof BuyRoute
   CommercialRoute: typeof CommercialRoute
   ContactRoute: typeof ContactRoute
   FavoritesRoute: typeof FavoritesRoute
   LandRoute: typeof LandRoute
-  ListPropertyRoute: typeof ListPropertyRoute
   LoginRoute: typeof LoginRoute
-  RegisterRoute: typeof RegisterRoute
   RentRoute: typeof RentRoute
-  AgentsSlugRoute: typeof AgentsSlugRoute
   InsightsSlugRoute: typeof InsightsSlugRoute
   LocationsSlugRoute: typeof LocationsSlugRoute
   PropertiesSlugRoute: typeof PropertiesSlugRoute
-  AgentsIndexRoute: typeof AgentsIndexRoute
+  SpecialistsSlugRoute: typeof SpecialistsSlugRoute
   InsightsIndexRoute: typeof InsightsIndexRoute
   LocationsIndexRoute: typeof LocationsIndexRoute
   PropertiesIndexRoute: typeof PropertiesIndexRoute
+  SpecialistsIndexRoute: typeof SpecialistsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -306,11 +362,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/account': {
-      id: '/account'
-      path: '/account'
-      fullPath: '/account'
-      preLoaderRoute: typeof AccountRouteImport
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/buy': {
@@ -348,25 +404,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LandRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/list-property': {
-      id: '/list-property'
-      path: '/list-property'
-      fullPath: '/list-property'
-      preLoaderRoute: typeof ListPropertyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/login': {
       id: '/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/register': {
-      id: '/register'
-      path: '/register'
-      fullPath: '/register'
-      preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/rent': {
@@ -376,19 +418,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RentRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/agents/': {
-      id: '/agents/'
-      path: '/agents'
-      fullPath: '/agents/'
-      preLoaderRoute: typeof AgentsIndexRouteImport
-      parentRoute: typeof rootRouteImport
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
     }
-    '/agents/$slug': {
-      id: '/agents/$slug'
-      path: '/agents/$slug'
-      fullPath: '/agents/$slug'
-      preLoaderRoute: typeof AgentsSlugRouteImport
-      parentRoute: typeof rootRouteImport
+    '/admin/content': {
+      id: '/admin/content'
+      path: '/content'
+      fullPath: '/admin/content'
+      preLoaderRoute: typeof AdminContentRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/enquiries': {
+      id: '/admin/enquiries'
+      path: '/enquiries'
+      fullPath: '/admin/enquiries'
+      preLoaderRoute: typeof AdminEnquiriesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/viewings': {
+      id: '/admin/viewings'
+      path: '/viewings'
+      fullPath: '/admin/viewings'
+      preLoaderRoute: typeof AdminViewingsRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/insights/': {
       id: '/insights/'
@@ -432,31 +495,89 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PropertiesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/specialists/': {
+      id: '/specialists/'
+      path: '/specialists'
+      fullPath: '/specialists/'
+      preLoaderRoute: typeof SpecialistsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/specialists/$slug': {
+      id: '/specialists/$slug'
+      path: '/specialists/$slug'
+      fullPath: '/specialists/$slug'
+      preLoaderRoute: typeof SpecialistsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/properties/': {
+      id: '/admin/properties/'
+      path: '/properties'
+      fullPath: '/admin/properties/'
+      preLoaderRoute: typeof AdminPropertiesIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/properties/$id': {
+      id: '/admin/properties/$id'
+      path: '/properties/$id'
+      fullPath: '/admin/properties/$id'
+      preLoaderRoute: typeof AdminPropertiesIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
+
+interface AdminRouteChildren {
+  AdminContentRoute: typeof AdminContentRoute
+  AdminEnquiriesRoute: typeof AdminEnquiriesRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
+  AdminViewingsRoute: typeof AdminViewingsRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+  AdminPropertiesIdRoute: typeof AdminPropertiesIdRoute
+  AdminPropertiesIndexRoute: typeof AdminPropertiesIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminContentRoute: AdminContentRoute,
+  AdminEnquiriesRoute: AdminEnquiriesRoute,
+  AdminSettingsRoute: AdminSettingsRoute,
+  AdminViewingsRoute: AdminViewingsRoute,
+  AdminIndexRoute: AdminIndexRoute,
+  AdminPropertiesIdRoute: AdminPropertiesIdRoute,
+  AdminPropertiesIndexRoute: AdminPropertiesIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  AccountRoute: AccountRoute,
+  AdminRoute: AdminRouteWithChildren,
   BuyRoute: BuyRoute,
   CommercialRoute: CommercialRoute,
   ContactRoute: ContactRoute,
   FavoritesRoute: FavoritesRoute,
   LandRoute: LandRoute,
-  ListPropertyRoute: ListPropertyRoute,
   LoginRoute: LoginRoute,
-  RegisterRoute: RegisterRoute,
   RentRoute: RentRoute,
-  AgentsSlugRoute: AgentsSlugRoute,
   InsightsSlugRoute: InsightsSlugRoute,
   LocationsSlugRoute: LocationsSlugRoute,
   PropertiesSlugRoute: PropertiesSlugRoute,
-  AgentsIndexRoute: AgentsIndexRoute,
+  SpecialistsSlugRoute: SpecialistsSlugRoute,
   InsightsIndexRoute: InsightsIndexRoute,
   LocationsIndexRoute: LocationsIndexRoute,
   PropertiesIndexRoute: PropertiesIndexRoute,
+  SpecialistsIndexRoute: SpecialistsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

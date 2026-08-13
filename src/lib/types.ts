@@ -1,12 +1,16 @@
 export type ListingType = "sale" | "rent";
 
+/**
+ * Inventory statuses for property owned/marketed by Property Masters.
+ * There are no seller/submission statuses — inventory is internal.
+ */
 export type PropertyStatus =
   | "draft"
-  | "published"
-  | "pending"
+  | "available"
+  | "reserved"
   | "sold"
   | "rented"
-  | "archived";
+  | "unavailable";
 
 export type PropertyCategory = "residential" | "land" | "commercial";
 
@@ -94,12 +98,15 @@ export interface Property {
   isDemo?: boolean;
 }
 
+/** Leads always come from prospective buyers or tenants. */
 export type EnquiryStatus =
   | "new"
   | "contacted"
+  | "viewing_requested"
   | "viewing_scheduled"
-  | "converted"
-  | "closed";
+  | "negotiating"
+  | "closed"
+  | "not_interested";
 
 export interface Enquiry {
   id: string;
@@ -112,34 +119,25 @@ export interface Enquiry {
   preferredDate?: string;
   preferredContact: "phone" | "email" | "whatsapp";
   status: EnquiryStatus;
+  assignedTo?: string;
   createdAt: string;
 }
 
-export type SubmissionStatus = "pending" | "approved" | "rejected" | "changes_requested";
+export type ViewingStatus = "requested" | "scheduled" | "completed" | "cancelled";
 
-export interface PropertySubmission {
+export interface ViewingRequest {
   id: string;
-  title: string;
-  listingType: ListingType;
-  propertyTypeId: string;
-  price: number;
-  county: string;
-  town: string;
-  area: string;
-  description: string;
-  bedrooms?: number;
-  bathrooms?: number;
-  parkingSpaces?: number;
-  propertySize?: number;
-  landSize?: number;
-  amenities: string[];
-  contactName: string;
-  contactPhone: string;
-  contactEmail: string;
-  images: string[];
-  status: SubmissionStatus;
+  propertyId: string;
+  propertyTitle: string;
+  name: string;
+  email: string;
+  phone: string;
+  preferredDate: string;
+  preferredTime: string;
+  message?: string;
+  status: ViewingStatus;
+  assignedTo?: string;
   createdAt: string;
-  reviewNote?: string;
 }
 
 export interface Article {
@@ -158,7 +156,8 @@ export interface Article {
   published: boolean;
 }
 
-export type UserRole = "customer" | "agent" | "admin" | "super_admin";
+/** Accounts exist only for internal Property Masters staff. */
+export type UserRole = "staff" | "admin" | "super_admin";
 
 export interface AppUser {
   uid: string;
