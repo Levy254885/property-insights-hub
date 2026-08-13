@@ -7,28 +7,24 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import {
-  GoogleAuthProvider,
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  signOut,
-  updateProfile,
-  type User,
-} from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut, type User } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
 import { getDb, getFirebaseAuth } from "./firebase";
 import type { UserRole } from "./types";
 
+/**
+ * Authentication exists only for internal Property Masters staff.
+ * Visitors never need an account to browse property or send an enquiry, and
+ * there is no public sign-up: staff accounts are provisioned by an
+ * administrator in Firebase Auth with a matching `users/{uid}` role document.
+ */
 interface AuthContextValue {
   user: User | null;
   role: UserRole | null;
   loading: boolean;
+  isStaff: boolean;
   isAdmin: boolean;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (name: string, email: string, password: string) => Promise<void>;
-  signInWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -40,25 +36,17 @@ function requireAuth() {
   return auth;
 }
 
-async function ensureUserRecord(user: User): Promise<UserRole> {
+async function readRole(user: User): Promise<UserRole | null> {
   const db = getDb();
-  if (!db) return "customer";
-  const ref = doc(db, "users", user.uid);
+  if (!db) return null;
   try {
-    const snap = await getDoc(ref);
-    if (snap.exists()) {
-      return ((snap.data() as { role?: UserRole }).role ?? "customer") as UserRole;
-    }
-    await setDoc(ref, {
-      email: user.email ?? "",
-      displayName: user.displayName ?? "",
-      role: "customer" satisfies UserRole,
-      createdAt: new Date().toISOString(),
-    });
-    return "customer";
+    const snap = await getDoc(doc(db, "users", user.uid));
+    if (!snap.exists()) return null;
+    const role = (snap.data() as { role?: UserRole }).role;
+    return role === "staff" || role === "admin" || role === "super_admin" ? role : null;
   } catch (error) {
-    console.warn("[property-masters] could not resolve user role", error);
-    return "customer";
+    console.warn("[property-masters] could not resolve staff role", error);
+    return null;
   }
 }
 
@@ -76,7 +64,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return onAuthStateChanged(auth, (next) => {
       setUser(next);
       if (next) {
-        void ensureUserRecord(next).then(setRole);
+        void readRole(next).then(setRole);
       } else {
         setRole(null);
       }
@@ -88,17 +76,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await signInWithEmailAndPassword(requireAuth(), email, password);
   }, []);
 
-  const signUp = useCallback(async (name: string, email: string, password: string) => {
-    const cred = await createUserWithEmailAndPassword(requireAuth(), email, password);
-    if (name) await updateProfile(cred.user, { displayName: name });
-    await ensureUserRecord(cred.user);
-  }, []);
-
-  const signInWithGoogle = useCallback(async () => {
-    const cred = await signInWithPopup(requireAuth(), new GoogleAuthProvider());
-    await ensureUserRecord(cred.user);
-  }, []);
-
   const logout = useCallback(async () => {
     await signOut(requireAuth());
   }, []);
@@ -108,13 +85,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user,
       role,
       loading,
+      isStaff: role !== null,
       isAdmin: role === "admin" || role === "super_admin",
       signIn,
-      signUp,
-      signInWithGoogle,
       logout,
     }),
-    [user, role, loading, signIn, signUp, signInWithGoogle, logout],
+    [user, role, loading, signIn, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
