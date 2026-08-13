@@ -22,6 +22,7 @@ import { Route as RentRouteImport } from './routes/rent'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminContentRouteImport } from './routes/admin.content'
 import { Route as AdminEnquiriesRouteImport } from './routes/admin.enquiries'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminViewingsRouteImport } from './routes/admin.viewings'
 import { Route as InsightsIndexRouteImport } from './routes/insights.index'
 import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
@@ -99,6 +100,11 @@ const AdminEnquiriesRoute = AdminEnquiriesRouteImport.update({
   path: '/enquiries',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminViewingsRoute = AdminViewingsRouteImport.update({
   id: '/viewings',
   path: '/viewings',
@@ -168,6 +174,7 @@ export interface FileRoutesByFullPath {
   '/rent': typeof RentRoute
   '/admin/content': typeof AdminContentRoute
   '/admin/enquiries': typeof AdminEnquiriesRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/admin/viewings': typeof AdminViewingsRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
@@ -193,6 +200,7 @@ export interface FileRoutesByTo {
   '/rent': typeof RentRoute
   '/admin/content': typeof AdminContentRoute
   '/admin/enquiries': typeof AdminEnquiriesRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/admin/viewings': typeof AdminViewingsRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
@@ -220,6 +228,7 @@ export interface FileRoutesById {
   '/rent': typeof RentRoute
   '/admin/content': typeof AdminContentRoute
   '/admin/enquiries': typeof AdminEnquiriesRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/admin/viewings': typeof AdminViewingsRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
@@ -248,6 +257,7 @@ export interface FileRouteTypes {
     | '/rent'
     | '/admin/content'
     | '/admin/enquiries'
+    | '/admin/settings'
     | '/admin/viewings'
     | '/insights/$slug'
     | '/locations/$slug'
@@ -273,6 +283,7 @@ export interface FileRouteTypes {
     | '/rent'
     | '/admin/content'
     | '/admin/enquiries'
+    | '/admin/settings'
     | '/admin/viewings'
     | '/insights/$slug'
     | '/locations/$slug'
@@ -299,6 +310,7 @@ export interface FileRouteTypes {
     | '/rent'
     | '/admin/content'
     | '/admin/enquiries'
+    | '/admin/settings'
     | '/admin/viewings'
     | '/insights/$slug'
     | '/locations/$slug'
@@ -427,6 +439,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminEnquiriesRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/viewings': {
       id: '/admin/viewings'
       path: '/viewings'
@@ -510,6 +529,7 @@ declare module '@tanstack/react-router' {
 interface AdminRouteChildren {
   AdminContentRoute: typeof AdminContentRoute
   AdminEnquiriesRoute: typeof AdminEnquiriesRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
   AdminViewingsRoute: typeof AdminViewingsRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AdminPropertiesIdRoute: typeof AdminPropertiesIdRoute
@@ -519,6 +539,7 @@ interface AdminRouteChildren {
 const AdminRouteChildren: AdminRouteChildren = {
   AdminContentRoute: AdminContentRoute,
   AdminEnquiriesRoute: AdminEnquiriesRoute,
+  AdminSettingsRoute: AdminSettingsRoute,
   AdminViewingsRoute: AdminViewingsRoute,
   AdminIndexRoute: AdminIndexRoute,
   AdminPropertiesIdRoute: AdminPropertiesIdRoute,
