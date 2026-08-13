@@ -21,6 +21,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as RentRouteImport } from './routes/rent'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminEnquiriesRouteImport } from './routes/admin.enquiries'
+import { Route as AdminViewingsRouteImport } from './routes/admin.viewings'
 import { Route as InsightsIndexRouteImport } from './routes/insights.index'
 import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
 import { Route as LocationsIndexRouteImport } from './routes/locations.index'
@@ -90,6 +91,11 @@ const AdminEnquiriesRoute = AdminEnquiriesRouteImport.update({
   path: '/enquiries',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminViewingsRoute = AdminViewingsRouteImport.update({
+  id: '/viewings',
+  path: '/viewings',
+  getParentRoute: () => AdminRoute,
+} as any)
 const InsightsIndexRoute = InsightsIndexRouteImport.update({
   id: '/insights/',
   path: '/insights/',
@@ -143,6 +149,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/rent': typeof RentRoute
   '/admin/enquiries': typeof AdminEnquiriesRoute
+  '/admin/viewings': typeof AdminViewingsRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/properties/$slug': typeof PropertiesSlugRoute
@@ -164,6 +171,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/rent': typeof RentRoute
   '/admin/enquiries': typeof AdminEnquiriesRoute
+  '/admin/viewings': typeof AdminViewingsRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/properties/$slug': typeof PropertiesSlugRoute
@@ -187,6 +195,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/rent': typeof RentRoute
   '/admin/enquiries': typeof AdminEnquiriesRoute
+  '/admin/viewings': typeof AdminViewingsRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/properties/$slug': typeof PropertiesSlugRoute
@@ -211,6 +220,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/rent'
     | '/admin/enquiries'
+    | '/admin/viewings'
     | '/insights/$slug'
     | '/locations/$slug'
     | '/properties/$slug'
@@ -232,6 +242,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/rent'
     | '/admin/enquiries'
+    | '/admin/viewings'
     | '/insights/$slug'
     | '/locations/$slug'
     | '/properties/$slug'
@@ -254,6 +265,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/rent'
     | '/admin/enquiries'
+    | '/admin/viewings'
     | '/insights/$slug'
     | '/locations/$slug'
     | '/properties/$slug'
@@ -372,6 +384,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminEnquiriesRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/viewings': {
+      id: '/admin/viewings'
+      path: '/viewings'
+      fullPath: '/admin/viewings'
+      preLoaderRoute: typeof AdminViewingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/insights/': {
       id: '/insights/'
       path: '/insights'
@@ -433,11 +452,13 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminEnquiriesRoute: typeof AdminEnquiriesRoute
+  AdminViewingsRoute: typeof AdminViewingsRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminEnquiriesRoute: AdminEnquiriesRoute,
+  AdminViewingsRoute: AdminViewingsRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
