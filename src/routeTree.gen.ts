@@ -30,6 +30,7 @@ import { Route as PropertiesIndexRouteImport } from './routes/properties.index'
 import { Route as PropertiesSlugRouteImport } from './routes/properties.$slug'
 import { Route as SpecialistsIndexRouteImport } from './routes/specialists.index'
 import { Route as SpecialistsSlugRouteImport } from './routes/specialists.$slug'
+import { Route as AdminPropertiesIndexRouteImport } from './routes/admin.properties.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -136,6 +137,11 @@ const SpecialistsSlugRoute = SpecialistsSlugRouteImport.update({
   path: '/specialists/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminPropertiesIndexRoute = AdminPropertiesIndexRouteImport.update({
+  id: '/properties/',
+  path: '/properties/',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -159,6 +165,7 @@ export interface FileRoutesByFullPath {
   '/locations/': typeof LocationsIndexRoute
   '/properties/': typeof PropertiesIndexRoute
   '/specialists/': typeof SpecialistsIndexRoute
+  '/admin/properties/': typeof AdminPropertiesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -181,6 +188,7 @@ export interface FileRoutesByTo {
   '/locations': typeof LocationsIndexRoute
   '/properties': typeof PropertiesIndexRoute
   '/specialists': typeof SpecialistsIndexRoute
+  '/admin/properties': typeof AdminPropertiesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -205,6 +213,7 @@ export interface FileRoutesById {
   '/locations/': typeof LocationsIndexRoute
   '/properties/': typeof PropertiesIndexRoute
   '/specialists/': typeof SpecialistsIndexRoute
+  '/admin/properties/': typeof AdminPropertiesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -230,6 +239,7 @@ export interface FileRouteTypes {
     | '/locations/'
     | '/properties/'
     | '/specialists/'
+    | '/admin/properties/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -252,6 +262,7 @@ export interface FileRouteTypes {
     | '/locations'
     | '/properties'
     | '/specialists'
+    | '/admin/properties'
   id:
     | '__root__'
     | '/'
@@ -275,6 +286,7 @@ export interface FileRouteTypes {
     | '/locations/'
     | '/properties/'
     | '/specialists/'
+    | '/admin/properties/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -447,6 +459,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SpecialistsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/properties/': {
+      id: '/admin/properties/'
+      path: '/properties'
+      fullPath: '/admin/properties/'
+      preLoaderRoute: typeof AdminPropertiesIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
@@ -454,12 +473,14 @@ interface AdminRouteChildren {
   AdminEnquiriesRoute: typeof AdminEnquiriesRoute
   AdminViewingsRoute: typeof AdminViewingsRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminPropertiesIndexRoute: typeof AdminPropertiesIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminEnquiriesRoute: AdminEnquiriesRoute,
   AdminViewingsRoute: AdminViewingsRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminPropertiesIndexRoute: AdminPropertiesIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
