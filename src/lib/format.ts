@@ -46,8 +46,12 @@ export function slugify(input: string): string {
 export function statusLabel(property: Property): string {
   if (property.status === "sold") return "Sold";
   if (property.status === "rented") return "Rented";
+  if (property.status === "reserved") return "Reserved";
+  if (property.status === "pending") return "Pending";
+  if (property.status === "unavailable") return "Unavailable";
   return property.listingType === "rent" ? "For Rent" : "For Sale";
 }
+
 
 export function propertyLocation(property: Property): string {
   return [property.area, property.town].filter(Boolean).join(", ");
