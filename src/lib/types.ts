@@ -7,10 +7,12 @@ export type ListingType = "sale" | "rent";
 export type PropertyStatus =
   | "draft"
   | "available"
+  | "pending"
   | "reserved"
   | "sold"
   | "rented"
   | "unavailable";
+
 
 export type PropertyCategory = "residential" | "land" | "commercial";
 
