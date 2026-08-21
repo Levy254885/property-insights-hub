@@ -7,10 +7,12 @@ export type ListingType = "sale" | "rent";
 export type PropertyStatus =
   | "draft"
   | "available"
+  | "pending"
   | "reserved"
   | "sold"
   | "rented"
   | "unavailable";
+
 
 export type PropertyCategory = "residential" | "land" | "commercial";
 
@@ -55,7 +57,15 @@ export interface Agent {
 export interface PropertyImage {
   url: string;
   alt: string;
+  /** Storage object path, used for deletion. Absent for legacy/demo images. */
+  path?: string;
+  filename?: string;
+  size?: number;
+  width?: number;
+  height?: number;
+  uploadedAt?: string;
 }
+
 
 export interface Property {
   id: string;

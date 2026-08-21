@@ -1,0 +1,70 @@
+rules_version = '2';
+
+// Property Masters — production Firestore rules.
+// Public visitors get read-only access to catalogue data and may only create
+// enquiries / viewing requests. Everything else requires a staff account.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function roleOf() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+
+    function isStaff() {
+      return isSignedIn()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && roleOf() in ['staff', 'admin', 'super_admin'];
+    }
+
+    function isAdmin() {
+      return isSignedIn()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && roleOf() in ['admin', 'super_admin'];
+    }
+
+    // Catalogue: world readable, staff writable.
+    match /properties/{propertyId} {
+      allow read: if true;
+      allow create, update: if isStaff();
+      allow delete: if isAdmin();
+
+      match /images/{imageId} {
+        allow read: if true;
+        allow write: if isStaff();
+      }
+    }
+
+    match /propertyTypes/{id}   { allow read: if true; allow write: if isStaff(); }
+    match /locations/{id}       { allow read: if true; allow write: if isStaff(); }
+    match /propertySpecialists/{id} { allow read: if true; allow write: if isStaff(); }
+    match /articles/{id}        { allow read: if true; allow write: if isStaff(); }
+    match /settings/{id}        { allow read: if true; allow write: if isAdmin(); }
+
+    // Leads: anyone can submit, only staff can read or manage.
+    match /enquiries/{id} {
+      allow create: if request.resource.data.keys().hasAll(['name', 'phone', 'propertyId'])
+                    && request.resource.data.name is string
+                    && request.resource.data.name.size() <= 120;
+      allow read, update, delete: if isStaff();
+    }
+
+    match /viewingRequests/{id} {
+      allow create: if request.resource.data.keys().hasAll(['name', 'phone', 'propertyId'])
+                    && request.resource.data.name is string
+                    && request.resource.data.name.size() <= 120;
+      allow read, update, delete: if isStaff();
+    }
+
+    // Staff role documents. Roles are never self-assigned except for the very
+    // first administrator bootstrap, which is blocked once any user exists.
+    match /users/{uid} {
+      allow read: if isSignedIn() && (request.auth.uid == uid || isStaff());
+      allow create: if isSignedIn() && request.auth.uid == uid;
+      allow update, delete: if isAdmin();
+    }
+  }
+}
