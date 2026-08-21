@@ -98,9 +98,12 @@ export function ImageUploader({
   }
 
   async function retry(item: Pending) {
-    setPending((list) => list.map((x) => (x.id === item.id ? { ...x, error: undefined, progress: 0 } : x)));
-    await uploadOne(item, images);
+    setPending((list) =>
+      list.map((x): Pending => (x.id === item.id ? { id: x.id, file: x.file, preview: x.preview, progress: 0 } : x)),
+    );
+    await uploadOne({ ...item, progress: 0 }, images);
   }
+
 
   async function remove(index: number) {
     const image = images[index];
