@@ -18,7 +18,7 @@ import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { Toaster } from "@/components/ui/sonner";
 import { Button } from "@/components/ui/button";
-import { defaultSettings } from "@/lib/settings";
+import { companyContact, defaultSettings } from "@/lib/settings";
 
 function NotFoundComponent() {
   return (
@@ -89,7 +89,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.png", type: "image/png" },
+      { rel: "apple-touch-icon", href: "/favicon.png" },
     ],
     scripts: [
       {
@@ -97,9 +98,26 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "RealEstateAgent",
-          name: "Property Masters",
+          "@id": `${companyContact.websiteUrl}/#organization`,
+          name: companyContact.legalName,
+          alternateName: "Property Masters Kenya",
+          slogan: defaultSettings.tagline,
           description: defaultSettings.defaultSeoDescription,
+          url: companyContact.websiteUrl,
+          logo: `${companyContact.websiteUrl}/favicon.png`,
+          image: `${companyContact.websiteUrl}/og-image.png`,
+          telephone: [companyContact.officePhone, companyContact.directorPhone],
+          email: companyContact.generalEmail,
           areaServed: "Kenya",
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: companyContact.streetAddress,
+            postOfficeBoxNumber: companyContact.postalAddress,
+            addressLocality: companyContact.locality,
+            addressRegion: companyContact.region,
+            addressCountry: companyContact.country,
+          },
+          openingHours: "Mo-Fr 08:30-17:30, Sa 09:00-13:00",
         }),
       },
     ],
