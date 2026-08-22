@@ -24,12 +24,16 @@ export const Route = createFileRoute("/login")({
   component: LoginPage,
 });
 
+const DEFAULT_ADMIN_EMAIL = "admin@propertymasters.co.ke";
+const DEFAULT_ADMIN_PASSWORD = "PropertyMasters2026!";
+
 function LoginPage() {
-  const { signIn } = useAuth();
+  const { signIn, bootstrapAdmin } = useAuth();
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(DEFAULT_ADMIN_EMAIL);
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
+  const [setupBusy, setSetupBusy] = useState(false);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -41,6 +45,28 @@ function LoginPage() {
       toast.error("Could not sign in", { description: (error as Error).message });
     } finally {
       setBusy(false);
+    }
+  }
+
+  /** Creates the default administrator the first time the site is deployed. */
+  async function runSetup() {
+    setSetupBusy(true);
+    try {
+      await bootstrapAdmin(DEFAULT_ADMIN_EMAIL, DEFAULT_ADMIN_PASSWORD);
+      toast.success("Administrator account created", {
+        description: `${DEFAULT_ADMIN_EMAIL} is ready — you are signed in.`,
+      });
+      void navigate({ to: "/admin" });
+    } catch (error) {
+      const message = (error as Error).message;
+      toast.error(
+        message.includes("email-already-in-use")
+          ? "The administrator account already exists — sign in below."
+          : "Could not create the administrator account",
+        { description: message },
+      );
+    } finally {
+      setSetupBusy(false);
     }
   }
 
