@@ -1,0 +1,36 @@
+rules_version = '2';
+
+// Property Masters — production Storage rules.
+// Property photography is world readable (it is marketing material) and only
+// signed-in staff may upload or delete files.
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isStaff() {
+      return request.auth != null
+        && firestore.exists(/databases/(default)/documents/users/$(request.auth.uid))
+        && firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role
+             in ['staff', 'admin', 'super_admin'];
+    }
+
+    function isValidImage() {
+      return request.resource.size < 10 * 1024 * 1024
+        && request.resource.contentType.matches('image/(jpeg|png|webp)');
+    }
+
+    match /properties/{propertyId}/{fileName} {
+      allow read: if true;
+      allow create, update: if isStaff() && isValidImage();
+      allow delete: if isStaff();
+    }
+
+    match /content/{allPaths=**} {
+      allow read: if true;
+      allow write: if isStaff() && isValidImage();
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
