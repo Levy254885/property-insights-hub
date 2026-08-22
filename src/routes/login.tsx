@@ -105,8 +105,29 @@ function LoginPage() {
             {busy ? "Signing in…" : "Sign in"}
           </Button>
         </form>
+        <div className="mt-8 rounded-sm border border-dashed border-border p-4">
+          <p className="eyebrow">First-time setup</p>
+          <p className="mt-2 text-xs text-muted-foreground">
+            Create the default administrator account (no email verification required):
+            <br />
+            <span className="font-semibold text-foreground">{DEFAULT_ADMIN_EMAIL}</span>
+            <br />
+            <span className="font-semibold text-foreground">{DEFAULT_ADMIN_PASSWORD}</span>
+          </p>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="mt-3 w-full"
+            disabled={setupBusy}
+            onClick={() => void runSetup()}
+          >
+            {setupBusy ? "Creating…" : "Create administrator account"}
+          </Button>
+        </div>
         <p className="mt-6 text-xs text-muted-foreground">
-          Accounts are created by an administrator. Contact your manager if you need access.
+          Further accounts are created by an administrator. Change the default password after your
+          first sign in.
         </p>
       </div>
     </div>
