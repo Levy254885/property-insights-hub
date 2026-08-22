@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { ArrowDown, ArrowUp, Star, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { ImageUploader } from "@/components/admin/ImageUploader";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -16,7 +16,7 @@ import {
 import { slugify } from "@/lib/format";
 import { useLocations, useProperties, usePropertyTypes, useSpecialists } from "@/lib/queries";
 import { saveProperty } from "@/lib/store";
-import type { ListingType, Property, PropertyImage, PropertyStatus } from "@/lib/types";
+import type { ListingType, Property, PropertyStatus } from "@/lib/types";
 
 export const Route = createFileRoute("/admin/properties/$id")({
   component: PropertyEditor,
@@ -70,7 +70,6 @@ function PropertyEditor() {
 
   const existing = useMemo(() => properties.find((p) => p.id === id), [properties, id]);
   const [form, setForm] = useState<Property>(() => existing ?? emptyProperty());
-  const [imageUrl, setImageUrl] = useState("");
   const [saving, setSaving] = useState(false);
 
   const set = <K extends keyof Property>(key: K, value: Property[K]) =>
@@ -78,34 +77,8 @@ function PropertyEditor() {
 
   const num = (v: string) => (v.trim() === "" ? undefined : Number(v));
 
-  function moveImage(index: number, delta: number) {
-    const next = [...form.images];
-    const target = index + delta;
-    if (target < 0 || target >= next.length) return;
-    const a = next[index]!;
-    const b = next[target]!;
-    next[index] = b;
-    next[target] = a;
-    set("images", next);
-  }
 
-  function addImage() {
-    const url = imageUrl.trim();
-    if (!url) return;
-    const image: PropertyImage = { url, alt: form.title || "Property Masters property photograph" };
-    const next = [...form.images, image];
-    setForm((f) => ({ ...f, images: next, primaryImage: f.primaryImage || url }));
-    setImageUrl("");
-  }
 
-  function removeImage(index: number) {
-    const next = form.images.filter((_, i) => i !== index);
-    setForm((f) => ({
-      ...f,
-      images: next,
-      primaryImage: next.some((i) => i.url === f.primaryImage) ? f.primaryImage : (next[0]?.url ?? ""),
-    }));
-  }
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
