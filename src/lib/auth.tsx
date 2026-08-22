@@ -31,6 +31,7 @@ interface AuthContextValue {
   isStaff: boolean;
   isAdmin: boolean;
   signIn: (email: string, password: string) => Promise<void>;
+  bootstrapAdmin: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -82,6 +83,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await signInWithEmailAndPassword(requireAuth(), email, password);
   }, []);
 
+  /**
+   * One-time provisioning of the first administrator. Creates the Firebase Auth
+   * user (no email verification required) and its `users/{uid}` role document.
+   */
+  const bootstrapAdmin = useCallback(async (email: string, password: string) => {
+    const cred = await createUserWithEmailAndPassword(requireAuth(), email, password);
+    const db = getDb();
+    if (db) {
+      await setDoc(doc(db, "users", cred.user.uid), {
+        email,
+        role: "super_admin",
+        createdAt: serverTimestamp(),
+      });
+    }
+    setRole("super_admin");
+  }, []);
+
   const logout = useCallback(async () => {
     await signOut(requireAuth());
   }, []);
@@ -94,9 +112,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isStaff: role !== null,
       isAdmin: role === "admin" || role === "super_admin",
       signIn,
+      bootstrapAdmin,
       logout,
     }),
-    [user, role, loading, signIn, logout],
+    [user, role, loading, signIn, bootstrapAdmin, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
