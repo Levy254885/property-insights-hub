@@ -132,13 +132,32 @@ function AdminProperties() {
                 onClick={() =>
                   void mutate(
                     p.id,
-                    { status: p.listingType === "rent" ? "rented" : "sold" },
-                    "Marked as closed",
+                    { verified: !p.verified },
+                    p.verified ? "Verification removed" : "Marked as verified",
                   )
                 }
               >
-                Mark {p.listingType === "rent" ? "rented" : "sold"}
+                {p.verified ? "Unverify" : "Verify"}
               </Button>
+              <Select
+                value={p.status}
+                onValueChange={(v) =>
+                  void mutate(p.id, { status: v as PropertyStatus }, "Status updated")
+                }
+              >
+                <SelectTrigger className="h-9 w-[9.5rem]" aria-label={`Status for ${p.title}`}>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {statuses
+                    .filter((s) => s.value !== "all")
+                    .map((s) => (
+                      <SelectItem key={s.value} value={s.value}>
+                        {s.label}
+                      </SelectItem>
+                    ))}
+                </SelectContent>
+              </Select>
               <Button variant="ghost" size="sm" onClick={() => void remove(p.id, p.title)}>
                 Delete
               </Button>

@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { ArrowDown, ArrowUp, Star, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { ImageUploader } from "@/components/admin/ImageUploader";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -16,7 +16,7 @@ import {
 import { slugify } from "@/lib/format";
 import { useLocations, useProperties, usePropertyTypes, useSpecialists } from "@/lib/queries";
 import { saveProperty } from "@/lib/store";
-import type { ListingType, Property, PropertyImage, PropertyStatus } from "@/lib/types";
+import type { ListingType, Property, PropertyStatus } from "@/lib/types";
 
 export const Route = createFileRoute("/admin/properties/$id")({
   component: PropertyEditor,
@@ -70,7 +70,6 @@ function PropertyEditor() {
 
   const existing = useMemo(() => properties.find((p) => p.id === id), [properties, id]);
   const [form, setForm] = useState<Property>(() => existing ?? emptyProperty());
-  const [imageUrl, setImageUrl] = useState("");
   const [saving, setSaving] = useState(false);
 
   const set = <K extends keyof Property>(key: K, value: Property[K]) =>
@@ -78,34 +77,8 @@ function PropertyEditor() {
 
   const num = (v: string) => (v.trim() === "" ? undefined : Number(v));
 
-  function moveImage(index: number, delta: number) {
-    const next = [...form.images];
-    const target = index + delta;
-    if (target < 0 || target >= next.length) return;
-    const a = next[index]!;
-    const b = next[target]!;
-    next[index] = b;
-    next[target] = a;
-    set("images", next);
-  }
 
-  function addImage() {
-    const url = imageUrl.trim();
-    if (!url) return;
-    const image: PropertyImage = { url, alt: form.title || "Property Masters property photograph" };
-    const next = [...form.images, image];
-    setForm((f) => ({ ...f, images: next, primaryImage: f.primaryImage || url }));
-    setImageUrl("");
-  }
 
-  function removeImage(index: number) {
-    const next = form.images.filter((_, i) => i !== index);
-    setForm((f) => ({
-      ...f,
-      images: next,
-      primaryImage: next.some((i) => i.url === f.primaryImage) ? f.primaryImage : (next[0]?.url ?? ""),
-    }));
-  }
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -376,41 +349,18 @@ function PropertyEditor() {
       <section className="rounded-md border border-border bg-card p-6">
         <h3 className="text-base font-semibold">Photographs</h3>
         <p className="mt-1 text-sm text-muted-foreground">
-          Add image URLs, reorder them, and set the primary image used on cards and previews.
+          Upload as many photographs as the listing needs — they are stored in cloud storage, not
+          in the database. Reorder them and pick the cover image used on cards and previews.
         </p>
-        <div className="mt-4 flex gap-2">
-          <Input
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
-            placeholder="https://…"
-            aria-label="Image URL"
+        <div className="mt-4">
+          <ImageUploader
+            propertyId={form.id}
+            images={form.images}
+            primaryImage={form.primaryImage}
+            altBase={form.title || "Property Masters property photograph"}
+            onChange={(images, primaryImage) => setForm((f) => ({ ...f, images, primaryImage }))}
           />
-          <Button type="button" variant="outline" onClick={addImage}>
-            Add
-          </Button>
         </div>
-        <ul className="mt-4 space-y-2">
-          {form.images.map((img, i) => (
-            <li key={img.url} className="flex items-center gap-3 rounded-sm border border-border p-2">
-              <img src={img.url} alt="" className="h-14 w-20 rounded-sm object-cover" />
-              <span className="min-w-0 flex-1 truncate text-xs text-muted-foreground">{img.url}</span>
-              {form.primaryImage === img.url && <span className="eyebrow text-bronze">Primary</span>}
-              <Button type="button" variant="ghost" size="icon" aria-label="Set primary" onClick={() => set("primaryImage", img.url)}>
-                <Star />
-              </Button>
-              <Button type="button" variant="ghost" size="icon" aria-label="Move up" onClick={() => moveImage(i, -1)}>
-                <ArrowUp />
-              </Button>
-              <Button type="button" variant="ghost" size="icon" aria-label="Move down" onClick={() => moveImage(i, 1)}>
-                <ArrowDown />
-              </Button>
-              <Button type="button" variant="ghost" size="icon" aria-label="Remove image" onClick={() => removeImage(i)}>
-                <Trash2 />
-              </Button>
-            </li>
-          ))}
-          {form.images.length === 0 && <li className="text-sm text-muted-foreground">No images yet.</li>}
-        </ul>
       </section>
 
       <section className="grid gap-4 rounded-md border border-border bg-card p-6 sm:grid-cols-2">

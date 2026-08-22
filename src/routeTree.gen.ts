@@ -19,6 +19,7 @@ import { Route as FavoritesRouteImport } from './routes/favorites'
 import { Route as LandRouteImport } from './routes/land'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RentRouteImport } from './routes/rent'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminContentRouteImport } from './routes/admin.content'
 import { Route as AdminEnquiriesRouteImport } from './routes/admin.enquiries'
@@ -83,6 +84,11 @@ const LoginRoute = LoginRouteImport.update({
 const RentRoute = RentRouteImport.update({
   id: '/rent',
   path: '/rent',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
@@ -172,6 +178,7 @@ export interface FileRoutesByFullPath {
   '/land': typeof LandRoute
   '/login': typeof LoginRoute
   '/rent': typeof RentRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin/content': typeof AdminContentRoute
   '/admin/enquiries': typeof AdminEnquiriesRoute
   '/admin/settings': typeof AdminSettingsRoute
@@ -198,6 +205,7 @@ export interface FileRoutesByTo {
   '/land': typeof LandRoute
   '/login': typeof LoginRoute
   '/rent': typeof RentRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin/content': typeof AdminContentRoute
   '/admin/enquiries': typeof AdminEnquiriesRoute
   '/admin/settings': typeof AdminSettingsRoute
@@ -226,6 +234,7 @@ export interface FileRoutesById {
   '/land': typeof LandRoute
   '/login': typeof LoginRoute
   '/rent': typeof RentRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin/content': typeof AdminContentRoute
   '/admin/enquiries': typeof AdminEnquiriesRoute
   '/admin/settings': typeof AdminSettingsRoute
@@ -255,6 +264,7 @@ export interface FileRouteTypes {
     | '/land'
     | '/login'
     | '/rent'
+    | '/sitemap.xml'
     | '/admin/content'
     | '/admin/enquiries'
     | '/admin/settings'
@@ -281,6 +291,7 @@ export interface FileRouteTypes {
     | '/land'
     | '/login'
     | '/rent'
+    | '/sitemap.xml'
     | '/admin/content'
     | '/admin/enquiries'
     | '/admin/settings'
@@ -308,6 +319,7 @@ export interface FileRouteTypes {
     | '/land'
     | '/login'
     | '/rent'
+    | '/sitemap.xml'
     | '/admin/content'
     | '/admin/enquiries'
     | '/admin/settings'
@@ -336,6 +348,7 @@ export interface RootRouteChildren {
   LandRoute: typeof LandRoute
   LoginRoute: typeof LoginRoute
   RentRoute: typeof RentRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   InsightsSlugRoute: typeof InsightsSlugRoute
   LocationsSlugRoute: typeof LocationsSlugRoute
   PropertiesSlugRoute: typeof PropertiesSlugRoute
@@ -416,6 +429,13 @@ declare module '@tanstack/react-router' {
       path: '/rent'
       fullPath: '/rent'
       preLoaderRoute: typeof RentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/': {
@@ -559,6 +579,7 @@ const rootRouteChildren: RootRouteChildren = {
   LandRoute: LandRoute,
   LoginRoute: LoginRoute,
   RentRoute: RentRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   InsightsSlugRoute: InsightsSlugRoute,
   LocationsSlugRoute: LocationsSlugRoute,
   PropertiesSlugRoute: PropertiesSlugRoute,

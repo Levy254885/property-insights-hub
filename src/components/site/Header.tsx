@@ -3,6 +3,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { Menu, Heart, Phone, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Logo } from "@/components/site/Logo";
 import { useFavorites } from "@/lib/favorites";
 import { defaultSettings } from "@/lib/settings";
 import { cn } from "@/lib/utils";
@@ -25,13 +26,8 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
       <div className="container-page flex h-16 items-center justify-between gap-6 lg:h-20">
-        <Link to="/" className="flex flex-col leading-none" aria-label="Property Masters home">
-          <span className="text-[0.95rem] font-extrabold uppercase tracking-[0.2em] text-foreground">
-            Property
-          </span>
-          <span className="text-[0.95rem] font-light uppercase tracking-[0.2em] text-bronze">
-            Masters
-          </span>
+        <Link to="/" aria-label="Property Masters home">
+          <Logo />
         </Link>
 
         <nav aria-label="Primary" className="hidden items-center gap-7 lg:flex">
