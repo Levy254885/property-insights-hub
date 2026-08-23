@@ -1,31 +1,25 @@
-import logoAsset from "@/assets/logo.png.asset.json";
 import { cn } from "@/lib/utils";
 
 /**
- * The official Property Masters logo, used unmodified.
- * The wordmark is white, so the logo always sits on the brand ink panel.
+ * The official Property Masters logo, used unmodified (transparent PNG).
+ * `tone="light"` renders the charcoal wordmark for light surfaces;
+ * `tone="dark"` renders the original white wordmark for dark surfaces.
+ * Both are served from /public so they render on any deployment target.
  */
 export function Logo({
   className,
-  imgClassName,
+  tone = "light",
 }: {
   className?: string;
-  imgClassName?: string;
+  tone?: "light" | "dark";
 }) {
   return (
-    <span
-      className={cn(
-        "inline-flex items-center justify-center rounded-sm bg-ink px-3 py-2",
-        className,
-      )}
-    >
-      <img
-        src={logoAsset.url}
-        alt="Property Masters — with you all the way"
-        width={1920}
-        height={1440}
-        className={cn("h-9 w-auto object-contain", imgClassName)}
-      />
-    </span>
+    <img
+      src={tone === "dark" ? "/logo.png" : "/logo-dark.png"}
+      alt="Property Masters — with you all the way"
+      width={736}
+      height={400}
+      className={cn("h-10 w-auto object-contain lg:h-12", className)}
+    />
   );
 }
