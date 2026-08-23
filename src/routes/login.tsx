@@ -106,13 +106,10 @@ function LoginPage() {
           </Button>
         </form>
         <div className="mt-8 rounded-sm border border-dashed border-border p-4">
-          <p className="eyebrow">First-time setup</p>
+          <p className="eyebrow">Administrator account</p>
           <p className="mt-2 text-xs text-muted-foreground">
-            Create the default administrator account (no email verification required):
-            <br />
-            <span className="font-semibold text-foreground">{DEFAULT_ADMIN_EMAIL}</span>
-            <br />
-            <span className="font-semibold text-foreground">{DEFAULT_ADMIN_PASSWORD}</span>
+            Sign in with <span className="font-semibold text-foreground">{DEFAULT_ADMIN_EMAIL}</span>. If the
+            account has not been provisioned yet, create it once below.
           </p>
           <Button
             type="button"
@@ -125,6 +122,7 @@ function LoginPage() {
             {setupBusy ? "Creating…" : "Create administrator account"}
           </Button>
         </div>
+
         <p className="mt-6 text-xs text-muted-foreground">
           Further accounts are created by an administrator. Change the default password after your
           first sign in.
