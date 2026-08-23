@@ -39,7 +39,7 @@ export function Footer() {
     <footer className="mt-24 border-t border-border bg-ink text-ink-foreground">
       <div className="container-page grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-5 lg:py-20">
         <div className="lg:col-span-2">
-          <Logo />
+          <Logo tone="dark" />
           <p className="mt-5 max-w-sm text-sm leading-relaxed text-ink-foreground/70">
             {s.tagline} Homes, land and commercial property across Kenya, presented with accurate
             information and straightforward advice.
