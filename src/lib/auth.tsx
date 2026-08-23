@@ -43,19 +43,38 @@ function requireAuth() {
   return auth;
 }
 
+/**
+ * Email addresses that are always treated as Property Masters administrators.
+ * The first time such an account signs in, its `users/{uid}` role document is
+ * created automatically so the dashboard is reachable without manual setup.
+ */
+const ADMIN_EMAILS = ["admin@propertymasters.co.ke", "nicholas@propertymasters.co.ke"];
+
 async function readRole(user: User): Promise<UserRole | null> {
   const db = getDb();
   if (!db) return null;
+  const allowlisted = ADMIN_EMAILS.includes((user.email ?? "").toLowerCase());
   try {
     const snap = await getDoc(doc(db, "users", user.uid));
-    if (!snap.exists()) return null;
-    const role = (snap.data() as { role?: UserRole }).role;
-    return role === "staff" || role === "admin" || role === "super_admin" ? role : null;
+    if (snap.exists()) {
+      const role = (snap.data() as { role?: UserRole }).role;
+      if (role === "staff" || role === "admin" || role === "super_admin") return role;
+    }
+    if (allowlisted) {
+      await setDoc(
+        doc(db, "users", user.uid),
+        { email: user.email, role: "super_admin", createdAt: serverTimestamp() },
+        { merge: true },
+      );
+      return "super_admin";
+    }
+    return null;
   } catch (error) {
     console.warn("[property-masters] could not resolve staff role", error);
-    return null;
+    return allowlisted ? "super_admin" : null;
   }
 }
+
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
