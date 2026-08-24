@@ -38,6 +38,9 @@ export function useProperties() {
     queryKey: ["properties"],
     queryFn: fetchProperties,
     initialData: demoProperties,
+    // Treat the seed data as stale so the live catalogue is fetched on first
+    // paint — visitors must always see the inventory managed in the dashboard.
+    initialDataUpdatedAt: 0,
     staleTime: 60_000,
   });
 }
@@ -47,6 +50,7 @@ export function usePropertyTypes() {
     queryKey: ["propertyTypes"],
     queryFn: fetchPropertyTypes,
     initialData: seedTypes,
+    initialDataUpdatedAt: 0,
     staleTime: 300_000,
   });
 }
@@ -56,6 +60,7 @@ export function useLocations() {
     queryKey: ["locations"],
     queryFn: fetchLocations,
     initialData: seedLocations,
+    initialDataUpdatedAt: 0,
     staleTime: 300_000,
   });
 }
@@ -65,6 +70,7 @@ export function useSpecialists() {
     queryKey: ["propertySpecialists"],
     queryFn: fetchSpecialists,
     initialData: seedAgents,
+    initialDataUpdatedAt: 0,
     staleTime: 300_000,
   });
 }
@@ -74,6 +80,7 @@ export function useArticles() {
     queryKey: ["articles"],
     queryFn: fetchArticles,
     initialData: demoArticles,
+    initialDataUpdatedAt: 0,
     staleTime: 300_000,
   });
 }
