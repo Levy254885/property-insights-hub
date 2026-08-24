@@ -51,10 +51,16 @@ function AdminProperties() {
     }
   }
 
-  async function remove(id: string, title: string) {
-    if (!window.confirm(`Delete "${title}" from the inventory?`)) return;
+  async function remove(property: (typeof rows)[number]) {
+    if (property.isDemo) {
+      toast.message("Demo records can't be deleted", {
+        description: "They are placeholders and disappear automatically once you add real inventory.",
+      });
+      return;
+    }
+    if (!window.confirm(`Delete "${property.title}" and its photographs from the inventory?`)) return;
     try {
-      await deleteProperty(id);
+      await deleteProperty(property.id, property.images);
       await qc.invalidateQueries({ queryKey: ["properties"] });
       toast.success("Property deleted");
     } catch (error) {
