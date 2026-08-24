@@ -164,7 +164,7 @@ function AdminProperties() {
                     ))}
                 </SelectContent>
               </Select>
-              <Button variant="ghost" size="sm" onClick={() => void remove(p.id, p.title)}>
+              <Button variant="ghost" size="sm" onClick={() => void remove(p)}>
                 Delete
               </Button>
             </div>
