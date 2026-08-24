@@ -3,6 +3,10 @@ rules_version = '2';
 // Property Masters — production Firestore rules.
 // Public visitors get read-only access to catalogue data and may only create
 // enquiries / viewing requests. Everything else requires a staff account.
+//
+// Staff are recognised in two ways so the dashboard works from day one:
+//   1. an allow-listed company email address (bootstrap administrators), or
+//   2. a users/{uid} document carrying a staff role.
 service cloud.firestore {
   match /databases/{database}/documents {
 
@@ -10,27 +14,41 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    function email() {
+      return isSignedIn() ? request.auth.token.email : '';
+    }
+
+    function isAllowlisted() {
+      return email() in [
+        'admin@propertymasters.co.ke',
+        'nicholas@propertymasters.co.ke'
+      ];
+    }
+
     function roleOf() {
       return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
     }
 
-    function isStaff() {
+    function hasRoleDoc() {
       return isSignedIn()
-        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
-        && roleOf() in ['staff', 'admin', 'super_admin'];
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+
+    function isStaff() {
+      return isAllowlisted()
+        || (hasRoleDoc() && roleOf() in ['staff', 'admin', 'super_admin']);
     }
 
     function isAdmin() {
-      return isSignedIn()
-        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
-        && roleOf() in ['admin', 'super_admin'];
+      return isAllowlisted()
+        || (hasRoleDoc() && roleOf() in ['admin', 'super_admin']);
     }
 
     // Catalogue: world readable, staff writable.
     match /properties/{propertyId} {
       allow read: if true;
       allow create, update: if isStaff();
-      allow delete: if isAdmin();
+      allow delete: if isStaff();
 
       match /images/{imageId} {
         allow read: if true;
@@ -44,23 +62,26 @@ service cloud.firestore {
     match /articles/{id}        { allow read: if true; allow write: if isStaff(); }
     match /settings/{id}        { allow read: if true; allow write: if isAdmin(); }
 
-    // Leads: anyone can submit, only staff can read or manage.
+    // Leads: anyone can submit (property enquiries and general contact
+    // messages alike), only staff can read or manage them.
     match /enquiries/{id} {
-      allow create: if request.resource.data.keys().hasAll(['name', 'phone', 'propertyId'])
-                    && request.resource.data.name is string
-                    && request.resource.data.name.size() <= 120;
+      allow create: if request.resource.data.name is string
+                    && request.resource.data.name.size() > 1
+                    && request.resource.data.name.size() <= 120
+                    && request.resource.data.message is string
+                    && request.resource.data.message.size() <= 4000;
       allow read, update, delete: if isStaff();
     }
 
     match /viewingRequests/{id} {
-      allow create: if request.resource.data.keys().hasAll(['name', 'phone', 'propertyId'])
-                    && request.resource.data.name is string
+      allow create: if request.resource.data.name is string
+                    && request.resource.data.name.size() > 1
                     && request.resource.data.name.size() <= 120;
       allow read, update, delete: if isStaff();
     }
 
-    // Staff role documents. Roles are never self-assigned except for the very
-    // first administrator bootstrap, which is blocked once any user exists.
+    // Staff role documents. A signed-in user may create/read their own record;
+    // only administrators can change or remove roles afterwards.
     match /users/{uid} {
       allow read: if isSignedIn() && (request.auth.uid == uid || isStaff());
       allow create: if isSignedIn() && request.auth.uid == uid;

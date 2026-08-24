@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -71,6 +71,16 @@ function PropertyEditor() {
   const existing = useMemo(() => properties.find((p) => p.id === id), [properties, id]);
   const [form, setForm] = useState<Property>(() => existing ?? emptyProperty());
   const [saving, setSaving] = useState(false);
+  const hydrated = useRef(Boolean(existing));
+
+  // Inventory loads asynchronously, so adopt the real record as soon as it
+  // arrives (the editor otherwise starts from a blank form on a hard reload).
+  useEffect(() => {
+    if (existing && !hydrated.current) {
+      hydrated.current = true;
+      setForm(existing);
+    }
+  }, [existing]);
 
   const set = <K extends keyof Property>(key: K, value: Property[K]) =>
     setForm((f) => ({ ...f, [key]: value }));
@@ -200,6 +210,11 @@ function PropertyEditor() {
               ))}
             </SelectContent>
           </Select>
+          <p className="mt-1.5 text-xs text-muted-foreground">
+            {form.status === "draft"
+              ? "Drafts are hidden from the public website."
+              : "This listing is live on the public website."}
+          </p>
         </div>
         <div>
           <label htmlFor="p-area" className="eyebrow mb-1.5 block">

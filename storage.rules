@@ -6,11 +6,22 @@ rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
 
-    function isStaff() {
+    function isAllowlisted() {
+      return request.auth != null && request.auth.token.email in [
+        'admin@propertymasters.co.ke',
+        'nicholas@propertymasters.co.ke'
+      ];
+    }
+
+    function hasStaffRole() {
       return request.auth != null
         && firestore.exists(/databases/(default)/documents/users/$(request.auth.uid))
         && firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role
              in ['staff', 'admin', 'super_admin'];
+    }
+
+    function isStaff() {
+      return isAllowlisted() || hasStaffRole();
     }
 
     function isValidImage() {
@@ -27,6 +38,7 @@ service firebase.storage {
     match /content/{allPaths=**} {
       allow read: if true;
       allow write: if isStaff() && isValidImage();
+      allow delete: if isStaff();
     }
 
     match /{allPaths=**} {

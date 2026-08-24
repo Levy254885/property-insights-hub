@@ -60,7 +60,12 @@ function AdminEnquiries() {
             <li key={e.id} className="rounded-md border border-border bg-card p-5">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
-                  <p className="text-base font-semibold">{e.name}</p>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <p className="text-base font-semibold">{e.name}</p>
+                    <span className="rounded-sm border border-border px-1.5 py-0.5 text-[0.625rem] font-bold uppercase tracking-wide text-muted-foreground">
+                      {e.propertyId === "general" ? "Contact form" : "Property enquiry"}
+                    </span>
+                  </div>
                   <p className="text-sm text-muted-foreground">{e.propertyTitle}</p>
                   <p className="mt-2 text-sm">
                     <a className="underline underline-offset-4" href={`tel:${e.phone}`}>

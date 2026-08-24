@@ -22,6 +22,7 @@ import type {
   Enquiry,
   LocationArea,
   Property,
+  PropertyImage,
   PropertyType,
   ViewingRequest,
 } from "./types";
@@ -92,9 +93,29 @@ function requireDb() {
   return db;
 }
 
+/**
+ * Firestore rejects `undefined` values, which optional form fields produce
+ * constantly (an empty bedroom count, no land size, no SEO override...).
+ * Strip them out recursively before every write.
+ */
+function clean<T>(value: T): T {
+  if (Array.isArray(value)) return value.map((v) => clean(v)) as unknown as T;
+  if (value && typeof value === "object" && !(value instanceof Date)) {
+    const out: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
+      if (v !== undefined) out[k] = clean(v);
+    }
+    return out as T;
+  }
+  return value;
+}
+
 export async function createEnquiry(payload: Omit<Enquiry, "id">): Promise<string> {
   const db = requireDb();
-  const ref = await addDoc(collection(db, "enquiries"), { ...payload, _createdAt: serverTimestamp() });
+  const ref = await addDoc(collection(db, "enquiries"), {
+    ...clean(payload),
+    _createdAt: serverTimestamp(),
+  });
   return ref.id;
 }
 
@@ -105,7 +126,7 @@ export async function updateEnquiryStatus(id: string, status: Enquiry["status"])
 export async function createViewingRequest(payload: Omit<ViewingRequest, "id">): Promise<string> {
   const db = requireDb();
   const ref = await addDoc(collection(db, "viewingRequests"), {
-    ...payload,
+    ...clean(payload),
     _createdAt: serverTimestamp(),
   });
   return ref.id;
@@ -117,19 +138,23 @@ export async function updateViewingStatus(id: string, status: ViewingRequest["st
 
 export async function saveProperty(property: Property): Promise<void> {
   const db = requireDb();
-  const { id, ...rest } = property;
+  const { id, ...rest } = clean(property);
   await setDoc(doc(db, "properties", id), { ...rest, updatedAt: new Date().toISOString() }, { merge: true });
 }
 
 export async function patchProperty(id: string, patch: Partial<Property>): Promise<void> {
-  await updateDoc(doc(requireDb(), "properties", id), {
-    ...patch,
-    updatedAt: new Date().toISOString(),
-  });
+  await setDoc(
+    doc(requireDb(), "properties", id),
+    { ...clean(patch), updatedAt: new Date().toISOString() },
+    { merge: true },
+  );
 }
 
-export async function deleteProperty(id: string): Promise<void> {
+/** Removes the record and any photographs it holds in cloud storage. */
+export async function deleteProperty(id: string, images: PropertyImage[] = []): Promise<void> {
   await deleteDoc(doc(requireDb(), "properties", id));
+  const { deletePropertyImage } = await import("./storage");
+  await Promise.all(images.map((image) => deletePropertyImage(image)));
 }
 
 export async function saveSpecialist(specialist: Agent): Promise<void> {
