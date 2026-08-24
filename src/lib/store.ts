@@ -22,6 +22,7 @@ import type {
   Enquiry,
   LocationArea,
   Property,
+  PropertyImage,
   PropertyType,
   ViewingRequest,
 } from "./types";
