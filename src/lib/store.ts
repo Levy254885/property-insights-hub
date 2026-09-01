@@ -153,8 +153,13 @@ export async function patchProperty(id: string, patch: Partial<Property>): Promi
 /** Removes the record and any photographs it holds in cloud storage. */
 export async function deleteProperty(id: string, images: PropertyImage[] = []): Promise<void> {
   await deleteDoc(doc(requireDb(), "properties", id));
-  const { deletePropertyImage } = await import("./storage");
-  await Promise.all(images.map((image) => deletePropertyImage(image)));
+  // Cloudinary assets (public_id under property-masters/) are managed in the
+  // Cloudinary console; only legacy Firebase Storage objects are removed here.
+  const legacy = images.filter((i) => i.path && !i.path.startsWith("property-masters/"));
+  if (legacy.length) {
+    const { deletePropertyImage } = await import("./storage");
+    await Promise.all(legacy.map((image) => deletePropertyImage(image)));
+  }
 }
 
 export async function saveSpecialist(specialist: Agent): Promise<void> {
