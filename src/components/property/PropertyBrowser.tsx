@@ -34,6 +34,19 @@ function FilterFields({
 }) {
   const { data: types } = usePropertyTypes();
   const { data: locations } = useLocations();
+  const { data: allProperties } = useProperties();
+  // Amenity options are derived from the live inventory so anything staff type
+  // into the dashboard becomes a filter automatically.
+  const amenityOptions = useMemo(() => {
+    const seen = new Map<string, string>();
+    for (const p of allProperties) {
+      for (const a of p.amenities ?? []) {
+        const key = a.trim().toLowerCase();
+        if (key && !seen.has(key)) seen.set(key, a.trim());
+      }
+    }
+    return [...seen.values()].sort((a, b) => a.localeCompare(b));
+  }, [allProperties]);
   const relevantTypes = types.filter((t) =>
     filters.category === "all" ? true : t.category === filters.category,
   );
@@ -47,7 +60,7 @@ function FilterFields({
         <Input
           id="f-q"
           value={filters.q}
-          placeholder="Title, area or description"
+          placeholder="Try “4 bedroom Karen” or “Beach House”"
           onChange={(e) => set({ q: e.target.value })}
         />
       </div>
@@ -248,9 +261,10 @@ export function PropertyBrowser({
     () => (id: string) => types.find((t) => t.id === id)?.category,
     [types],
   );
+  const typeNameOf = useMemo(() => (id: string) => types.find((t) => t.id === id)?.name, [types]);
   const results = useMemo(
-    () => applyFilters(properties, filters, typeCategory),
-    [properties, filters, typeCategory],
+    () => applyFilters(properties, filters, typeCategory, typeNameOf),
+    [properties, filters, typeCategory, typeNameOf],
   );
   const visible = results.slice(0, page * PAGE_SIZE);
   const activeCount =
