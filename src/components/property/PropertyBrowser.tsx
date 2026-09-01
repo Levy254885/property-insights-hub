@@ -16,7 +16,7 @@ import { PropertyGrid } from "./PropertyGrid";
 import { PropertyCardSkeleton } from "./PropertyCard";
 import { EmptyState } from "@/components/site/EmptyState";
 import { applyFilters, defaultFilters, useLocations, useProperties, usePropertyTypes } from "@/lib/queries";
-import { amenityOptions } from "@/data/seed";
+
 import { formatPrice, propertyLocation, statusLabel } from "@/lib/format";
 import type { PropertyFiltersState } from "@/lib/types";
 import { cn } from "@/lib/utils";

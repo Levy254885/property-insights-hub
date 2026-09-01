@@ -116,6 +116,7 @@ export function applyFilters(
   properties: Property[],
   filters: PropertyFiltersState,
   typeCategory: (typeId: string) => string | undefined,
+  typeName?: (typeId: string) => string | undefined,
 ): Property[] {
   const q = filters.q.trim().toLowerCase();
   const minPrice = num(filters.minPrice);
@@ -127,8 +128,21 @@ export function applyFilters(
   const result = properties.filter((p) => {
     if (!isPublic(p)) return false;
     if (q) {
-      const haystack = `${p.title} ${p.area} ${p.town} ${p.description}`.toLowerCase();
-      if (!haystack.includes(q)) return false;
+      const haystack = [
+        p.title,
+        p.area,
+        p.town,
+        p.description,
+        p.address ?? "",
+        typeName?.(p.propertyTypeId) ?? "",
+        p.listingType === "rent" ? "for rent rental" : "for sale buy",
+        p.amenities.join(" "),
+        p.features.join(" "),
+      ]
+        .join(" ")
+        .toLowerCase()
+        .replace(/\s+/g, " ");
+      if (!q.split(/\s+/).every((term) => haystack.includes(term))) return false;
     }
     if (filters.listingType !== "all" && p.listingType !== filters.listingType) return false;
     if (filters.category !== "all" && typeCategory(p.propertyTypeId) !== filters.category) return false;
