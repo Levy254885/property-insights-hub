@@ -3,6 +3,7 @@ import { Bath, BedDouble, Heart, Maximize } from "lucide-react";
 import type { Property } from "@/lib/types";
 import { formatPrice, formatSize, propertyLocation, statusLabel } from "@/lib/format";
 import { useFavorites } from "@/lib/favorites";
+import { optimizedUrl } from "@/lib/cloudinary";
 import { cn } from "@/lib/utils";
 
 export function PropertyCard({ property, typeName }: { property: Property; typeName?: string }) {
@@ -15,7 +16,7 @@ export function PropertyCard({ property, typeName }: { property: Property; typeN
     <article className="group relative flex flex-col overflow-hidden rounded-md border border-border bg-card shadow-card transition-shadow duration-200 hover:shadow-lift">
       <div className="relative aspect-[4/3] overflow-hidden bg-muted">
         <img
-          src={property.primaryImage}
+          src={optimizedUrl(property.primaryImage, 800)}
           alt={property.images[0]?.alt ?? property.title}
           loading="lazy"
           width={1280}
