@@ -3,12 +3,8 @@ import { ArrowLeft, ArrowRight, RefreshCw, Star, Trash2, UploadCloud } from "luc
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  deletePropertyImage,
-  uploadPropertyImage,
-  validateImageFile,
-  ACCEPTED_IMAGE_TYPES,
-} from "@/lib/storage";
+import { validateImageFile, ACCEPTED_IMAGE_TYPES } from "@/lib/storage";
+import { optimizedUrl, uploadToCloudinary } from "@/lib/cloudinary";
 import type { PropertyImage } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -21,9 +17,10 @@ interface Pending {
 }
 
 /**
- * Unlimited-count property image manager. Files go straight to Firebase
- * Storage (persistent cloud storage) and only their metadata is kept on the
- * property document, so a listing can carry 50 or 100+ photographs.
+ * Unlimited-count property image manager. Files go straight to Cloudinary,
+ * which serves them publicly over its CDN, and only their metadata is kept on
+ * the property document, so a listing can carry 50 or 100+ photographs and
+ * every visitor sees them immediately.
  */
 export function ImageUploader({
   propertyId,
@@ -49,7 +46,7 @@ export function ImageUploader({
 
   async function uploadOne(item: Pending, current: PropertyImage[]): Promise<PropertyImage[]> {
     try {
-      const uploaded = await uploadPropertyImage(propertyId, item.file, (p) =>
+      const uploaded = await uploadToCloudinary(item.file, `property-masters/${propertyId}`, (p) =>
         setPending((list) => list.map((x) => (x.id === item.id ? { ...x, progress: p } : x))),
       );
       const next = [...current, { ...uploaded, alt: altBase || "Property Masters property photograph" }];
@@ -110,7 +107,10 @@ export function ImageUploader({
     if (!image) return;
     const next = images.filter((_, i) => i !== index);
     commit(next);
-    await deletePropertyImage(image);
+    if (image.path && !image.path.startsWith("property-masters/")) {
+      const { deletePropertyImage } = await import("@/lib/storage");
+      await deletePropertyImage(image);
+    }
   }
 
   function move(index: number, delta: number) {
@@ -192,7 +192,7 @@ export function ImageUploader({
         {images.map((img, i) => (
           <li key={`${img.url}-${i}`} className="overflow-hidden rounded-sm border border-border">
             <div className="relative aspect-[4/3] bg-muted">
-              <img src={img.url} alt={img.alt} loading="lazy" className="h-full w-full object-cover" />
+              <img src={optimizedUrl(img.url, 480)} alt={img.alt} loading="lazy" className="h-full w-full object-cover" />
               {img.url === primaryImage && (
                 <span className="absolute left-1.5 top-1.5 rounded-sm bg-bronze px-1.5 py-0.5 text-[0.625rem] font-bold uppercase tracking-wide text-bronze-foreground">
                   Cover

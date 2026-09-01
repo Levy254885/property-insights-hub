@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight, Expand, X } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import type { PropertyImage } from "@/lib/types";
+import { optimizedUrl } from "@/lib/cloudinary";
 import { cn } from "@/lib/utils";
 
 export function PropertyGallery({ images, title }: { images: PropertyImage[]; title: string }) {
@@ -40,7 +41,7 @@ export function PropertyGallery({ images, title }: { images: PropertyImage[]; ti
         }}
       >
         <img
-          src={current.url}
+          src={optimizedUrl(current.url, 1600)}
           alt={current.alt || title}
           width={1280}
           height={800}
@@ -94,7 +95,7 @@ export function PropertyGallery({ images, title }: { images: PropertyImage[]; ti
               )}
             >
               <img
-                src={img.url}
+                src={optimizedUrl(img.url, 320)}
                 alt={img.alt || `${title} thumbnail ${i + 1}`}
                 loading="lazy"
                 width={224}
@@ -110,7 +111,7 @@ export function PropertyGallery({ images, title }: { images: PropertyImage[]; ti
         <DialogContent className="max-w-[96vw] border-none bg-ink p-0 sm:max-w-5xl">
           <DialogTitle className="sr-only">{title} gallery</DialogTitle>
           <div className="relative">
-            <img src={current.url} alt={current.alt || title} className="max-h-[80vh] w-full object-contain" />
+            <img src={optimizedUrl(current.url, 1920)} alt={current.alt || title} className="max-h-[80vh] w-full object-contain" />
             {count > 1 && (
               <>
                 <button
