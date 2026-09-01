@@ -3,12 +3,8 @@ import { ArrowLeft, ArrowRight, RefreshCw, Star, Trash2, UploadCloud } from "luc
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  deletePropertyImage,
-  uploadPropertyImage,
-  validateImageFile,
-  ACCEPTED_IMAGE_TYPES,
-} from "@/lib/storage";
+import { validateImageFile, ACCEPTED_IMAGE_TYPES } from "@/lib/storage";
+import { optimizedUrl, uploadToCloudinary } from "@/lib/cloudinary";
 import type { PropertyImage } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
