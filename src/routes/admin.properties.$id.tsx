@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/select";
 import { slugify } from "@/lib/format";
 import { useLocations, useProperties, usePropertyTypes, useSpecialists } from "@/lib/queries";
-import { saveProperty } from "@/lib/store";
+import { saveLocation, saveProperty, savePropertyType } from "@/lib/store";
 import type { ListingType, Property, PropertyStatus } from "@/lib/types";
 
 export const Route = createFileRoute("/admin/properties/$id")({
@@ -71,6 +71,8 @@ function PropertyEditor() {
   const existing = useMemo(() => properties.find((p) => p.id === id), [properties, id]);
   const [form, setForm] = useState<Property>(() => existing ?? emptyProperty());
   const [saving, setSaving] = useState(false);
+  const [typeText, setTypeText] = useState("");
+  const [areaText, setAreaText] = useState("");
   const hydrated = useRef(Boolean(existing));
 
   // Inventory loads asynchronously, so adopt the real record as soon as it
@@ -92,24 +94,72 @@ function PropertyEditor() {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!form.title.trim() || !form.propertyTypeId || !form.area) {
-      toast.error("Title, property type and location are required");
+    if (!form.title.trim()) {
+      toast.error("A title is required");
       return;
     }
     setSaving(true);
     try {
-      const area = locations.find((l) => l.slug === form.areaSlug);
+      // Property type: free text. Reuse a matching record, otherwise create one
+      // so filters and category pages pick the new type up automatically.
+      const typeLabel = (typeText || types.find((t) => t.id === form.propertyTypeId)?.name || "").trim();
+      let propertyTypeId = form.propertyTypeId;
+      if (typeLabel) {
+        const match = types.find((t) => t.name.toLowerCase() === typeLabel.toLowerCase());
+        propertyTypeId = match?.id ?? slugify(typeLabel);
+        if (!match) {
+          await savePropertyType({
+            id: propertyTypeId,
+            name: typeLabel,
+            slug: slugify(typeLabel),
+            category: /land|plot|farm/i.test(typeLabel)
+              ? "land"
+              : /office|shop|retail|warehouse|commercial|godown/i.test(typeLabel)
+                ? "commercial"
+                : "residential",
+          });
+        }
+      }
+
+      // Location: free text, "Area, Town" accepted.
+      const locLabel = (areaText || form.area || "").trim();
+      let { areaSlug, area, town, countyId } = form;
+      if (locLabel) {
+        const [areaPart, townPart] = locLabel.split(",").map((x) => x.trim());
+        const match = locations.find(
+          (l) => l.name.toLowerCase() === (areaPart ?? "").toLowerCase() || l.slug === form.areaSlug,
+        );
+        area = areaPart || locLabel;
+        town = townPart || match?.town || area;
+        areaSlug = match?.slug ?? slugify(area);
+        countyId = match?.countyId ?? countyId ?? "";
+        if (!match) {
+          await saveLocation({
+            id: areaSlug,
+            name: area,
+            slug: areaSlug,
+            countyId: countyId || "kenya",
+            town,
+            intro: `${area} property listings from Property Masters.`,
+          });
+        }
+      }
+
       const payload: Property = {
         ...form,
+        propertyTypeId,
         slug: form.slug || slugify(form.title),
-        area: area?.name ?? form.area,
-        town: area?.town ?? form.town,
-        countyId: area?.countyId ?? form.countyId,
+        area,
+        town,
+        countyId,
+        areaSlug,
         primaryImage: form.primaryImage || (form.images[0]?.url ?? ""),
         isDemo: false,
         updatedAt: new Date().toISOString(),
       };
       await saveProperty(payload);
+      await qc.invalidateQueries({ queryKey: ["propertyTypes"] });
+      await qc.invalidateQueries({ queryKey: ["locations"] });
       await qc.invalidateQueries({ queryKey: ["properties"] });
       toast.success("Property saved");
       void navigate({ to: "/admin/properties" });
@@ -170,18 +220,18 @@ function PropertyEditor() {
           <label htmlFor="p-type" className="eyebrow mb-1.5 block">
             Property type
           </label>
-          <Select value={form.propertyTypeId} onValueChange={(v) => set("propertyTypeId", v)}>
-            <SelectTrigger id="p-type">
-              <SelectValue placeholder="Select type" />
-            </SelectTrigger>
-            <SelectContent>
-              {types.map((t) => (
-                <SelectItem key={t.id} value={t.id}>
-                  {t.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Input
+            id="p-type"
+            list="pm-types"
+            placeholder="e.g. Beach House"
+            value={typeText || types.find((t) => t.id === form.propertyTypeId)?.name || ""}
+            onChange={(e) => setTypeText(e.target.value)}
+          />
+          <datalist id="pm-types">
+            {types.map((t) => (
+              <option key={t.id} value={t.name} />
+            ))}
+          </datalist>
         </div>
         <div>
           <label htmlFor="p-price" className="eyebrow mb-1.5 block">
@@ -220,30 +270,18 @@ function PropertyEditor() {
           <label htmlFor="p-area" className="eyebrow mb-1.5 block">
             Location
           </label>
-          <Select
-            value={form.areaSlug}
-            onValueChange={(v) => {
-              const loc = locations.find((l) => l.slug === v);
-              setForm((f) => ({
-                ...f,
-                areaSlug: v,
-                area: loc?.name ?? f.area,
-                town: loc?.town ?? f.town,
-                countyId: loc?.countyId ?? f.countyId,
-              }));
-            }}
-          >
-            <SelectTrigger id="p-area">
-              <SelectValue placeholder="Select location" />
-            </SelectTrigger>
-            <SelectContent>
-              {locations.map((l) => (
-                <SelectItem key={l.id} value={l.slug}>
-                  {l.name}, {l.town}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Input
+            id="p-area"
+            list="pm-locations"
+            placeholder="e.g. Nyali, Mombasa"
+            value={areaText || (form.area ? `${form.area}${form.town && form.town !== form.area ? `, ${form.town}` : ""}` : "")}
+            onChange={(e) => setAreaText(e.target.value)}
+          />
+          <datalist id="pm-locations">
+            {locations.map((l) => (
+              <option key={l.id} value={`${l.name}, ${l.town}`} />
+            ))}
+          </datalist>
         </div>
         <div>
           <label htmlFor="p-specialist" className="eyebrow mb-1.5 block">
@@ -364,8 +402,7 @@ function PropertyEditor() {
       <section className="rounded-md border border-border bg-card p-6">
         <h3 className="text-base font-semibold">Photographs</h3>
         <p className="mt-1 text-sm text-muted-foreground">
-          Upload as many photographs as the listing needs — they are stored in cloud storage, not
-          in the database. Reorder them and pick the cover image used on cards and previews.
+          Upload as many photographs as the listing needs — they are stored on the Cloudinary CDN, not in the database, so they appear for every visitor instantly. Reorder them and pick the cover image used on cards and previews.
         </p>
         <div className="mt-4">
           <ImageUploader
