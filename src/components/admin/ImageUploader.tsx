@@ -17,9 +17,10 @@ interface Pending {
 }
 
 /**
- * Unlimited-count property image manager. Files go straight to Firebase
- * Storage (persistent cloud storage) and only their metadata is kept on the
- * property document, so a listing can carry 50 or 100+ photographs.
+ * Unlimited-count property image manager. Files go straight to Cloudinary,
+ * which serves them publicly over its CDN, and only their metadata is kept on
+ * the property document, so a listing can carry 50 or 100+ photographs and
+ * every visitor sees them immediately.
  */
 export function ImageUploader({
   propertyId,
