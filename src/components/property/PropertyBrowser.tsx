@@ -32,9 +32,9 @@ function FilterFields({
   set: (patch: Partial<PropertyFiltersState>) => void;
   lock: { listing?: boolean; category?: boolean };
 }) {
-  const { data: types } = usePropertyTypes();
-  const { data: locations } = useLocations();
-  const { data: allProperties } = useProperties();
+  const { data: types = [] } = usePropertyTypes();
+  const { data: locations = [] } = useLocations();
+  const { data: allProperties = [] } = useProperties();
   // Amenity options are derived from the live inventory so anything staff type
   // into the dashboard becomes a filter automatically.
   const amenityOptions = useMemo(() => {
@@ -245,8 +245,8 @@ export function PropertyBrowser({
   lock?: { listing?: boolean; category?: boolean };
   heading?: string;
 }) {
-  const { data: properties, isFetching } = useProperties();
-  const { data: types } = usePropertyTypes();
+  const { data: properties = [], isFetching, isLoading } = useProperties();
+  const { data: types = [] } = usePropertyTypes();
   const [filters, setFilters] = useState<PropertyFiltersState>({ ...defaultFilters, ...initial });
   const [view, setView] = useState<"grid" | "list">("grid");
   const [page, setPage] = useState(1);
@@ -279,6 +279,7 @@ export function PropertyBrowser({
     filters.amenities.length;
 
   const reset = () => set({ ...defaultFilters, ...initial });
+  const showSkeleton = (isLoading || isFetching) && properties.length === 0;
 
   return (
     <div className="container-page grid gap-10 py-10 lg:grid-cols-[300px_1fr] lg:py-14">
@@ -303,7 +304,9 @@ export function PropertyBrowser({
               {heading ?? "Properties"}
             </h1>
             <p className="mt-1 text-sm text-muted-foreground">
-              {results.length} {results.length === 1 ? "property" : "properties"} available
+              {showSkeleton
+                ? "Loading properties…"
+                : `${results.length} ${results.length === 1 ? "property" : "properties"} available`}
             </p>
           </div>
 
@@ -368,7 +371,7 @@ export function PropertyBrowser({
         </div>
 
         <div className="pt-8">
-          {isFetching && properties.length === 0 ? (
+          {showSkeleton ? (
             <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
               {Array.from({ length: 6 }).map((_, i) => (
                 <PropertyCardSkeleton key={i} />
