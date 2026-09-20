@@ -13,7 +13,6 @@ export type PropertyStatus =
   | "rented"
   | "unavailable";
 
-
 export type PropertyCategory = "residential" | "land" | "commercial";
 
 export interface PropertyType {
@@ -37,6 +36,8 @@ export interface LocationArea {
   town: string;
   /** Short editorial introduction shown on the location landing page. */
   intro: string;
+  /** Optional longer body for SEO location hubs (paragraphs separated by \n\n). */
+  body?: string;
   parentSlug?: string;
 }
 
@@ -65,7 +66,6 @@ export interface PropertyImage {
   height?: number;
   uploadedAt?: string;
 }
-
 
 export interface Property {
   id: string;
@@ -104,6 +104,8 @@ export interface Property {
   createdBy?: string;
   seoTitle?: string;
   seoDescription?: string;
+  /** When true, page is excluded from sitemap and gets noindex. */
+  noIndex?: boolean;
   /** Demo records are shipped for development and are clearly labelled. */
   isDemo?: boolean;
 }
@@ -161,6 +163,7 @@ export interface Article {
   author: string;
   coverImage?: string;
   publishedAt: string;
+  updatedAt?: string;
   seoTitle?: string;
   seoDescription?: string;
   published: boolean;
