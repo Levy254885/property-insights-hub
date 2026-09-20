@@ -2,23 +2,30 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { useArticles } from "@/lib/queries";
 import { formatDate } from "@/lib/format";
+import { seo } from "@/lib/seo";
+
+const head = seo({
+  title: "Property Insights & Buying Guides for Kenya | Property Masters",
+  description:
+    "Practical guides on buying land, renting in Nairobi, reading listings, diaspora investment and due diligence — from Property Masters, Westlands.",
+  path: "/insights",
+  keywords: [
+    "buying property in Kenya",
+    "land due diligence Kenya",
+    "renting in Nairobi",
+    "diaspora property Kenya",
+    "title search Kenya",
+    "Property Masters guides",
+  ],
+});
 
 export const Route = createFileRoute("/insights/")({
-  head: () => ({
-    meta: [
-      { title: "Property insights and guides | Property Masters" },
-      { name: "description", content: "Buying guides, land due diligence and rental market notes for Kenya." },
-      { property: "og:title", content: "Property insights and guides | Property Masters" },
-      { property: "og:description", content: "Practical guides for buyers, tenants and property owners in Kenya." },
-      { property: "og:url", content: "/insights" },
-    ],
-    links: [{ rel: "canonical", href: "/insights" }],
-  }),
+  head: () => head,
   component: InsightsPage,
 });
 
 function InsightsPage() {
-  const { data: articles } = useArticles();
+  const { data: articles = [] } = useArticles();
   const published = articles.filter((a) => a.published);
 
   return (
@@ -26,7 +33,7 @@ function InsightsPage() {
       <SectionHeading
         eyebrow="Insights"
         title="Guides and market notes"
-        description="Practical, sourced guidance for buying, renting and owning property in Kenya."
+        description="Practical, sourced guidance for buying, renting and owning property in Kenya. Written for buyers, tenants and diaspora investors."
       />
       <ul className="mt-12 divide-y divide-border border-y border-border">
         {published.map((a) => (

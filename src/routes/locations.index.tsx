@@ -1,24 +1,31 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { useLocations, useProperties, isPublic } from "@/lib/queries";
+import { seo } from "@/lib/seo";
+
+const head = seo({
+  title: "Property Locations across Kenya — Nairobi, Kitengela & More | Property Masters",
+  description:
+    "Browse property by neighbourhood and town: Westlands, Kilimani, Karen, Runda, Kitengela and more. Live listings from Property Masters, Westlands Nairobi.",
+  path: "/locations",
+  keywords: [
+    "property locations Kenya",
+    "property Westlands",
+    "property Kilimani",
+    "property Karen",
+    "land Kitengela",
+    "Property Masters Nairobi",
+  ],
+});
 
 export const Route = createFileRoute("/locations/")({
-  head: () => ({
-    meta: [
-      { title: "Property locations across Kenya | Property Masters" },
-      { name: "description", content: "Browse property by county, town and neighbourhood across Kenya." },
-      { property: "og:title", content: "Property locations across Kenya | Property Masters" },
-      { property: "og:description", content: "Explore the Kenyan markets Property Masters covers." },
-      { property: "og:url", content: "/locations" },
-    ],
-    links: [{ rel: "canonical", href: "/locations" }],
-  }),
+  head: () => head,
   component: LocationsPage,
 });
 
 function LocationsPage() {
-  const { data: locations } = useLocations();
-  const { data: properties } = useProperties();
+  const { data: locations = [] } = useLocations();
+  const { data: properties = [] } = useProperties();
   const published = properties.filter(isPublic);
 
   return (
@@ -26,7 +33,7 @@ function LocationsPage() {
       <SectionHeading
         eyebrow="Locations"
         title="Browse property by location"
-        description="Each location page lists what is currently available, the property types found there and related areas."
+        description="Each location page lists what is currently available, the property types found there and related areas. Search by neighbourhood the way buyers and tenants actually search."
       />
       <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {locations.map((l) => {

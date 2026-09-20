@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PropertyBrowser } from "@/components/property/PropertyBrowser";
 import type { PropertyFiltersState } from "@/lib/types";
+import { seo } from "@/lib/seo";
 
 export interface PropertySearchParams {
   q?: string;
@@ -12,6 +13,21 @@ export interface PropertySearchParams {
   max?: string;
   beds?: string;
 }
+
+const head = seo({
+  title: "Property Search — Homes, Land & Commercial in Kenya | Property Masters",
+  description:
+    "Search homes, apartments, land and commercial property across Kenya. Filter by location, price, bedrooms, size and amenities. Verified inventory from Property Masters, Westlands.",
+  path: "/properties",
+  keywords: [
+    "property search Kenya",
+    "homes for sale Nairobi",
+    "apartments for rent Nairobi",
+    "land for sale Kenya",
+    "commercial property Nairobi",
+    "Property Masters",
+  ],
+});
 
 export const Route = createFileRoute("/properties/")({
   validateSearch: (search: Record<string, unknown>): PropertySearchParams => ({
@@ -30,20 +46,7 @@ export const Route = createFileRoute("/properties/")({
     ...(typeof search["max"] === "string" ? { max: search["max"] } : {}),
     ...(typeof search["beds"] === "string" ? { beds: search["beds"] } : {}),
   }),
-  head: () => ({
-    meta: [
-      { title: "Property search — homes, land and commercial | Property Masters" },
-      {
-        name: "description",
-        content:
-          "Search homes, apartments, land and commercial property across Kenya. Filter by location, price, bedrooms, size and amenities.",
-      },
-      { property: "og:title", content: "Property search | Property Masters" },
-      { property: "og:description", content: "Filter Kenyan property listings by location, price and type." },
-      { property: "og:url", content: "/properties" },
-    ],
-    links: [{ rel: "canonical", href: "/properties" }],
-  }),
+  head: () => head,
   component: PropertiesPage,
 });
 
