@@ -119,6 +119,21 @@ export function breadcrumbLd(items: Array<{ name: string; path: string }>) {
   };
 }
 
+export function faqLd(faqs: Array<{ question: string; answer: string }>) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+      "@type": "Question",
+      name: f.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: f.answer,
+      },
+    })),
+  };
+}
+
 /* ------------------------------------------------------------------ */
 /* Property metadata                                                   */
 /* ------------------------------------------------------------------ */
@@ -289,7 +304,20 @@ export function locationSeoDescription(location: LocationArea, count: number, ty
         typeNames.length ? ` including ${typeNames.slice(0, 3).join(", ").toLowerCase()}` : ""
       }.`
     : "Tell us what you are looking for and we will alert you when something suitable comes up.";
-  return clamp(`${location.intro} ${inventory}`, 158);
+  return clamp(`Browse homes, land and commercial property in ${place}. ${location.intro} ${inventory}`, 158);
+}
+
+export function locationKeywords(location: LocationArea): string[] {
+  const place = location.name;
+  return [
+    `property for sale ${place}`,
+    `property for rent ${place}`,
+    `apartments ${place}`,
+    `houses for sale ${place}`,
+    `land for sale ${place}`,
+    `${place} Nairobi real estate`,
+    `Property Masters ${place}`,
+  ];
 }
 
 export function articleLd(article: Article) {
@@ -307,4 +335,14 @@ export function articleLd(article: Article) {
     url,
     ...(article.coverImage ? { image: article.coverImage } : { image: DEFAULT_OG_IMAGE }),
   };
+}
+
+export function articleSeoTitle(article: Article): string {
+  if (article.seoTitle?.trim()) return article.seoTitle.trim();
+  return clamp(`${article.title} | ${SITE_NAME}`, 70);
+}
+
+export function articleSeoDescription(article: Article): string {
+  if (article.seoDescription?.trim()) return clamp(article.seoDescription.trim(), 158);
+  return clamp(article.excerpt, 158);
 }
