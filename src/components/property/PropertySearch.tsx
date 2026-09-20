@@ -21,6 +21,12 @@ const tabs = [
   { key: "commercial", label: "Commercial", listing: "all", category: "commercial" },
 ] as const;
 
+/** Light field style for selects sitting on the white search card */
+const fieldTrigger =
+  "h-11 border border-neutral-300 bg-neutral-100 text-neutral-900 shadow-none " +
+  "data-[placeholder]:text-neutral-500 hover:bg-neutral-50 focus:ring-bronze " +
+  "[&_svg]:text-neutral-600";
+
 export function PropertySearch({ variant = "hero" }: { variant?: "hero" | "inline" }) {
   const navigate = useNavigate();
   const { data: types } = usePropertyTypes();
@@ -90,10 +96,10 @@ export function PropertySearch({ variant = "hero" }: { variant?: "hero" | "inlin
             Location
           </label>
           <Select value={area} onValueChange={setArea}>
-            <SelectTrigger id="search-location" className="h-11 border-border bg-background text-foreground">
+            <SelectTrigger id="search-location" className={fieldTrigger}>
               <SelectValue placeholder="Any location" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white text-neutral-900">
               <SelectItem value="any">Any location</SelectItem>
               {locations.map((l) => (
                 <SelectItem key={l.id} value={l.slug}>
@@ -109,10 +115,10 @@ export function PropertySearch({ variant = "hero" }: { variant?: "hero" | "inlin
             Property type
           </label>
           <Select value={typeId} onValueChange={setTypeId}>
-            <SelectTrigger id="search-type" className="h-11 border-border bg-background text-foreground">
+            <SelectTrigger id="search-type" className={fieldTrigger}>
               <SelectValue placeholder="Any type" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white text-neutral-900">
               <SelectItem value="any">Any type</SelectItem>
               {relevantTypes.map((t) => (
                 <SelectItem key={t.id} value={t.id}>
@@ -128,10 +134,10 @@ export function PropertySearch({ variant = "hero" }: { variant?: "hero" | "inlin
             Max price
           </label>
           <Select value={maxPrice} onValueChange={setMaxPrice}>
-            <SelectTrigger id="search-price" className="h-11 border-border bg-background text-foreground">
+            <SelectTrigger id="search-price" className={fieldTrigger}>
               <SelectValue placeholder="No maximum" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white text-neutral-900">
               <SelectItem value="any">No maximum</SelectItem>
               {priceOptions.map((p) => (
                 <SelectItem key={p} value={p}>
@@ -148,10 +154,10 @@ export function PropertySearch({ variant = "hero" }: { variant?: "hero" | "inlin
             Bedrooms
           </label>
           <Select value={beds} onValueChange={setBeds}>
-            <SelectTrigger id="search-beds" className="h-11 border-border bg-background text-foreground">
+            <SelectTrigger id="search-beds" className={fieldTrigger}>
               <SelectValue placeholder="Any" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white text-neutral-900">
               <SelectItem value="any">Any</SelectItem>
               {["1", "2", "3", "4", "5"].map((b) => (
                 <SelectItem key={b} value={b}>

@@ -23,24 +23,28 @@ export function PropertyCard({ property, typeName }: { property: Property; typeN
           height={960}
           className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
         />
-        <div className="absolute left-3 top-3 flex flex-wrap gap-2">
+        <div className="absolute left-3 top-3 z-10 flex flex-wrap gap-2">
+          {/*
+            Use literal white/black — not theme tokens.
+            .bg-card forces text-foreground → dark, which made black chips unreadable.
+          */}
           <span
             className={cn(
-              "rounded-sm px-2.5 py-1 text-[0.625rem] font-bold uppercase tracking-[0.12em]",
+              "rounded-sm px-2.5 py-1 text-[0.625rem] font-bold uppercase tracking-[0.12em] shadow-sm",
               closed
-                ? "bg-ink/85 text-ink-foreground"
-                : "bg-background/95 text-foreground",
+                ? "bg-neutral-900 text-white"
+                : "bg-white text-neutral-900",
             )}
           >
             {statusLabel(property)}
           </span>
           {property.featured && !closed && (
-            <span className="rounded-sm bg-bronze px-2.5 py-1 text-[0.625rem] font-bold uppercase tracking-[0.12em] text-bronze-foreground">
+            <span className="rounded-sm bg-bronze px-2.5 py-1 text-[0.625rem] font-bold uppercase tracking-[0.12em] text-bronze-foreground shadow-sm">
               Featured
             </span>
           )}
           {property.isDemo && (
-            <span className="rounded-sm bg-ink/80 px-2.5 py-1 text-[0.625rem] font-bold uppercase tracking-[0.12em] text-ink-foreground">
+            <span className="rounded-sm bg-neutral-800 px-2.5 py-1 text-[0.625rem] font-bold uppercase tracking-[0.12em] text-white shadow-sm">
               Demo
             </span>
           )}
@@ -50,9 +54,14 @@ export function PropertyCard({ property, typeName }: { property: Property; typeN
           onClick={() => toggleFavorite(property.id)}
           aria-pressed={saved}
           aria-label={saved ? `Remove ${property.title} from saved` : `Save ${property.title}`}
-          className="absolute right-3 top-3 z-10 grid h-9 w-9 place-items-center rounded-full bg-background/90 text-foreground backdrop-blur-sm transition-transform duration-150 hover:scale-105"
+          className="absolute right-3 top-3 z-10 grid h-9 w-9 place-items-center rounded-full bg-white/95 text-neutral-900 shadow-sm backdrop-blur-sm transition-transform duration-150 hover:scale-105"
         >
-          <Heart className={cn("h-4 w-4 transition-colors", saved && "fill-bronze text-bronze")} />
+          <Heart
+            className={cn(
+              "h-4 w-4 transition-colors",
+              saved ? "fill-bronze text-bronze" : "text-neutral-800",
+            )}
+          />
         </button>
       </div>
 
