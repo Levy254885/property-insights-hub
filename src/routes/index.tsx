@@ -112,10 +112,10 @@ function Home() {
                 <Link
                   to="/properties"
                   search={{ type: c.typeId }}
-                  className="flex h-full items-center justify-between rounded-md border border-border bg-card px-5 py-6 text-sm font-semibold transition-colors hover:border-bronze"
+                  className="flex h-full items-center justify-between rounded-md border border-border bg-card px-5 py-6 text-sm font-semibold text-card-foreground transition-colors hover:border-bronze"
                 >
                   {c.name}
-                  <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                  <ArrowRight className="h-4 w-4 text-card-muted" />
                 </Link>
               </li>
             ))}
@@ -142,10 +142,10 @@ function Home() {
                 <Link
                   to="/locations/$slug"
                   params={{ slug: l.slug }}
-                  className="block rounded-md border border-border bg-card px-5 py-5 transition-colors hover:border-bronze"
+                  className="block rounded-md border border-border bg-card px-5 py-5 text-card-foreground transition-colors hover:border-bronze"
                 >
-                  <p className="text-sm font-semibold">{l.name}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">
+                  <p className="text-sm font-semibold text-card-foreground">{l.name}</p>
+                  <p className="mt-1 text-xs text-card-muted">
                     {count} {count === 1 ? "listing" : "listings"}
                   </p>
                 </Link>
@@ -158,14 +158,14 @@ function Home() {
       <section className="border-y border-border bg-ink text-ink-foreground">
         <div className="container-page py-16 lg:py-24">
           <p className="eyebrow text-ink-foreground/60">Why Property Masters</p>
-          <h2 className="mt-3 max-w-2xl text-2xl font-bold sm:text-3xl">
+          <h2 className="mt-3 max-w-2xl text-2xl font-bold text-ink-foreground sm:text-3xl">
             A straightforward way to buy and rent property in Kenya.
           </h2>
           <div className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
             {trust.map((t) => (
               <div key={t.title}>
                 <t.icon className="h-5 w-5 text-bronze" />
-                <h3 className="mt-4 text-base font-semibold">{t.title}</h3>
+                <h3 className="mt-4 text-base font-semibold text-ink-foreground">{t.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-ink-foreground/70">{t.body}</p>
               </div>
             ))}
@@ -184,7 +184,7 @@ function Home() {
         <div className="container-page grid gap-8 py-16 lg:grid-cols-2 lg:items-center lg:py-20">
           <div>
             <p className="eyebrow">Speak to us</p>
-            <h2 className="mt-3 text-2xl font-bold sm:text-3xl">
+            <h2 className="mt-3 text-2xl font-bold text-foreground sm:text-3xl">
               Found something you like? Arrange a viewing.
             </h2>
             <p className="mt-4 max-w-lg text-sm leading-relaxed text-muted-foreground">
@@ -219,7 +219,7 @@ function Home() {
               <p className="eyebrow">
                 {a.category} · {formatDate(a.publishedAt)}
               </p>
-              <h3 className="mt-3 text-base font-semibold leading-snug">
+              <h3 className="mt-3 text-base font-semibold leading-snug text-foreground">
                 <Link to="/insights/$slug" params={{ slug: a.slug }} className="hover:text-bronze">
                   {a.title}
                 </Link>
@@ -231,8 +231,10 @@ function Home() {
       </section>
 
       <section className="container-page pb-24">
-        <div className="flex flex-col items-start gap-6 rounded-md border border-border bg-card px-8 py-14 sm:items-center sm:text-center">
-          <h2 className="max-w-xl text-2xl font-bold sm:text-3xl">Let's find the right property.</h2>
+        <div className="flex flex-col items-start gap-6 rounded-md border border-border bg-card px-8 py-14 text-card-foreground sm:items-center sm:text-center">
+          <h2 className="max-w-xl text-2xl font-bold text-card-foreground sm:text-3xl">
+            Let's find the right property.
+          </h2>
           <div className="flex flex-wrap gap-3">
             <Button size="lg" asChild>
               <Link to="/properties">Explore Properties</Link>
