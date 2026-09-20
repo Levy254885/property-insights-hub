@@ -12,7 +12,6 @@ import { getDb } from "./firebase";
 import {
   agents as seedAgents,
   demoArticles,
-  demoProperties,
   locations as seedLocations,
   propertyTypes as seedTypes,
 } from "@/data/seed";
@@ -31,8 +30,8 @@ import type {
  * Data access layer for the Property Masters internal inventory.
  *
  * Properties are company-owned records maintained by staff through the admin
- * dashboard. Demo seed records are used as a fallback so the site renders
- * during SSR and before the Firestore collections are populated.
+ * dashboard. Demo seed records are NOT used as a fallback for the live
+ * catalogue — visitors only ever see real inventory (or an empty/loading state).
  */
 
 async function readCollection<T>(name: string): Promise<T[]> {
@@ -47,9 +46,9 @@ async function readCollection<T>(name: string): Promise<T[]> {
   }
 }
 
+/** Live properties only — never fall back to demo seed data. */
 export async function fetchProperties(): Promise<Property[]> {
-  const remote = await readCollection<Property>("properties");
-  return remote.length ? remote : demoProperties;
+  return readCollection<Property>("properties");
 }
 
 export async function fetchPropertyTypes(): Promise<PropertyType[]> {

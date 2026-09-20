@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import {
   agents as seedAgents,
   demoArticles,
-  demoProperties,
   locations as seedLocations,
   propertyTypes as seedTypes,
 } from "@/data/seed";
@@ -33,14 +32,14 @@ export const defaultFilters: PropertyFiltersState = {
   sort: "newest",
 };
 
+/**
+ * Live catalogue only. No demo/seed initialData so visitors never see
+ * placeholder listings flash before real inventory arrives from Firestore.
+ */
 export function useProperties() {
   return useQuery({
     queryKey: ["properties"],
     queryFn: fetchProperties,
-    initialData: demoProperties,
-    // Treat the seed data as stale so the live catalogue is fetched on first
-    // paint — visitors must always see the inventory managed in the dashboard.
-    initialDataUpdatedAt: 0,
     staleTime: 60_000,
   });
 }
@@ -79,6 +78,8 @@ export function useArticles() {
   return useQuery({
     queryKey: ["articles"],
     queryFn: fetchArticles,
+    // Keep seed articles only as a soft fallback for first paint of insights;
+    // live articles from Firestore take over as soon as they load.
     initialData: demoArticles,
     initialDataUpdatedAt: 0,
     staleTime: 300_000,
@@ -99,7 +100,7 @@ export function useUsers() {
 
 /** Statuses that are visible on the public catalogue. */
 export function isPublic(p: Property): boolean {
-  return p.status !== "draft";
+  return p.status !== "draft" && !p.isDemo;
 }
 
 /** Inventory a customer can still transact on. */
