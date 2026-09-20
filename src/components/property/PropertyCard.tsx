@@ -13,7 +13,7 @@ export function PropertyCard({ property, typeName }: { property: Property; typeN
   const closed = property.status === "sold" || property.status === "rented";
 
   return (
-    <article className="group relative flex flex-col overflow-hidden rounded-md border border-border bg-card shadow-card transition-shadow duration-200 hover:shadow-lift">
+    <article className="group relative flex flex-col overflow-hidden rounded-md border border-border bg-card text-card-foreground shadow-card transition-shadow duration-200 hover:shadow-lift">
       <div className="relative aspect-[4/3] overflow-hidden bg-muted">
         <img
           src={optimizedUrl(property.primaryImage, 800)}
@@ -27,7 +27,9 @@ export function PropertyCard({ property, typeName }: { property: Property; typeN
           <span
             className={cn(
               "rounded-sm px-2.5 py-1 text-[0.625rem] font-bold uppercase tracking-[0.12em]",
-              closed ? "bg-ink/85 text-ink-foreground" : "bg-background/95 text-foreground",
+              closed
+                ? "bg-ink/85 text-ink-foreground"
+                : "bg-background/95 text-foreground",
             )}
           >
             {statusLabel(property)}
@@ -38,7 +40,7 @@ export function PropertyCard({ property, typeName }: { property: Property; typeN
             </span>
           )}
           {property.isDemo && (
-            <span className="rounded-sm bg-muted/95 px-2.5 py-1 text-[0.625rem] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+            <span className="rounded-sm bg-ink/80 px-2.5 py-1 text-[0.625rem] font-bold uppercase tracking-[0.12em] text-ink-foreground">
               Demo
             </span>
           )}
@@ -54,11 +56,11 @@ export function PropertyCard({ property, typeName }: { property: Property; typeN
         </button>
       </div>
 
-      <div className="flex flex-1 flex-col p-5">
-        <p className="text-lg font-bold tracking-tight text-foreground">
+      <div className="flex flex-1 flex-col p-5 text-card-foreground">
+        <p className="text-lg font-bold tracking-tight text-card-foreground">
           {formatPrice(property.price, property.listingType)}
         </p>
-        <h3 className="mt-1.5 text-[0.9375rem] font-semibold leading-snug text-foreground">
+        <h3 className="mt-1.5 text-[0.9375rem] font-semibold leading-snug text-card-foreground">
           <Link
             to="/properties/$slug"
             params={{ slug: property.slug }}
@@ -67,9 +69,9 @@ export function PropertyCard({ property, typeName }: { property: Property; typeN
             {property.title}
           </Link>
         </h3>
-        <p className="mt-1 text-sm text-muted-foreground">{propertyLocation(property)}</p>
+        <p className="mt-1 text-sm text-card-muted">{propertyLocation(property)}</p>
 
-        <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-2 pt-5 text-xs text-muted-foreground">
+        <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-2 pt-5 text-xs text-card-muted">
           {property.bedrooms ? (
             <span className="inline-flex items-center gap-1.5">
               <BedDouble className="h-3.5 w-3.5" /> {property.bedrooms} bed
@@ -85,7 +87,7 @@ export function PropertyCard({ property, typeName }: { property: Property; typeN
               <Maximize className="h-3.5 w-3.5" /> {size}
             </span>
           ) : null}
-          {typeName ? <span className="ml-auto text-foreground/70">{typeName}</span> : null}
+          {typeName ? <span className="ml-auto text-card-foreground/70">{typeName}</span> : null}
         </div>
       </div>
     </article>

@@ -9,11 +9,12 @@
  *
  * Palette (logo):
  *   Black   — primary surface / authority (client: black is the boss)
- *   Orange  — house outline + brick (#FF5C00 family) — CTAs, borders, energy
- *   Magenta — diamond + tagline script — secondary accent, emphasis
- *   White   — type on black, card surfaces for listings
+ *   Orange  — house outline + brick — CTAs, borders, energy
+ *   Magenta — diamond + tagline — secondary accent
+ *   White   — type on black; also used as card surfaces for listings
  *
- * One typeface (Manrope). Restraint over decoration.
+ * Contrast rule: anything with bg-card (white) forces dark card-foreground
+ * so text never disappears as white-on-white.
  */
 
 @theme inline {
@@ -29,6 +30,7 @@
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
+  --color-card-muted: var(--card-muted);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
@@ -50,7 +52,6 @@
   --color-ring-offset-background: var(--background);
   --color-ink: var(--ink);
   --color-ink-foreground: var(--ink-foreground);
-  /* "bronze" kept as class name for compatibility — values are logo orange */
   --color-bronze: var(--bronze);
   --color-bronze-foreground: var(--bronze-foreground);
   --color-magenta: var(--magenta);
@@ -76,17 +77,18 @@
 :root {
   --radius: 0.25rem;
 
-  /* Black-led canvas — logo background is pure black */
+  /* Black-led canvas */
   --background: oklch(0.12 0.005 40);
   --foreground: oklch(0.97 0.01 90);
 
-  /* White cards so property photos and body copy stay readable */
+  /* White cards — text must stay dark (see .bg-card rules below) */
   --card: oklch(0.99 0.005 90);
-  --card-foreground: oklch(0.14 0.01 40);
+  --card-foreground: oklch(0.16 0.015 40);
+  --card-muted: oklch(0.42 0.02 45);
+
   --popover: oklch(0.16 0.01 40);
   --popover-foreground: oklch(0.97 0.01 90);
 
-  /* Primary actions = logo orange */
   --primary: oklch(0.68 0.22 40);
   --primary-foreground: oklch(0.12 0.01 40);
 
@@ -96,11 +98,9 @@
   --muted: oklch(0.2 0.012 40);
   --muted-foreground: oklch(0.72 0.02 70);
 
-  /* Accent = magenta (logo diamond + tagline) */
   --accent: oklch(0.62 0.27 330);
   --accent-foreground: oklch(0.99 0.01 90);
 
-  /* bronze token → logo orange (existing bg-bronze / text-bronze keep working) */
   --bronze: oklch(0.68 0.22 40);
   --bronze-foreground: oklch(0.12 0.01 40);
 
@@ -136,12 +136,12 @@
   --sidebar-ring: oklch(0.68 0.22 40);
 }
 
-/* Explicit .dark stays aligned with the same brand (site is dark by default) */
 .dark {
   --background: oklch(0.1 0.005 40);
   --foreground: oklch(0.97 0.01 90);
   --card: oklch(0.99 0.005 90);
-  --card-foreground: oklch(0.14 0.01 40);
+  --card-foreground: oklch(0.16 0.015 40);
+  --card-muted: oklch(0.42 0.02 45);
   --popover: oklch(0.16 0.01 40);
   --popover-foreground: oklch(0.97 0.01 90);
   --primary: oklch(0.7 0.22 40);
@@ -202,10 +202,48 @@
     outline-offset: 2px;
   }
 
-  /* Selection tinted with logo orange */
   ::selection {
     background-color: oklch(0.68 0.22 40 / 0.35);
     color: oklch(0.99 0.01 90);
+  }
+
+  /*
+   * CRITICAL CONTRAST FIX
+   * White card surfaces must never inherit page foreground (white).
+   * Force dark text + readable muted grey inside any bg-card region.
+   */
+  .bg-card {
+    color: var(--color-card-foreground);
+  }
+
+  .bg-card .text-foreground,
+  .bg-card .text-foreground\/70,
+  .bg-card .text-foreground\/80,
+  .bg-card .text-foreground\/90 {
+    color: var(--color-card-foreground) !important;
+  }
+
+  .bg-card .text-muted-foreground {
+    color: var(--color-card-muted) !important;
+  }
+
+  /* Labels / eyebrows on cards: use dark muted, not page magenta-on-black assumption */
+  .bg-card .eyebrow {
+    color: var(--color-card-muted);
+  }
+
+  /* Form controls sitting on white cards */
+  .bg-card input,
+  .bg-card textarea,
+  .bg-card select,
+  .bg-card [data-slot="select-trigger"],
+  .bg-card button[role="combobox"] {
+    color: var(--color-card-foreground);
+  }
+
+  .bg-card input::placeholder,
+  .bg-card textarea::placeholder {
+    color: var(--color-card-muted);
   }
 }
 
@@ -231,7 +269,6 @@
   border-top: 1px solid var(--color-border);
 }
 
-/* Soft orange glow used on hero / CTA bands */
 @utility brand-glow {
   box-shadow: 0 0 0 1px oklch(0.68 0.22 40 / 0.35), 0 12px 40px -12px oklch(0.68 0.22 40 / 0.45);
 }

@@ -60,7 +60,7 @@ export function PropertySearch({ variant = "hero" }: { variant?: "hero" | "inlin
   return (
     <div
       className={cn(
-        "rounded-md border border-border bg-card shadow-lift",
+        "rounded-md border border-border bg-card text-card-foreground shadow-lift",
         variant === "hero" && "backdrop-blur",
       )}
     >
@@ -75,8 +75,8 @@ export function PropertySearch({ variant = "hero" }: { variant?: "hero" | "inlin
             className={cn(
               "relative flex-1 px-3 py-3.5 text-sm font-semibold transition-colors sm:flex-none sm:px-7",
               tab === t.key
-                ? "text-foreground after:absolute after:inset-x-0 after:-bottom-px after:h-0.5 after:bg-bronze after:content-['']"
-                : "text-muted-foreground hover:text-foreground",
+                ? "text-card-foreground after:absolute after:inset-x-0 after:-bottom-px after:h-0.5 after:bg-bronze after:content-['']"
+                : "text-card-muted hover:text-card-foreground",
             )}
           >
             {t.label}
@@ -90,7 +90,7 @@ export function PropertySearch({ variant = "hero" }: { variant?: "hero" | "inlin
             Location
           </label>
           <Select value={area} onValueChange={setArea}>
-            <SelectTrigger id="search-location" className="h-11">
+            <SelectTrigger id="search-location" className="h-11 border-border bg-background text-foreground">
               <SelectValue placeholder="Any location" />
             </SelectTrigger>
             <SelectContent>
@@ -109,7 +109,7 @@ export function PropertySearch({ variant = "hero" }: { variant?: "hero" | "inlin
             Property type
           </label>
           <Select value={typeId} onValueChange={setTypeId}>
-            <SelectTrigger id="search-type" className="h-11">
+            <SelectTrigger id="search-type" className="h-11 border-border bg-background text-foreground">
               <SelectValue placeholder="Any type" />
             </SelectTrigger>
             <SelectContent>
@@ -128,7 +128,7 @@ export function PropertySearch({ variant = "hero" }: { variant?: "hero" | "inlin
             Max price
           </label>
           <Select value={maxPrice} onValueChange={setMaxPrice}>
-            <SelectTrigger id="search-price" className="h-11">
+            <SelectTrigger id="search-price" className="h-11 border-border bg-background text-foreground">
               <SelectValue placeholder="No maximum" />
             </SelectTrigger>
             <SelectContent>
@@ -148,7 +148,7 @@ export function PropertySearch({ variant = "hero" }: { variant?: "hero" | "inlin
             Bedrooms
           </label>
           <Select value={beds} onValueChange={setBeds}>
-            <SelectTrigger id="search-beds" className="h-11">
+            <SelectTrigger id="search-beds" className="h-11 border-border bg-background text-foreground">
               <SelectValue placeholder="Any" />
             </SelectTrigger>
             <SelectContent>
