@@ -24,10 +24,11 @@ export function Header() {
   const tel = `tel:${defaultSettings.phone.replace(/\s/g, "")}`;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+    <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90">
       <div className="container-page flex h-16 items-center justify-between gap-6 lg:h-20">
         <Link to="/" aria-label="Property Masters home">
-          <Logo />
+          {/* White logo for black-led canvas (matches official logo on black) */}
+          <Logo tone="dark" />
         </Link>
 
         <nav aria-label="Primary" className="hidden items-center gap-7 lg:flex">
@@ -36,8 +37,8 @@ export function Header() {
               key={item.to}
               to={item.to}
               className={cn(
-                "text-sm font-medium text-muted-foreground transition-colors hover:text-foreground",
-                pathname.startsWith(item.to) && "text-foreground",
+                "text-sm font-medium text-muted-foreground transition-colors hover:text-bronze",
+                pathname.startsWith(item.to) && "text-bronze",
               )}
             >
               {item.label}
@@ -86,7 +87,7 @@ export function Header() {
                 <Menu />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[86vw] max-w-sm p-0">
+            <SheetContent side="right" className="w-[86vw] max-w-sm border-border bg-background p-0">
               <SheetTitle className="sr-only">Navigation</SheetTitle>
               <nav aria-label="Mobile" className="flex h-full flex-col overflow-y-auto px-6 pb-8 pt-14">
                 {primaryNav.map((item) => (
@@ -94,7 +95,7 @@ export function Header() {
                     key={item.to}
                     to={item.to}
                     onClick={() => setOpen(false)}
-                    className="border-b border-border py-4 text-lg font-medium text-foreground"
+                    className="border-b border-border py-4 text-lg font-medium text-foreground hover:text-bronze"
                   >
                     {item.label}
                   </Link>
@@ -102,21 +103,21 @@ export function Header() {
                 <Link
                   to="/properties"
                   onClick={() => setOpen(false)}
-                  className="border-b border-border py-4 text-lg font-medium text-foreground"
+                  className="border-b border-border py-4 text-lg font-medium text-foreground hover:text-bronze"
                 >
                   All Properties
                 </Link>
                 <Link
                   to="/specialists"
                   onClick={() => setOpen(false)}
-                  className="border-b border-border py-4 text-lg font-medium text-foreground"
+                  className="border-b border-border py-4 text-lg font-medium text-foreground hover:text-bronze"
                 >
                   Property Specialists
                 </Link>
                 <Link
                   to="/insights"
                   onClick={() => setOpen(false)}
-                  className="border-b border-border py-4 text-lg font-medium text-foreground"
+                  className="border-b border-border py-4 text-lg font-medium text-foreground hover:text-bronze"
                 >
                   Insights
                 </Link>
