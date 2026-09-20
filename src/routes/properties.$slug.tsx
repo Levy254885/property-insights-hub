@@ -20,36 +20,54 @@ import { useSpecialists, useProperties, usePropertyTypes, isPublic } from "@/lib
 import { useFavorites } from "@/lib/favorites";
 import { formatPrice, formatSize, propertyLocation, statusLabel, whatsappLink } from "@/lib/format";
 import { defaultSettings } from "@/lib/settings";
+import {
+  seo,
+  propertySeoTitle,
+  propertySeoDescription,
+  propertyLd,
+  breadcrumbLd,
+  organizationLd,
+  jsonLd,
+  propertyPath,
+  isIndexableProperty,
+} from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/properties/$slug")({
-  head: ({ params }) => ({
-    meta: [
-      { title: "Property details | Property Masters" },
-      { name: "description", content: "Full details, photographs and enquiry options for this listing." },
-      { property: "og:type", content: "article" },
-      { property: "og:url", content: `/properties/${params.slug}` },
-    ],
-    links: [{ rel: "canonical", href: `/properties/${params.slug}` }],
-  }),
+  head: ({ params }) => {
+    // Static fallback for crawlers before client data arrives.
+    // Component injects richer JSON-LD once the property is known.
+    const base = seo({
+      title: "Property details | Property Masters",
+      description: "Full details, photographs and enquiry options for this listing from Property Masters, Westlands Nairobi.",
+      path: `/properties/${params.slug}`,
+      type: "article",
+    });
+    return {
+      meta: base.meta,
+      links: base.links,
+      scripts: [jsonLd(organizationLd())],
+    };
+  },
   component: PropertyDetail,
 });
 
 function PropertyDetail() {
   const { slug } = Route.useParams();
-  const { data: properties, isFetching } = useProperties();
-  const { data: types } = usePropertyTypes();
-  const { data: specialists } = useSpecialists();
+  const { data: properties = [], isFetching, isLoading } = useProperties();
+  const { data: types = [] } = usePropertyTypes();
+  const { data: specialists = [] } = useSpecialists();
   const { isFavorite, toggleFavorite } = useFavorites();
 
   const property = properties.find((p) => p.slug === slug);
 
   if (!property) {
-    if (isFetching) {
+    if (isLoading || isFetching) {
       return (
         <div className="container-page py-14">
           <div className="aspect-[16/10] animate-pulse rounded-md bg-muted" />
           <div className="mt-6 h-8 w-2/3 animate-pulse rounded bg-muted" />
+          <div className="mt-4 h-4 w-1/3 animate-pulse rounded bg-muted" />
         </div>
       );
     }
@@ -68,6 +86,10 @@ function PropertyDetail() {
     .slice(0, 3);
 
   const waMessage = `Hello Property Masters, I am interested in the ${property.title} in ${propertyLocation(property)}.`;
+
+  const pageTitle = propertySeoTitle(property, type?.name);
+  const pageDescription = propertySeoDescription(property, type?.name);
+  const indexable = isIndexableProperty(property);
 
   async function share() {
     const url = window.location.href;
@@ -90,8 +112,25 @@ function PropertyDetail() {
     size ? { icon: Maximize, label: size } : null,
   ].filter(Boolean) as Array<{ icon: typeof BedDouble; label: string }>;
 
+  const listingLd = propertyLd(property, type?.name, type?.category);
+  const crumbs = breadcrumbLd([
+    { name: "Home", path: "/" },
+    { name: "Properties", path: "/properties" },
+    { name: property.title, path: propertyPath(property) },
+  ]);
+
   return (
     <article className="container-page py-8 lg:py-12">
+      {/* Client-side head enrichment for accurate title/description/schema once data is ready */}
+      <title>{pageTitle}</title>
+      <meta name="description" content={pageDescription} />
+      <meta name="robots" content={indexable ? "index, follow" : "noindex, follow"} />
+      <meta property="og:title" content={pageTitle} />
+      <meta property="og:description" content={pageDescription} />
+      {property.primaryImage && <meta property="og:image" content={property.primaryImage} />}
+      <script type="application/ld+json">{JSON.stringify(listingLd)}</script>
+      <script type="application/ld+json">{JSON.stringify(crumbs)}</script>
+
       <nav aria-label="Breadcrumb" className="mb-6 text-xs text-muted-foreground">
         <ol className="flex flex-wrap items-center gap-2">
           <li>
@@ -124,11 +163,6 @@ function PropertyDetail() {
               </span>
             )}
             {type && <span className="text-xs text-muted-foreground">{type.name}</span>}
-            {property.isDemo && (
-              <span className="rounded-sm bg-muted px-2.5 py-1 text-[0.625rem] font-bold uppercase tracking-[0.12em] text-muted-foreground">
-                Demo listing
-              </span>
-            )}
           </div>
 
           <h1 className="mt-4 text-2xl font-extrabold sm:text-4xl">{property.title}</h1>

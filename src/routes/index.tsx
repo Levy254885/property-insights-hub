@@ -49,10 +49,10 @@ const trust = [
 ];
 
 function Home() {
-  const { data: properties } = useProperties();
-  const { data: types } = usePropertyTypes();
-  const { data: locations } = useLocations();
-  const { data: articles } = useArticles();
+  const { data: properties = [], isLoading: propsLoading } = useProperties();
+  const { data: types = [] } = usePropertyTypes();
+  const { data: locations = [] } = useLocations();
+  const { data: articles = [] } = useArticles();
 
   const published = properties.filter(isPublic);
   const featured = published.filter((p) => p.featured).slice(0, 3);
@@ -99,7 +99,7 @@ function Home() {
           }
         />
         <div className="mt-10">
-          <PropertyGrid properties={featured} types={types} />
+          <PropertyGrid properties={featured} types={types} loading={propsLoading} />
         </div>
       </section>
 
@@ -176,7 +176,7 @@ function Home() {
       <section className="container-page py-16 lg:py-24">
         <SectionHeading eyebrow="Just listed" title="Latest properties" />
         <div className="mt-10">
-          <PropertyGrid properties={latest} types={types} />
+          <PropertyGrid properties={latest} types={types} loading={propsLoading} />
         </div>
       </section>
 
