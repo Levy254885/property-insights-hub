@@ -54,6 +54,7 @@ export const locations: LocationArea[] = [
     town: "Nairobi",
     intro:
       "Kenya's capital and its deepest property market, spanning city-centre apartments, suburban family homes and commercial space across the metropolitan area.",
+    body: "Buyers and tenants search Nairobi by neighbourhood more often than by the city name alone. Westlands, Kilimani, Kileleshwa, Karen, Runda and Lavington each have distinct price bands, stock types and tenant profiles.\n\nProperty Masters lists verified homes, land and commercial space across these markets and coordinates viewings from our Westlands office.",
   },
   {
     id: "karen",
@@ -64,6 +65,7 @@ export const locations: LocationArea[] = [
     parentSlug: "nairobi",
     intro:
       "A low-density suburb west of the city known for large plots, mature gardens and standalone family houses.",
+    body: "Karen remains one of Nairobi's strongest markets for villas and houses on half-acre and larger plots. Search demand clusters around phrases such as houses for sale Karen, villa for sale Karen and land for sale Karen.\n\nWhen viewing, confirm access roads, water sources, perimeter security and any estate rules. Freehold versus leasehold and the remaining lease term materially affect value.",
   },
   {
     id: "kilimani",
@@ -74,6 +76,7 @@ export const locations: LocationArea[] = [
     parentSlug: "nairobi",
     intro:
       "A centrally located, largely apartment-led neighbourhood close to offices, schools and amenities.",
+    body: "Kilimani is a primary search area for 1, 2 and 3 bedroom apartments for sale and rent. Proximity to the CBD, hospitals and schools supports both owner-occupiers and investors seeking rental yield.\n\nAlways ask for monthly service charge, what it covers, and recent management accounts before committing.",
   },
   {
     id: "westlands",
@@ -84,6 +87,7 @@ export const locations: LocationArea[] = [
     parentSlug: "nairobi",
     intro:
       "Nairobi's commercial hub, mixing office towers, retail and modern residential developments.",
+    body: "Westlands attracts corporate tenants, expats and professionals. Common searches include apartments for rent Westlands, 2 bedroom apartment Westlands and office space Westlands.\n\nProperty Masters is based in Westlands (Lotus Plaza, Chiromo Lane) and markets both residential and commercial stock in the area.",
   },
   {
     id: "runda",
@@ -93,6 +97,7 @@ export const locations: LocationArea[] = [
     town: "Nairobi",
     parentSlug: "nairobi",
     intro: "A quiet residential estate to the north of the city, characterised by detached homes on generous plots.",
+    body: "Runda is sought for family houses and embassy-grade residences. Listings often include 4 and 5 bedroom homes with staff quarters, generators and secured perimeters.\n\nVerify plot size on the title, access rights and any estate covenants before offer.",
   },
   {
     id: "lavington",
@@ -102,6 +107,7 @@ export const locations: LocationArea[] = [
     town: "Nairobi",
     parentSlug: "nairobi",
     intro: "An established leafy suburb with a mix of townhouses, maisonettes and newer apartment schemes.",
+    body: "Lavington balances family houses with denser apartment schemes. Buyers often compare Lavington with Kileleshwa and Kilimani on price per square metre and commute.\n\nCheck tenure, service charge (for apartments) and recent comparable sales when negotiating.",
   },
   {
     id: "kileleshwa",
@@ -111,6 +117,7 @@ export const locations: LocationArea[] = [
     town: "Nairobi",
     parentSlug: "nairobi",
     intro: "A residential area that has shifted steadily from bungalows to mid-rise apartment living.",
+    body: "Kileleshwa is active for 2 and 3 bedroom apartments for sale and rent, including off-plan stock. Investors watch rental demand from professionals working in the CBD and Westlands.\n\nInspect build quality, parking allocation and the management company before signing.",
   },
   {
     id: "upper-hill",
@@ -120,6 +127,7 @@ export const locations: LocationArea[] = [
     town: "Nairobi",
     parentSlug: "nairobi",
     intro: "Nairobi's principal office district, home to corporate headquarters and grade-A commercial space.",
+    body: "Upper Hill dominates searches for office space for rent and commercial property for sale in Nairobi. Floor plates, parking ratios, backup power and fibre connectivity drive letting decisions.\n\nProperty Masters markets commercial suites with clear lettable areas and service charge details.",
   },
   {
     id: "kitengela",
@@ -128,12 +136,48 @@ export const locations: LocationArea[] = [
     countyId: "kajiado",
     town: "Kitengela",
     intro: "A fast-growing satellite town south of Nairobi, active for residential plots and new-build housing.",
+    body: "Kitengela is one of the strongest markets for land for sale and residential plots near Nairobi. Buyers search for surveyed plots with ready title, graded access and proximity to the expressway corridor.\n\nNever pay a deposit until an advocate has completed an official search and boundary confirmation on site.",
   },
-  { id: "mombasa", name: "Mombasa", slug: "mombasa", countyId: "mombasa", town: "Mombasa", intro: "Kenya's coastal city, with beachfront apartments, holiday homes and port-related commercial property." },
-  { id: "kisumu", name: "Kisumu", slug: "kisumu", countyId: "kisumu", town: "Kisumu", intro: "The principal lakeside city in western Kenya, with growing residential and retail development." },
-  { id: "nakuru", name: "Nakuru", slug: "nakuru", countyId: "nakuru", town: "Nakuru", intro: "A Rift Valley city with an active market in residential plots, family homes and commercial premises." },
-  { id: "eldoret", name: "Eldoret", slug: "eldoret", countyId: "uasin-gishu", town: "Eldoret", intro: "A regional commercial centre in the North Rift with steady demand for housing and land." },
-  { id: "kakamega", name: "Kakamega", slug: "kakamega", countyId: "kakamega", town: "Kakamega", intro: "A western Kenya county headquarters with expanding residential and mixed-use development." },
+  {
+    id: "mombasa",
+    name: "Mombasa",
+    slug: "mombasa",
+    countyId: "mombasa",
+    town: "Mombasa",
+    intro: "Kenya's coastal city, with beachfront apartments, holiday homes and port-related commercial property.",
+  },
+  {
+    id: "kisumu",
+    name: "Kisumu",
+    slug: "kisumu",
+    countyId: "kisumu",
+    town: "Kisumu",
+    intro: "The principal lakeside city in western Kenya, with growing residential and retail development.",
+  },
+  {
+    id: "nakuru",
+    name: "Nakuru",
+    slug: "nakuru",
+    countyId: "nakuru",
+    town: "Nakuru",
+    intro: "A Rift Valley city with an active market in residential plots, family homes and commercial premises.",
+  },
+  {
+    id: "eldoret",
+    name: "Eldoret",
+    slug: "eldoret",
+    countyId: "uasin-gishu",
+    town: "Eldoret",
+    intro: "A regional commercial centre in the North Rift with steady demand for housing and land.",
+  },
+  {
+    id: "kakamega",
+    name: "Kakamega",
+    slug: "kakamega",
+    countyId: "kakamega",
+    town: "Kakamega",
+    intro: "A western Kenya county headquarters with expanding residential and mixed-use development.",
+  },
 ];
 
 export const agents: Agent[] = [
@@ -142,9 +186,9 @@ export const agents: Agent[] = [
     name: "Property Masters Sales Desk",
     slug: "sales-desk",
     role: "Sales & Lettings",
-    phone: "+254 700 000 000",
+    phone: "+254 715 311 930",
     email: "sales@propertymasters.co.ke",
-    bio: "The central desk handling viewings, offers and letting enquiries. Individual consultant profiles will be published once confirmed.",
+    bio: "The central desk handling viewings, offers and letting enquiries from our Westlands office.",
     areasServed: ["Nairobi", "Kajiado"],
     specialisations: ["Residential sales", "Lettings"],
     active: true,
@@ -154,7 +198,7 @@ export const agents: Agent[] = [
     name: "Property Masters Land Desk",
     slug: "land-desk",
     role: "Land & Development",
-    phone: "+254 700 000 000",
+    phone: "+254 715 311 930",
     email: "land@propertymasters.co.ke",
     bio: "Handles plot sales, subdivisions and development land enquiries, including title verification support.",
     areasServed: ["Kajiado", "Nakuru", "Machakos"],
@@ -166,7 +210,7 @@ export const agents: Agent[] = [
     name: "Property Masters Commercial Desk",
     slug: "commercial-desk",
     role: "Commercial",
-    phone: "+254 700 000 000",
+    phone: "+254 715 311 930",
     email: "commercial@propertymasters.co.ke",
     bio: "Office, retail and industrial space across Nairobi's commercial districts.",
     areasServed: ["Upper Hill", "Westlands", "Industrial Area"],
@@ -187,7 +231,7 @@ export const demoProperties: Property[] = [
     title: "4 Bedroom Contemporary Villa in Karen",
     slug: "4-bedroom-contemporary-villa-karen",
     description:
-      "A contemporary four bedroom villa set on a mature, well-planted plot in Karen. The ground floor opens onto a covered terrace and garden, with a separate family room and a fitted kitchen with a pantry. All bedrooms are en-suite, and there is staff accommodation and a double garage.",
+      "A contemporary four bedroom villa set on a mature, well-planted plot in Karen. The ground floor opens onto a covered terrace and garden, with a separate family room and a fitted kitchen with a pantry. All bedrooms are en-suite, and there is staff accommodation and a double garage. Ideal for buyers searching houses for sale Karen or villa for sale Karen Nairobi.",
     listingType: "sale",
     propertyTypeId: "villa",
     price: 78_000_000,
@@ -219,7 +263,7 @@ export const demoProperties: Property[] = [
     title: "3 Bedroom Apartment in Westlands",
     slug: "3-bedroom-apartment-westlands",
     description:
-      "A three bedroom apartment in a managed Westlands development, within walking distance of offices, retail and restaurants. The unit has an open-plan living and dining area, a balcony, and access to shared amenities.",
+      "A three bedroom apartment in a managed Westlands development, within walking distance of offices, retail and restaurants. The unit has an open-plan living and dining area, a balcony, and access to shared amenities. Suited to tenants searching apartments for rent Westlands or 3 bedroom apartment Westlands Nairobi.",
     listingType: "rent",
     propertyTypeId: "apartment",
     price: 185_000,
@@ -249,7 +293,7 @@ export const demoProperties: Property[] = [
     title: "Residential Plot in Kitengela",
     slug: "residential-plot-kitengela",
     description:
-      "An eighth-acre residential plot in a surveyed Kitengela scheme with graded access roads. Ready title, suitable for immediate development.",
+      "An eighth-acre residential plot in a surveyed Kitengela scheme with graded access roads. Ready title, suitable for immediate development. Listed for buyers searching land for sale Kitengela or residential plot for sale near Nairobi.",
     listingType: "sale",
     propertyTypeId: "residential-land",
     price: 3_200_000,
@@ -274,7 +318,7 @@ export const demoProperties: Property[] = [
     title: "2 Bedroom Modern Apartment in Kilimani",
     slug: "2-bedroom-modern-apartment-kilimani",
     description:
-      "A two bedroom apartment in Kilimani with generous natural light, an open-plan living space and a fitted kitchen. Close to schools, hospitals and the Nairobi CBD.",
+      "A two bedroom apartment in Kilimani with generous natural light, an open-plan living space and a fitted kitchen. Close to schools, hospitals and the Nairobi CBD. Matches searches for 2 bedroom apartment for sale Kilimani and apartments for sale Nairobi.",
     listingType: "sale",
     propertyTypeId: "apartment",
     price: 16_500_000,
@@ -301,7 +345,7 @@ export const demoProperties: Property[] = [
     title: "Commercial Office Suite in Upper Hill",
     slug: "commercial-office-suite-upper-hill",
     description:
-      "An open-plan office suite in an Upper Hill commercial tower, available on a lettable floor plate with dedicated parking and lift access.",
+      "An open-plan office suite in an Upper Hill commercial tower, available on a lettable floor plate with dedicated parking and lift access. Aimed at companies searching office space for rent Upper Hill or commercial property Nairobi.",
     listingType: "rent",
     propertyTypeId: "office",
     price: 420_000,
@@ -326,7 +370,7 @@ export const demoProperties: Property[] = [
     title: "5 Bedroom Family Home in Runda",
     slug: "5-bedroom-family-home-runda",
     description:
-      "A five bedroom family home in Runda on a hedged plot with a paved driveway and mature trees. Formal and informal living areas, a study, and self-contained staff quarters.",
+      "A five bedroom family home in Runda on a hedged plot with a paved driveway and mature trees. Formal and informal living areas, a study, and self-contained staff quarters. Relevant for houses for sale Runda and 5 bedroom house Nairobi searches.",
     listingType: "sale",
     propertyTypeId: "house",
     price: 135_000_000,
@@ -374,10 +418,12 @@ export const demoArticles: Article[] = [
     slug: "buying-land-in-kenya-checks-that-matter",
     excerpt:
       "A practical walkthrough of the searches, approvals and site checks to complete before paying a deposit on a plot.",
-    body:
-      "Before committing to a plot, confirm the title particulars at the relevant land registry and match them against the seller's identity documents.\n\nRequest a recent official search, confirm rates and land rent are clear, and verify the plot boundaries on site with a licensed surveyor. Where the land sits within an approved scheme, ask for the approved subdivision plan and confirm the access roads shown on it exist on the ground.\n\nAgree the payment structure in writing through an advocate, and only release the balance once the transfer documents are lodged.",
+    seoTitle: "Buying Land in Kenya — Title Search, Survey & Due Diligence Checklist | Property Masters",
+    seoDescription:
+      "How to buy land in Kenya safely: Ardhisasa title search, rates, survey, subdivision plans and when to release funds. Guide from Property Masters.",
+    body: "Before committing to a plot, confirm the title particulars at the relevant land registry and match them against the seller's identity documents. In Kenya this increasingly means using Ardhisasa (ardhisasa.lands.go.ke) for an official search, not only a photocopy of a title deed.\n\nRequest a recent official search, confirm rates and land rent are clear, and verify the plot boundaries on site with a licensed surveyor. Where the land sits within an approved scheme, ask for the approved subdivision plan and confirm the access roads shown on it exist on the ground.\n\nAgree the payment structure in writing through an advocate, and only release the balance once the transfer documents are lodged. Avoid paying large deposits in cash or to personal accounts without a formal agreement.\n\nCommon risk areas include double allocation, forged titles, unpaid rates, and plots that look larger on the ground than on the survey plan. Property Masters can help you shortlist land for sale in Kitengela, Kiambu and other growth corridors, but independent legal and survey checks remain essential.\n\nIf you are buying from abroad, use a trusted advocate, insist on video or in-person boundary confirmation, and never skip the registry search because of time pressure.",
     category: "Land",
-    tags: ["land", "due diligence"],
+    tags: ["land for sale Kenya", "title search", "due diligence", "Kitengela", "Ardhisasa"],
     author: "Property Masters",
     publishedAt: "2026-05-12T08:00:00.000Z",
     published: true,
@@ -387,10 +433,12 @@ export const demoArticles: Article[] = [
     title: "Renting in Nairobi: what to confirm before you sign",
     slug: "renting-in-nairobi-what-to-confirm",
     excerpt: "Deposits, service charge, utilities and exit terms — the clauses tenants most often overlook.",
-    body:
-      "Read the lease in full and confirm what the rent includes. Service charge, water, refuse and security levies are often billed separately.\n\nClarify the deposit amount, the conditions for its refund, and the notice period. Photograph the unit at handover and attach the inventory to the lease.\n\nConfirm who is responsible for repairs, and whether the landlord or the management company handles them.",
+    seoTitle: "Renting in Nairobi — Deposits, Service Charge & Lease Checklist | Property Masters",
+    seoDescription:
+      "What to check before renting an apartment in Nairobi: deposit, service charge, utilities, notice period and inventory. Practical tenant guide.",
+    body: "Read the lease in full and confirm what the rent includes. Service charge, water, refuse and security levies are often billed separately — especially in managed apartments in Westlands, Kilimani and Kileleshwa.\n\nClarify the deposit amount, the conditions for its refund, and the notice period. Photograph the unit at handover and attach the inventory to the lease. This protects both tenant and landlord when the tenancy ends.\n\nConfirm who is responsible for repairs, and whether the landlord or the management company handles them. Ask for the management company's contact details and typical response times for plumbing and electrical issues.\n\nFor furnished or semi-furnished units, list every item. For parking, confirm whether a bay is allocated and whether visitors can use basement parking. These details matter more than the headline rent when comparing apartments for rent in Nairobi.\n\nProperty Masters can arrange viewings and explain service charge structures on the listings we market.",
     category: "Renting",
-    tags: ["renting", "tenants"],
+    tags: ["apartments for rent Nairobi", "Westlands", "service charge", "tenants"],
     author: "Property Masters",
     publishedAt: "2026-04-28T08:00:00.000Z",
     published: true,
@@ -400,12 +448,62 @@ export const demoArticles: Article[] = [
     title: "How to read a property listing properly",
     slug: "how-to-read-a-property-listing-properly",
     excerpt: "Size, service charge and tenure change the real cost of a home far more than the headline price.",
-    body:
-      "A headline price rarely tells the whole story. Compare properties on price per square metre, and read the size figure carefully: some listings quote plinth area, others usable area.\n\nFor apartments, ask for the monthly service charge and what it covers. For houses, ask about the tenure — freehold or leasehold, and if leasehold, the unexpired term.\n\nFinally, ask when the property was last valued and whether the price is negotiable.",
+    seoTitle: "How to Read a Property Listing in Kenya — Price, Size & Tenure | Property Masters",
+    seoDescription:
+      "Compare Kenyan property listings by price per square metre, service charge, freehold vs leasehold and negotiability — not just the asking price.",
+    body: "A headline price rarely tells the whole story. Compare properties on price per square metre, and read the size figure carefully: some listings quote plinth area, others usable area.\n\nFor apartments, ask for the monthly service charge and what it covers. A lower purchase price with a high service charge can cost more over five years than a slightly dearer unit with efficient management.\n\nFor houses and villas, ask about the tenure — freehold or leasehold, and if leasehold, the unexpired term. Confirm land size on the title, not only on the brochure.\n\nFinally, ask when the property was last valued, whether the price is negotiable, and which fixtures are included. Property Masters states size, tenure and price basis clearly on every listing we publish.",
     category: "Buying",
-    tags: ["buying", "guides"],
+    tags: ["property for sale Kenya", "buying guide", "service charge", "tenure"],
     author: "Property Masters",
     publishedAt: "2026-03-19T08:00:00.000Z",
+    published: true,
+  },
+  {
+    id: "article-4",
+    title: "Buying property in Kenya from abroad: a diaspora checklist",
+    slug: "buying-property-kenya-diaspora-checklist",
+    excerpt:
+      "How Kenyans in the UK, US and UAE can buy land or homes remotely without falling for common scams.",
+    seoTitle: "Buying Property in Kenya from Abroad — Diaspora Investor Checklist | Property Masters",
+    seoDescription:
+      "Diaspora guide to buying property in Kenya: title search, advocates, payments, and how to avoid fraud when investing from the UK, US or UAE.",
+    body: "Diaspora investors are a major force in Kenyan real estate, especially for apartments in Westlands and Kilimani and land in Kitengela, Ruiru and other satellite towns.\n\nStart with an independent title search via Ardhisasa or a licensed advocate — never rely only on photos and WhatsApp messages. Insist on video calls during boundary walks and on written agreements before any substantial payment.\n\nUse a reputable advocate for the sale agreement and transfer. Prefer payments through traceable channels to the seller's advocate or a formal escrow arrangement, not personal M-Pesa numbers for large sums.\n\nDecide early whether you need a property manager for rentals. Gross yields in prime Nairobi areas often sit in the mid single digits before management costs; emerging areas can show higher yields with higher risk.\n\nProperty Masters markets verified inventory and can coordinate remote viewings, documentation support and handover for buyers based outside Kenya.",
+    category: "Buying",
+    tags: ["diaspora", "buying property in Kenya", "investment", "fraud prevention"],
+    author: "Property Masters",
+    publishedAt: "2026-06-01T08:00:00.000Z",
+    published: true,
+  },
+  {
+    id: "article-5",
+    title: "Apartments in Westlands and Kilimani: what buyers and tenants compare",
+    slug: "apartments-westlands-kilimani-comparison",
+    excerpt:
+      "How professionals and investors weigh rent, service charge, commute and yield between Westlands and Kilimani.",
+    seoTitle: "Apartments Westlands vs Kilimani — Rent, Buy & Yield Guide | Property Masters",
+    seoDescription:
+      "Compare apartments for rent and sale in Westlands and Kilimani: location, service charge, tenant demand and what to check before you sign.",
+    body: "Westlands and Kilimani are two of the most searched apartment markets in Nairobi. Tenants often look for 1, 2 and 3 bedroom apartments for rent Westlands or Kilimani near work and amenities. Buyers compare price per square metre and expected rental yield.\n\nWestlands tends to attract corporate and expat demand, with strong retail and office proximity. Kilimani offers a more residential feel while remaining close to the CBD and major hospitals.\n\nOn every viewing, confirm parking allocation, generator coverage, water backup and the exact service charge. Ask whether short-term letting is allowed if that is part of your investment plan.\n\nProperty Masters lists apartments in both areas with transparent sizes and charges, and can arrange same-day viewings from our Westlands office.",
+    category: "Buying",
+    tags: ["Westlands", "Kilimani", "apartments for rent", "apartments for sale"],
+    author: "Property Masters",
+    publishedAt: "2026-06-15T08:00:00.000Z",
+    published: true,
+  },
+  {
+    id: "article-6",
+    title: "Office space in Upper Hill and Westlands: practical letting notes",
+    slug: "office-space-upper-hill-westlands",
+    excerpt:
+      "What companies should verify when leasing commercial space in Nairobi's main office districts.",
+    seoTitle: "Office Space for Rent Upper Hill & Westlands — Letting Checklist | Property Masters",
+    seoDescription:
+      "Lease office space in Upper Hill or Westlands: floor plates, parking, power, fibre and service charge — practical notes from Property Masters.",
+    body: "Upper Hill and Westlands dominate commercial search demand for office space for rent in Nairobi. Landlords quote on lettable area, parking bays and service charge; tenants care about backup power, lifts, fibre and security.\n\nBefore signing, measure the actual usable area against the brochure, confirm whether the quote is inclusive of service charge, and check fit-out rules and reinstatement obligations at the end of the term.\n\nParking ratios matter for staff and clients. Ask how visitor parking is managed and whether additional bays can be leased.\n\nProperty Masters markets commercial suites with clear floor areas and can introduce you to options in Upper Hill, Westlands and adjacent commercial nodes.",
+    category: "Commercial",
+    tags: ["office space Upper Hill", "office space Westlands", "commercial property Nairobi"],
+    author: "Property Masters",
+    publishedAt: "2026-07-01T08:00:00.000Z",
     published: true,
   },
 ];
