@@ -5,8 +5,15 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Property Masters design system.
- * Charcoal / ivory / bronze. One typeface (Manrope). Restraint over decoration.
+ * Property Masters design system — matched to the official logo.
+ *
+ * Palette (logo):
+ *   Black   — primary surface / authority (client: black is the boss)
+ *   Orange  — house outline + brick (#FF5C00 family) — CTAs, borders, energy
+ *   Magenta — diamond + tagline script — secondary accent, emphasis
+ *   White   — type on black, card surfaces for listings
+ *
+ * One typeface (Manrope). Restraint over decoration.
  */
 
 @theme inline {
@@ -43,8 +50,11 @@
   --color-ring-offset-background: var(--background);
   --color-ink: var(--ink);
   --color-ink-foreground: var(--ink-foreground);
+  /* "bronze" kept as class name for compatibility — values are logo orange */
   --color-bronze: var(--bronze);
   --color-bronze-foreground: var(--bronze-foreground);
+  --color-magenta: var(--magenta);
+  --color-magenta-foreground: var(--magenta-foreground);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -58,93 +68,104 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --shadow-card: 0 1px 2px oklch(0.2 0.01 60 / 0.04), 0 8px 24px -16px oklch(0.2 0.01 60 / 0.18);
-  --shadow-lift: 0 2px 4px oklch(0.2 0.01 60 / 0.05), 0 18px 40px -22px oklch(0.2 0.01 60 / 0.28);
+  --shadow-card: 0 1px 2px oklch(0 0 0 / 0.35), 0 12px 32px -16px oklch(0.65 0.22 40 / 0.25);
+  --shadow-lift: 0 2px 6px oklch(0 0 0 / 0.4), 0 20px 48px -20px oklch(0.65 0.22 40 / 0.35);
   --tracking-display: -0.03em;
 }
 
 :root {
   --radius: 0.25rem;
 
-  --background: oklch(0.985 0.006 85);
-  --foreground: oklch(0.205 0.008 60);
+  /* Black-led canvas — logo background is pure black */
+  --background: oklch(0.12 0.005 40);
+  --foreground: oklch(0.97 0.01 90);
 
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.205 0.008 60);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.205 0.008 60);
+  /* White cards so property photos and body copy stay readable */
+  --card: oklch(0.99 0.005 90);
+  --card-foreground: oklch(0.14 0.01 40);
+  --popover: oklch(0.16 0.01 40);
+  --popover-foreground: oklch(0.97 0.01 90);
 
-  --primary: oklch(0.215 0.008 60);
-  --primary-foreground: oklch(0.98 0.008 85);
+  /* Primary actions = logo orange */
+  --primary: oklch(0.68 0.22 40);
+  --primary-foreground: oklch(0.12 0.01 40);
 
-  --secondary: oklch(0.955 0.008 85);
-  --secondary-foreground: oklch(0.28 0.008 60);
+  --secondary: oklch(0.2 0.01 40);
+  --secondary-foreground: oklch(0.95 0.01 90);
 
-  --muted: oklch(0.955 0.006 85);
-  --muted-foreground: oklch(0.505 0.01 65);
+  --muted: oklch(0.2 0.012 40);
+  --muted-foreground: oklch(0.72 0.02 70);
 
-  --accent: oklch(0.645 0.203 42);
-  --accent-foreground: oklch(0.99 0.005 85);
+  /* Accent = magenta (logo diamond + tagline) */
+  --accent: oklch(0.62 0.27 330);
+  --accent-foreground: oklch(0.99 0.01 90);
 
-  --bronze: oklch(0.645 0.203 42);
-  --bronze-foreground: oklch(0.99 0.005 85);
+  /* bronze token → logo orange (existing bg-bronze / text-bronze keep working) */
+  --bronze: oklch(0.68 0.22 40);
+  --bronze-foreground: oklch(0.12 0.01 40);
 
-  --ink: oklch(0.16 0.004 60);
-  --ink-foreground: oklch(0.97 0.008 85);
+  --magenta: oklch(0.62 0.27 330);
+  --magenta-foreground: oklch(0.99 0.01 90);
 
-  --destructive: oklch(0.545 0.19 27);
+  --ink: oklch(0.08 0.005 40);
+  --ink-foreground: oklch(0.97 0.01 90);
+
+  --destructive: oklch(0.58 0.22 25);
   --destructive-foreground: oklch(0.99 0 0);
-  --success: oklch(0.52 0.11 155);
-  --success-foreground: oklch(0.99 0 0);
+  --success: oklch(0.62 0.14 155);
+  --success-foreground: oklch(0.12 0 0);
 
-  --border: oklch(0.9 0.008 80);
-  --border-strong: oklch(0.82 0.01 78);
-  --input: oklch(0.885 0.008 80);
-  --ring: oklch(0.605 0.075 62);
+  --border: oklch(0.28 0.02 40);
+  --border-strong: oklch(0.68 0.22 40 / 0.55);
+  --input: oklch(0.28 0.02 40);
+  --ring: oklch(0.68 0.22 40);
 
-  --chart-1: oklch(0.605 0.075 62);
-  --chart-2: oklch(0.35 0.01 60);
-  --chart-3: oklch(0.7 0.05 62);
-  --chart-4: oklch(0.55 0.02 60);
-  --chart-5: oklch(0.8 0.03 80);
+  --chart-1: oklch(0.68 0.22 40);
+  --chart-2: oklch(0.62 0.27 330);
+  --chart-3: oklch(0.75 0.15 50);
+  --chart-4: oklch(0.45 0.08 40);
+  --chart-5: oklch(0.85 0.05 90);
 
-  --sidebar: oklch(0.185 0.008 60);
-  --sidebar-foreground: oklch(0.92 0.006 85);
-  --sidebar-primary: oklch(0.605 0.075 62);
-  --sidebar-primary-foreground: oklch(0.99 0.005 85);
-  --sidebar-accent: oklch(0.26 0.008 60);
-  --sidebar-accent-foreground: oklch(0.98 0.006 85);
-  --sidebar-border: oklch(0.3 0.008 60);
-  --sidebar-ring: oklch(0.605 0.075 62);
+  --sidebar: oklch(0.1 0.008 40);
+  --sidebar-foreground: oklch(0.94 0.01 90);
+  --sidebar-primary: oklch(0.68 0.22 40);
+  --sidebar-primary-foreground: oklch(0.12 0.01 40);
+  --sidebar-accent: oklch(0.2 0.02 40);
+  --sidebar-accent-foreground: oklch(0.97 0.01 90);
+  --sidebar-border: oklch(0.28 0.02 40);
+  --sidebar-ring: oklch(0.68 0.22 40);
 }
 
+/* Explicit .dark stays aligned with the same brand (site is dark by default) */
 .dark {
-  --background: oklch(0.17 0.008 60);
-  --foreground: oklch(0.96 0.006 85);
-  --card: oklch(0.215 0.008 60);
-  --card-foreground: oklch(0.96 0.006 85);
-  --popover: oklch(0.215 0.008 60);
-  --popover-foreground: oklch(0.96 0.006 85);
-  --primary: oklch(0.95 0.006 85);
-  --primary-foreground: oklch(0.2 0.008 60);
-  --secondary: oklch(0.26 0.008 60);
-  --secondary-foreground: oklch(0.96 0.006 85);
-  --muted: oklch(0.26 0.008 60);
-  --muted-foreground: oklch(0.72 0.01 70);
-  --accent: oklch(0.68 0.19 42);
-  --accent-foreground: oklch(0.16 0.008 60);
-  --bronze: oklch(0.7 0.19 42);
-  --bronze-foreground: oklch(0.16 0.008 60);
-  --ink: oklch(0.13 0.008 60);
-  --ink-foreground: oklch(0.96 0.006 85);
-  --destructive: oklch(0.65 0.18 27);
-  --destructive-foreground: oklch(0.15 0 0);
-  --success: oklch(0.68 0.12 155);
-  --success-foreground: oklch(0.15 0 0);
-  --border: oklch(1 0 0 / 12%);
-  --border-strong: oklch(1 0 0 / 22%);
+  --background: oklch(0.1 0.005 40);
+  --foreground: oklch(0.97 0.01 90);
+  --card: oklch(0.99 0.005 90);
+  --card-foreground: oklch(0.14 0.01 40);
+  --popover: oklch(0.16 0.01 40);
+  --popover-foreground: oklch(0.97 0.01 90);
+  --primary: oklch(0.7 0.22 40);
+  --primary-foreground: oklch(0.12 0.01 40);
+  --secondary: oklch(0.22 0.015 40);
+  --secondary-foreground: oklch(0.95 0.01 90);
+  --muted: oklch(0.22 0.015 40);
+  --muted-foreground: oklch(0.72 0.02 70);
+  --accent: oklch(0.65 0.27 330);
+  --accent-foreground: oklch(0.99 0.01 90);
+  --bronze: oklch(0.7 0.22 40);
+  --bronze-foreground: oklch(0.12 0.01 40);
+  --magenta: oklch(0.65 0.27 330);
+  --magenta-foreground: oklch(0.99 0.01 90);
+  --ink: oklch(0.06 0.005 40);
+  --ink-foreground: oklch(0.97 0.01 90);
+  --destructive: oklch(0.62 0.2 25);
+  --destructive-foreground: oklch(0.99 0 0);
+  --success: oklch(0.65 0.14 155);
+  --success-foreground: oklch(0.12 0 0);
+  --border: oklch(1 0 0 / 14%);
+  --border-strong: oklch(0.7 0.22 40 / 0.6);
   --input: oklch(1 0 0 / 16%);
-  --ring: oklch(0.66 0.08 62);
+  --ring: oklch(0.7 0.22 40);
 }
 
 @layer base {
@@ -172,9 +193,19 @@
     text-wrap: balance;
   }
 
+  a {
+    color: inherit;
+  }
+
   :focus-visible {
     outline: 2px solid var(--color-ring);
     outline-offset: 2px;
+  }
+
+  /* Selection tinted with logo orange */
+  ::selection {
+    background-color: oklch(0.68 0.22 40 / 0.35);
+    color: oklch(0.99 0.01 90);
   }
 }
 
@@ -193,9 +224,14 @@
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--color-muted-foreground);
+  color: var(--color-magenta);
 }
 
 @utility hairline {
   border-top: 1px solid var(--color-border);
+}
+
+/* Soft orange glow used on hero / CTA bands */
+@utility brand-glow {
+  box-shadow: 0 0 0 1px oklch(0.68 0.22 40 / 0.35), 0 12px 40px -12px oklch(0.68 0.22 40 / 0.45);
 }
