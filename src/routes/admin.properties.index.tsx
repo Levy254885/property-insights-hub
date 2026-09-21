@@ -31,14 +31,16 @@ const statuses: Array<{ value: PropertyStatus | "all"; label: string }> = [
 ];
 
 function AdminProperties() {
-  const { data: properties } = useProperties();
+  const { data: properties = [], isLoading } = useProperties();
   const qc = useQueryClient();
   const [q, setQ] = useState("");
   const [status, setStatus] = useState<PropertyStatus | "all">("all");
 
   const rows = properties
     .filter((p) => (status === "all" ? true : p.status === status))
-    .filter((p) => (q ? `${p.title} ${p.area} ${p.town}`.toLowerCase().includes(q.toLowerCase()) : true))
+    .filter((p) =>
+      q ? `${p.title} ${p.area} ${p.town}`.toLowerCase().includes(q.toLowerCase()) : true,
+    )
     .sort((a, b) => (a.updatedAt < b.updatedAt ? 1 : -1));
 
   async function mutate(id: string, patch: Parameters<typeof patchProperty>[1], message: string) {
@@ -89,14 +91,14 @@ function AdminProperties() {
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Search inventory"
-          className="max-w-xs"
+          className="max-w-xs bg-neutral-100 text-neutral-900"
           aria-label="Search inventory"
         />
         <Select value={status} onValueChange={(v) => setStatus(v as PropertyStatus | "all")}>
-          <SelectTrigger className="w-48">
+          <SelectTrigger className="w-48 border-neutral-300 bg-neutral-100 text-neutral-900">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-white text-neutral-900">
             {statuses.map((s) => (
               <SelectItem key={s.value} value={s.value}>
                 {s.label}
@@ -106,12 +108,15 @@ function AdminProperties() {
         </Select>
       </div>
 
-      <ul className="mt-6 divide-y divide-border rounded-md border border-border bg-card">
+      <ul className="mt-6 divide-y divide-border rounded-md border border-border bg-card text-card-foreground">
+        {isLoading && rows.length === 0 && (
+          <li className="p-6 text-sm text-card-muted">Loading inventory…</li>
+        )}
         {rows.map((p) => (
           <li key={p.id} className="flex flex-wrap items-center justify-between gap-4 p-4">
             <div className="min-w-0">
-              <p className="truncate text-sm font-semibold">{p.title}</p>
-              <p className="text-xs text-muted-foreground">
+              <p className="truncate text-sm font-semibold text-card-foreground">{p.title}</p>
+              <p className="text-xs text-card-muted">
                 {p.area}, {p.town} · {formatPrice(p.price, p.listingType)} · {p.status}
                 {p.featured ? " · featured" : ""}
                 {p.isDemo ? " · demo record" : ""}
@@ -127,7 +132,11 @@ function AdminProperties() {
                 variant="ghost"
                 size="sm"
                 onClick={() =>
-                  void mutate(p.id, { featured: !p.featured }, p.featured ? "Removed from featured" : "Marked as featured")
+                  void mutate(
+                    p.id,
+                    { featured: !p.featured },
+                    p.featured ? "Removed from featured" : "Marked as featured",
+                  )
                 }
               >
                 {p.featured ? "Unfeature" : "Feature"}
@@ -151,10 +160,13 @@ function AdminProperties() {
                   void mutate(p.id, { status: v as PropertyStatus }, "Status updated")
                 }
               >
-                <SelectTrigger className="h-9 w-[9.5rem]" aria-label={`Status for ${p.title}`}>
+                <SelectTrigger
+                  className="h-9 w-[9.5rem] border-neutral-300 bg-neutral-100 text-neutral-900"
+                  aria-label={`Status for ${p.title}`}
+                >
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-white text-neutral-900">
                   {statuses
                     .filter((s) => s.value !== "all")
                     .map((s) => (
@@ -170,8 +182,8 @@ function AdminProperties() {
             </div>
           </li>
         ))}
-        {rows.length === 0 && (
-          <li className="p-6 text-sm text-muted-foreground">No properties match this filter.</li>
+        {!isLoading && rows.length === 0 && (
+          <li className="p-6 text-sm text-card-muted">No properties match this filter.</li>
         )}
       </ul>
     </div>
