@@ -25,9 +25,9 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90">
-      <div className="container-page flex h-20 items-center justify-between gap-3 sm:gap-4 lg:h-20">
-        <Link to="/" aria-label="Property Masters home" className="flex items-center">
-          <Logo tone="dark" className="max-h-[72px] w-auto object-contain sm:max-h-[80px] lg:max-h-[112px]" />
+      <div className="container-page flex h-32 items-center justify-between gap-3 sm:gap-4 lg:h-24">
+        <Link to="/" aria-label="Property Masters home" className="flex items-center py-2">
+          <Logo tone="dark" />
         </Link>
 
         <nav aria-label="Primary" className="hidden items-center gap-7 lg:flex">
