@@ -19,7 +19,7 @@ export function Logo({
       alt="Property Masters — with you all the way"
       width={736}
       height={400}
-      className={cn("h-28 w-auto object-contain lg:h-32", className)}
+      className={cn("h-16 w-auto object-contain lg:h-20", className)}
     />
   );
 }
