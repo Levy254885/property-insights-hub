@@ -25,18 +25,18 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90">
-      <div className="container-page flex h-32 items-center justify-between gap-3 sm:gap-4 lg:h-24">
-        <Link to="/" aria-label="Property Masters home" className="flex items-center py-2">
+      <div className="container-page flex h-16 items-center justify-between gap-2 sm:gap-3 lg:h-16">
+        <Link to="/" aria-label="Property Masters home" className="flex items-center py-1">
           <Logo tone="dark" />
         </Link>
 
-        <nav aria-label="Primary" className="hidden items-center gap-7 lg:flex">
+        <nav aria-label="Primary" className="hidden items-center gap-4 lg:flex">
           {primaryNav.map((item) => (
             <Link
               key={item.to}
               to={item.to}
               className={cn(
-                "text-sm font-medium text-muted-foreground transition-colors hover:text-bronze",
+                "text-xs font-medium text-muted-foreground transition-colors hover:text-bronze",
                 pathname.startsWith(item.to) && "text-bronze",
               )}
             >
@@ -45,15 +45,15 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-2 lg:flex">
-          <Button variant="ghost" size="icon" asChild aria-label="Search properties">
+        <div className="hidden items-center gap-1 lg:flex">
+          <Button variant="ghost" size="sm" asChild aria-label="Search properties">
             <Link to="/properties">
-              <Search />
+              <Search className="h-4 w-4" />
             </Link>
           </Button>
-          <Button variant="ghost" size="icon" asChild aria-label={`Saved properties (${favorites.length})`}>
+          <Button variant="ghost" size="sm" asChild aria-label={`Saved properties (${favorites.length})`}>
             <Link to="/favorites" className="relative">
-              <Heart />
+              <Heart className="h-4 w-4" />
               {favorites.length > 0 && (
                 <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-bronze px-1 text-[0.625rem] font-bold text-bronze-foreground">
                   {favorites.length}
@@ -61,29 +61,29 @@ export function Header() {
               )}
             </Link>
           </Button>
-          <Button variant="ghost" size="sm" asChild>
-            <a href={tel}>
-              <Phone /> {defaultSettings.phone}
+          <Button variant="ghost" size="xs" asChild>
+            <a href={tel} className="text-xs">
+              <Phone className="h-3 w-3" /> {defaultSettings.phone}
             </a>
           </Button>
-          <Button variant="outline" size="sm" asChild>
-            <Link to="/properties">Explore Properties</Link>
+          <Button variant="outline" size="xs" asChild>
+            <Link to="/properties" className="text-xs">Explore</Link>
           </Button>
-          <Button size="sm" asChild>
-            <Link to="/contact">Enquire Now</Link>
+          <Button size="xs" asChild>
+            <Link to="/contact" className="text-xs">Enquire</Link>
           </Button>
         </div>
 
         <div className="flex items-center gap-1 lg:hidden">
-          <Button variant="ghost" size="icon" asChild aria-label="Saved properties">
+          <Button variant="ghost" size="sm" asChild aria-label="Saved properties">
             <Link to="/favorites">
-              <Heart />
+              <Heart className="h-4 w-4" />
             </Link>
           </Button>
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" aria-label="Open menu">
-                <Menu />
+              <Button variant="ghost" size="sm" aria-label="Open menu">
+                <Menu className="h-4 w-4" />
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[86vw] max-w-sm border-border bg-background p-0">
